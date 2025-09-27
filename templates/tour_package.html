@@ -1,0 +1,154 @@
+  
+  <!-- FontAwesome for stars -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  
+  <style>
+  .tour-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-in-out;
+    background: #fff;
+    cursor: pointer;
+  
+  }
+  .tour-card{
+    opacity: 0;
+    transform: translateY(-50px);
+    transition: all 1s ease-out; 
+  }
+
+.tour-card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+  .tour-card img {
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  
+  .tour-card:hover {
+    /* transform: translateY(-6px); */
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+
+  .tour-card .card-body {
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  .tour-card .tour-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .tour-card .rating {
+    font-size: 0.85rem;
+    color: #444;
+    margin-bottom: 0.3rem;
+  }
+  
+  .tour-card .price {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #e63946;
+    margin-bottom: 0.2rem;
+  }
+
+  .border-theme {
+        border-top: 3px solid orange;
+        width: 200px;
+        margin: 0 auto;
+        display: block;
+        margin-bottom: 40px;
+    }
+    
+  </style>
+  
+  <div class="container my-2">
+    <div class="text-center mb-5">
+        <h2>Tour Package</h2>
+        <span class="border-theme"></span>
+    </div>
+  </div>  
+<!-- Tour Packages -->
+<div class="container my-5">
+    <!-- <h3 class="text-center fw-bold  my-5">Tour Packages</h3> -->
+    <div class="row g-4 ">
+      <!-- Card 1 -->
+      <div class="col-6 col-md-3 tour_package">
+        <div class="card tour-card">
+          <img src="/media/hotel.jpg" class="card-img-top" alt="">
+          <div class="card-body">
+            <h6 class="tour-title">Hotel Paradise</h6>
+            <p class="rating"><i class="fa-solid fa-star text-warning"></i> 4.8/5 Excellent (1214 reviews)</p>
+            <p class="price">Rs. 10,000</p>
+            <span class="small text-muted">Price starts from</span>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Card 2 -->
+      <div class="col-6 col-md-3 tour_package">
+        <div class="card tour-card">
+          <img src="/media/hotel2.png" class="card-img-top" alt="">
+          <div class="card-body">
+            <h6 class="tour-title">Hotel Kuala Lumpur</h6>
+            <p class="rating"><i class="fa-solid fa-star text-warning"></i> 4.8/5 Excellent (1214 reviews)</p>
+            <p class="price">Rs. 10,000</p>
+            <span class="small text-muted">Price starts from</span>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Card 3 -->
+      <div class="col-6 col-md-3 tour_package">
+        <div class="card tour-card">
+          <img src="/media/hotel3.png" class="card-img-top" alt="">
+          <div class="card-body">
+            <h6 class="tour-title">Hotel Deluxe</h6>
+            <p class="rating"><i class="fa-solid fa-star text-warning"></i> 4.8/5 Excellent (1214 reviews)</p>
+            <p class="price">Rs. 10,000</p>
+            <span class="small text-muted">Price starts from</span>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Card 4 -->
+      <div class="col-6 col-md-3 tour_package">
+        <div class="card tour-card">
+          <img src="/media/hotel4.png" class="card-img-top" alt="">
+          <div class="card-body">
+            <h6 class="tour-title">Thailand Grand Suite</h6>
+            <p class="rating"><i class="fa-solid fa-star text-warning"></i> 4.8/5 Excellent (1214 reviews)</p>
+            <p class="price">Rs. 10,000</p>
+            <span class="small text-muted">Price starts from</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const tourPackages = document.querySelectorAll(".tour-card");
+    
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+            observer.unobserve(entry.target); // animate only once
+          }
+        });
+      }, { threshold: 0.3 });
+    
+      tourPackages.forEach(pkg => observer.observe(pkg));
+    });
+    </script>
+    

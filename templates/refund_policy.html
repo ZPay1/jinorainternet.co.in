@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block title %}Return Policy{% endblock %}
+
+{% block content %}
+<style>
+  .policy-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    /* background-color: #fefefe; */
+    border-radius: 10px;
+    /* box-shadow: 0 0 20px rgba(0,0,0,0.05); */
+    color: #333;
+    margin-bottom: 20px;
+    margin-top: 10px;
+  }
+  .policy-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #d10000;
+    margin-bottom: 10px;
+  }
+  .policy-section {
+    margin-bottom: 25px;
+  }
+  .policy-section h4 {
+    font-weight: 600;
+    color: #222;
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+  .policy-section ul {
+    padding-left: 18px;
+  }
+  .policy-section p,
+  .policy-section li {
+    line-height: 1.6;
+    text-align: justify;
+  }
+  .last-updated {
+    font-size: 0.9rem;
+    color: #666;
+    text-align: right;
+    margin-bottom: 20px;
+  }
+  ::selection {
+    background: purple;
+    color: #fff;
+  }
+
+
+    /* Hero Section */
+    .our_services {
+      background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNFpZUusVnBdUffCn-Z5tFD9Htx_fYwkA2Eg&s') center/cover no-repeat;
+      height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-align: center;
+      position: relative;
+    }
+    .our_services::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    .our_services h2 {
+      position: relative;
+      font-size: 3rem;
+      color: #ffff;
+    }
+</style>
+<!-- Hero -->
+<section class="our_services">
+    <h2 style="color: #fff;">Refund-Policy</h2>
+</section>
+
+<div class="policy-container">
+  
+  <div class="last-updated">Last Updated: 9/25/2025</div>
+
+  <div class="policy-section">
+    <p>
+      Our focus is complete customer satisfaction. If you are displeased with the services provided, we will refund back the money, provided the reasons are genuine and proved after investigation. Please read the fine prints of each deal before buying it, it provides all the details about the services or the product you purchase.
+    </p>
+    <p>
+      In case of dissatisfaction from our services, Agents have the liberty to cancel their products and request a refund from us. Our Policy for the cancellation and refund will be as follows:
+    </p>
+  </div>
+
+  <div class="policy-section">
+    <h4>Cancellation Policy</h4>
+    <ul>
+      <li>For Cancellations please contact us via the contact us link.</li>
+      <li>15 business days from request received will be treated as cancellation of services for the next service period.</li>
+    </ul>
+  </div>
+
+  <div class="policy-section">
+    <h4>Refund Policy</h4>
+    <ul>
+      <li>We will try our best to create the suitable design concepts for our agents.</li>
+      <li>In case any agent is not completely satisfied with our products we can provide a refund within 7 days.</li>
+      <li>If paid by credit card, refunds will be issued to the original credit card provided at the time of purchase and in case of payment gateway name payments refund will be made to the same account within 7 days.</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

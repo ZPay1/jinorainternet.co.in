@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% block title %} career{% endblock %}
+
+{% block content %}
+<style>
+  .career-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 25px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #cc0000;
+    margin-bottom: 15px;
+  }
+
+  .subheading {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #2c2b2b;
+    margin-bottom: 30px;
+  }
+
+  .last-updated {
+    font-size: 0.9rem;
+    /* color: #706f6f; */
+    text-align: right;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+
+  h4 {
+    color: #222;
+    font-size: 1rem;
+    font-weight: bold;
+    border-left: 5px solid #b80000;
+    padding-left: 12px;
+    margin-top: 40px;
+    margin-bottom: 15px;
+  }
+
+  p {
+    line-height: 1.8;
+    font-size: 1.05rem;
+    margin-bottom: 15px;
+    /* color: #444; */
+  }
+
+  ul {
+    padding-left: 25px;
+    margin-bottom: 20px;
+  }
+
+  li {
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: 576px) {
+    h1 {
+      font-size: 2rem;
+    }
+
+    h4 {
+      font-size: 1.4rem;
+    }
+
+    .policy-container {
+      padding: 40px 15px;
+    }
+  }
+
+
+  
+/* =================================
+        Contact Us Styles 
+  ================================== */
+
+.Contact_us{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+}
+.Contact_us_button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+    background-color: #FEDE00;
+  color: #333;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.Contact_us_button:hover {
+  color: #fff;
+  background-color: crimson;
+  transition: 0.3s ease;
+}
+.Contact_us_button a{
+    text-decoration: none;
+}
+
+
+/*===============================
+      Hero Section
+=============================== */
+
+    .our_services {
+      background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNFpZUusVnBdUffCn-Z5tFD9Htx_fYwkA2Eg&s') center/cover no-repeat;
+      height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-align: center;
+      position: relative;
+    }
+    .our_services::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    .our_services h2 {
+      position: relative;
+      font-size: 3rem;
+      color: #ffff;
+   
+    }
+
+  
+
+</style>
+
+
+<!-- Hero -->
+<section class="our_services">
+    <h2 style="color: #fff;"> Career </h2>
+    <!-- <p>&nbsp;</p> -->
+  </section>
+  
+
+<div class="career-container">
+
+  <div class="subheading">Join our dynamic team and become part of an organization that gives importance to innovation, cooperation and development. We are always looking for emotional professionals who are ready to contribute to their skills and ideas to create a meaningful effect.
+
+  </div>
+
+   <div class="why-lelife-section">
+    <h4>Why LeLife?</h4>
+    <ul>
+      <li><strong>Innovative work environment:</strong> Be a part of a forward-thinking organization that thrives on creativity and new ideas.</li>
+      <li><strong>Career Development Opportunities:</strong> We promote a culture of learning, mentorship, and skill development.</li>
+      <li><strong>Impressive Tasks:</strong> Contribute to improving lives, empowering communities, and transforming businesses.</li>
+      <li><strong>Diverse Team:</strong> Work in an environment that values inclusion, equality, and respect for individual contributions.</li>
+    </ul>
+    <p>If you are ready to take the next step in your career, we would like to hear from you. Start your journey with us:</p>
+    <p><strong>For inquiry, contact us at <a href="https://jinorainternet.co.in/">jinorainternet.co.in/</a></strong></p>
+
+    <h4>Internship Opportunities</h4>
+    <p>We also provide exciting internship programs for students and new graduates, offering real-world experience and mentorship to help kickstart your career. Join us and be part of a team dedicated to creating impressive solutions for a better tomorrow.</p>
+  </div>
+
+
+
+ </div>
+{% endblock %}

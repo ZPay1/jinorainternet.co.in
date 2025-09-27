@@ -1,0 +1,188 @@
+   <style>
+        .border-theme {
+        border-top: 3px solid orange;
+        width: 80px;
+        margin: 0 auto;
+        display: block;
+        margin-bottom: 40px;
+    }
+    
+    .train_image {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 1s ease-out;
+    }
+    
+    .train_image.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+
+   
+/* Hero Section */
+.hero {
+  background: url('https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=1173&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 1s ease-out;
+  margin-top: -20px;
+}
+
+/* Overlay with animated gradient */
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(120deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
+  z-index: 1;
+  animation: gradientShift 6s infinite alternate;
+}
+
+@keyframes gradientShift {
+  0% {background-position: 0% 50%;}
+  100% {background-position: 100% 50%;}
+}
+
+.hero.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hero text animation */
+.hero-text {
+  position: relative;
+  font-size: 5rem;
+  font-weight: bold;
+  z-index: 2;
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: textRise 1.2s forwards 0.3s;
+}
+
+/* Text rise animation */
+@keyframes textRise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 578px) {
+  .hero {
+  height: 80vh;
+
+}
+.hero-text {
+  font-size: 2rem;
+}
+}
+/* Letter-by-letter effect */
+.hero-text span {
+  /* display: inline-block; */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: letterRise 0.8s forwards;
+}
+
+@keyframes letterRise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Optional: slight zoom on hero background */
+.hero.show::before {
+  content: "";
+  position: absolute;
+  top:0; left:0; right:0; bottom:0;
+  background: inherit;
+  z-index: 0;
+  transform: scale(1.1);
+  transition: transform 2s ease-out;
+}
+   </style>
+ 
+  <!-- <div class="container my-5">
+    <div class="text-center mb-5">
+        <h2>Partner</h2>
+        <span class="border-theme"></span>
+    </div>
+  </div>   -->
+
+ <!-- Hero -->
+ <div class="hero">
+  <h1 class="hero-text">LIVE YOUR DREAMS</h1>
+</div>
+
+
+<!-- Partner Section -->
+<section>
+<div class="container my-5">
+    <div class="row align-items-center">
+      <div class="col-md-5 text-center train_image">
+        <img src="/media/trainimg.png" class="img-fluid" alt="Train">
+      </div>
+      <div class="col-md-6">
+        <h1 class="fw-bold train_image">Principal Service Partner of IRCTC</h1>
+        <p class="train_image">As a proud principal service partner of IRCTC, we provide comfortable, efficient and reliable ticketing solutions to meet the needs of travel businesses. Our strong partnership with IRCTC enables us to provide us with rapid, safe and trouble -free railway booking services that enhance customers' satisfaction and operational efficiency. With innovation and customer aid focus on, we help travel agents and agencies to streamline their procedures and enhance our businesses with confidence. Whether you are a small agency or a large travel enterprise, our reliable platform ensures that you provide top-services to your customers every time you. Experience the partner and difference with us. </p>
+      </div>
+    </div>
+  </div>
+</section>  
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const tourPackages = document.querySelectorAll(".train_image");
+  
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+          observer.unobserve(entry.target); // animate only once
+        }
+      });
+    }, { threshold: 0.3 });
+  
+    tourPackages.forEach(pkg => observer.observe(pkg));
+  });
+  </script>
+  
+
+
+  <script>
+    // Animate hero text letter by letter
+    document.addEventListener("DOMContentLoaded", function() {
+        const hero = document.querySelector(".hero");
+        const text = document.querySelector(".hero-text");
+        const letters = text.textContent.split("");
+        text.textContent = "";
+        letters.forEach((letter, i) => {
+            const span = document.createElement("span");
+            span.textContent = letter;
+            span.style.animationDelay = `${i * 0.05}s`;
+            text.appendChild(span);
+        });
+    
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    hero.classList.add("show");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+    
+        observer.observe(hero);
+    });
+    </script>

@@ -1,0 +1,78 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+<link rel="icon" type="/media/JINORA_logo" href="/media/JINORA_logo.png">
+<title>{% block title %} Complete Travel Solution {% endblock %} </title> 
+</head>
+<style>
+  ::selection {
+    background: orange;
+    color: #fff;
+  }
+
+  /* Scroll Badge Styles */
+  .scroll-badge {
+    position: fixed;
+    right: 20px;
+    bottom: 40px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .scroll-badge button {
+    background: #189ab4;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 1.3rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .scroll-badge button:hover {
+    background: #189ab4;
+    color: #fff;
+    /* color: #07575B; */
+  }
+</style>
+<body>
+{% include "header.html" %} 
+
+{% block content %}
+
+<!-- 
+<div style="margin-top: 120px;">
+
+</div> -->
+{% endblock %}   
+{% include "footer.html" %} 
+
+<!-- Scroll Badge for Up/Down -->
+<div class="scroll-badge">
+  <button id="scrollUpBtn" title="Scroll to Top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+  <button id="scrollDownBtn" title="Scroll to Bottom">
+    <i class="fas fa-arrow-down"></i>
+  </button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+<script>
+  // Scroll to Top
+  document.getElementById('scrollUpBtn').onclick = function() {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  };
+  // Scroll to Bottom
+  document.getElementById('scrollDownBtn').onclick = function() {
+    window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+  };
+</script>
+
+</body>
+</html>

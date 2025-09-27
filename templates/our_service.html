@@ -1,0 +1,343 @@
+{% extends 'base.html' %}
+{% block title %}Our service{% endblock %}
+{% block content %}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+    /* Container Styling */
+    .container {
+        max-width: 1200px;
+    }
+    
+    /* Section Heading */
+    h1 {
+        color: #07575B;
+        font-weight: 700;
+        margin-bottom: 10px;
+        font-size: 2.5rem;
+    }
+    
+    .border-theme {
+        border-top: 3px solid #75E6DA;
+        width: 80px;
+        margin: 0 auto;
+        display: block;
+        margin-bottom: 40px;
+    }
+    
+    /* Card Styling */
+    .service-card {
+        background: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        /* transition: transform 0.3s, box-shadow 0.3s; */
+        padding: 10px;
+        text-align: center;
+        overflow: hidden; 
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .service-card:hover {
+       
+        box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    }
+    
+    /* Full-width image */
+    .service-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* Service Icon Wrapper */
+    .service-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: rgb(4, 4, 84);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: -20px auto 15px auto; 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.10);
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 1px solid #eee;
+        position: relative;
+        z-index: 2;
+    }
+    .service-icon img {
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+        background: transparent;
+        object-fit: contain;
+        display: block;
+        margin: 0;
+        box-shadow: none;
+        padding: 0;
+    
+        filter: brightness(0) invert(1);
+    }
+    .service-card:hover .service-icon {
+        
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    .service-icon i {
+        color: #003B73 !important;
+        font-size: 1.2rem;
+    }
+    .service-card h6 {
+        font-weight: 600;
+        color: #07575B;
+        margin: 10px 0 15px;
+        font-size: 1rem;
+    }
+
+    /* Hero Section */
+    .our_services {
+      background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNFpZUusVnBdUffCn-Z5tFD9Htx_fYwkA2Eg&s') center/cover no-repeat;
+      height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-align: center;
+      position: relative;
+    }
+    .our_services::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    .our_services h2 {
+      position: relative;
+      font-size: 3rem;
+      color: #ffff;
+    }
+
+    .custom_vision{
+        opacity: 0;
+        transform: translateY(-50px);
+        transition: all 1s ease-out; 
+    }
+
+    .custom_vision.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+
+<!-- Hero -->
+<section class="our_services">
+    <h2 style="color: #fff;">Our Services</h2>
+</section>
+
+<section>
+    <div class="container" style="margin-top: 100px;">
+        <div class="row g-4 ">
+            <!-- Card Example -->
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex custom_vision">
+                <div class="card service-card w-100">
+                    <img src="/media/train.jpg" alt="train" style="border-radius: 20px;">
+                    <div class="service-icon">
+                        <img src="/media/icons/train.png" alt="train icon">
+                    </div>
+                    <h2 style="font-size: 1.4rem; font-weight: bold;">Railway Tickets</h2>
+                    <p style="font-size: 1rem; padding: 8px 0;">
+                        Book railway tickets quickly and easily with our easy-to-use platform. Real-time train schedule,
+                        seat availability and access to safe payment options—all at the same place. Enjoy a hassle-free
+                        booking experience and plan your journey with confidence, whether it is for business or holiday 
+                        journey.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex custom_vision">
+                <div class="card service-card w-100">
+                    <img src="/media/plane.jpg" alt="plane" style="border-radius: 20px;">
+                    <div class="service-icon">
+                        <img src="/media/icons/luggage.png" alt="plane icon">
+                    </div>
+                    <h2 style="font-size: 1.4rem; font-weight: bold;">Flight Tickets</h2>
+                    <p style="font-size: 1rem; padding: 8px 0;">
+                        Book flight tickets quickly and easily with our easy-to-use platform. Real-time flight schedule,
+                        seat availability and access to safe payment options—all at the same place. Enjoy a hassle-free
+                        booking experience and plan your journey with confidence, whether it is for business or holiday 
+                        journey.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex custom_vision">
+                <div class="card service-card w-100">
+                    <img src="/media/hotel.jpg" alt="hotel" style="border-radius: 20px;">
+                    <div class="service-icon">
+                        <img src="/media/icons/hotel.png" alt="hotel icon">
+                    </div>
+                    <h2 style="font-size: 1.4rem; font-weight: bold;">Hotel Booking</h2>
+                    <p style="font-size: 1rem; padding: 8px 0;">
+                        Find and book hotels at the best prices. Browse a wide range of hotels, check real-time availability,
+                        and enjoy secure payment options for a comfortable stay on your next trip.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex custom_vision">
+                <div class="card service-card w-100">
+                    <img src="/media/bus.jpg" alt="bus" style="border-radius: 20px;">
+                    <div class="service-icon">
+                        <img src="/media/icons/bus.png" alt="bus icon">
+                    </div>
+                    <h2 style="font-size: 1.4rem; font-weight: bold;">Bus Booking</h2>
+                    <p style="font-size: 1rem; padding: 8px 0;">
+                        Book bus tickets for your preferred routes with ease. Check seat availability, bus timings, and
+                        make secure payments for a smooth travel experience.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex custom_vision">
+                <div class="card service-card w-100">
+                    <img src="/media/recharge.jpg" alt="recharge" style="border-radius: 20px;">
+                    <div class="service-icon">
+                        <img src="/media/icons/electricity-bill.png" alt="recharge icon">
+                    </div>
+                    <h2 style="font-size: 1.4rem; font-weight: bold;">Mobile/DTH Recharge</h2>
+                    <p style="font-size: 1rem; padding: 8px 0;">
+                        Recharge your mobile or DTH instantly. Choose from multiple operators and plans, and pay securely
+                        for uninterrupted connectivity and entertainment.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex custom_vision">
+                <div class="card service-card w-100">
+                    <img src="/media/billpay.jpg" alt="billpay" style="border-radius: 20px;">
+                    <div class="service-icon">
+                        <img src="/media/icons/bill.png" alt="billpay icon">
+                    </div>
+                    <h2 style="font-size: 1.4rem; font-weight: bold;">Utility Bill Payment</h2>
+                    <p style="font-size: 1rem; padding: 8px 0;">
+                        Pay your electricity, water, gas, and other utility bills online. Enjoy fast, secure, and convenient
+                        bill payments from the comfort of your home.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex custom_vision">
+                <div class="card service-card w-100">
+                    <img src="/media/aeps.png" alt="aeps" style="border-radius: 20px;">
+                    <div class="service-icon">
+                        <img src="/media/icons/aeps.png" alt="aeps icon">
+                    </div>
+                    <h2 style="font-size: 1.4rem; font-weight: bold;">AEPS</h2>
+                    <p style="font-size: 1rem; padding: 8px 0;">
+                        Use Aadhaar Enabled Payment System (AEPS) for secure and easy banking transactions like cash withdrawal,
+                        balance enquiry, and more at your nearest center.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex custom_vision">
+                <div class="card service-card w-100">
+                    <img src="/media/mpos.jpg" alt="mpos" style="border-radius: 20px;">
+                    <div class="service-icon">
+                        <img src="/media/icons/mpos.png" alt="mpos icon">
+                    </div>
+                    <h2 style="font-size: 1.4rem; font-weight: bold;">MPOS</h2>
+                    <p style="font-size: 1rem; padding: 8px 0;">
+                        Accept card payments easily with our MPOS solutions. Enable your business to go cashless and
+                        provide seamless payment experiences to your customers.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex custom_vision">
+                <div class="card service-card w-100">
+                    <img src="/media/insurance.png" alt="insurance" style="border-radius: 20px;">
+                    <div class="service-icon">
+                        <img src="/media/icons/life-insurance.png" alt="insurance icon">
+                    </div>
+                    <h2 style="font-size: 1.4rem; font-weight: bold;">Insurance</h2>
+                    <p style="font-size: 1rem; padding: 8px 0;">
+                        Buy or renew insurance policies online. Choose from a variety of plans and secure your future
+                        with trusted insurance partners.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex custom_vision">
+                <div class="card service-card w-100">
+                    <img src="/media/goldloan.png" alt="goldloan" style="border-radius: 20px;">
+                    <div class="service-icon">
+                        <img src="/media/icons/goldloan.png" alt="goldloan icon">
+                    </div>
+                    <h2 style="font-size: 1.4rem; font-weight: bold;">Gold Loan</h2>
+                    <p style="font-size: 1rem; padding: 8px 0;">
+                        Get instant gold loans at attractive interest rates. Quick processing and minimal documentation
+                        for your urgent financial needs.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex custom_vision">
+                <div class="card service-card w-100">
+                    <img src="/media/cms.png" alt="cms" style="border-radius: 20px;">
+                    <div class="service-icon">
+                        <img src="/media/icons/cms.png" alt="cms icon">
+                    </div>
+                    <h2 style="font-size: 1.4rem; font-weight: bold;">CMS</h2>
+                    <p style="font-size: 1rem; padding: 8px 0;">
+                        Cash Management Services (CMS) for businesses and individuals. Manage your cash flow efficiently
+                        and securely with our CMS solutions.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex custom_vision">
+                <div class="card service-card w-100">
+                    <img src="/media/creditscore.png" alt="creditscore" style="border-radius: 20px;">
+                    <div class="service-icon">
+                        <img src="/media/icons/creditscore.png" alt="creditscore icon">
+                    </div>
+                    <h2 style="font-size: 1.4rem; font-weight: bold;">Cibil</h2>
+                    <p style="font-size: 1rem; padding: 8px 0;">
+                        Check your CIBIL/credit score instantly. Monitor your credit health and get tips to improve your
+                        financial profile.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>    
+</section>
+
+<br>
+<br>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const cards = document.querySelectorAll(".custom_vision");
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  cards.forEach(card => observer.observe(card));
+});
+</script>
+
+
+    
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>    
+{% endblock %}

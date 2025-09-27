@@ -1,0 +1,85 @@
+<!-- Bootstrap 5 CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+<style>
+    /* Transparent Header on Hero */
+    .main_header_area {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 3;
+ 
+  
+    }
+    .topbar-area {
+      background: rgba(0,0,0,0.5);
+    }
+    .main-navbar {
+  
+      background: rgba(255, 255, 255, 0.961); 
+      backdrop-filter: blur(5px); 
+    }
+
+   
+</style>
+
+<!-- Header (Transparent Overlay) -->
+<header class="main_header_area" style="position: fixed;">
+    <!-- Top Bar -->
+    <div class="topbar-area text-white py-2">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item">
+                            <a href="{% url 'homepage_view' %}" class="text-white me-2"><i class="fab fa-facebook"></i></a>
+                            <a href="{% url 'homepage_view' %}" class="text-white me-2"><i class="fab fa-twitter-square"></i></a>
+                            <a href="{% url 'homepage_view' %}" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                            <a href="{% url 'homepage_view' %}" class="text-white"><i class="fab fa-linkedin"></i></a>
+                        </li>
+                        <li class="list-inline-item ms-3"><i class="fas fa-phone-alt"></i> <a href="tel:+91 94118 88638" style="text-decoration: none;" class="text-white">+91 94118 88638</a></li>
+                        <li class="list-inline-item ms-3"><i class="fas fa-envelope"></i> <a href="mailto:sales@llgspl.com" style="text-decoration: none;" class="text-white">jinorainternet@gmail.com</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 col-md-6 text-end">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a href="{% url 'login_view' %}" style="text-decoration: none;" class="text-white">Login</a></li>
+                        <li class="list-inline-item ms-3"><a href="{% url 'register_view' %}" style="text-decoration: none;" class="text-white">Sign up</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+ 
+    <div class="main-navbar shadow-sm">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand" href="{% url 'homepage_view' %}">
+                    <img src="/media/JINORA_logo.png" alt="logo" style="height:60px; border-radius: 20%;">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a href="{% url 'homepage_view' %}" class="nav-link custom-nav-link">Home</a></li>
+                        <li class="nav-item"><a href="{% url 'about_us' %}" class="nav-link custom-nav-link">About Us</a></li>
+                        <li class="nav-item"><a href="{% url 'our_service' %}" class="nav-link custom-nav-link">Services</a></li>
+                        <li class="nav-item"><a href="{% url 'career_view' %}" class="nav-link custom-nav-link">Career</a></li>
+                        <li class="nav-item"><a href="{% url 'contact_us' %}" class="nav-link custom-nav-link">Contact Us</a></li>
+                        <li class="nav-item "><a href="{% url 'login_view' %}" class="nav-link custom-nav-link">Login</a></li>
+                        <li class="nav-item "><a href="{% url 'register_view' %}" class="nav-link custom-nav-link">Registration</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+

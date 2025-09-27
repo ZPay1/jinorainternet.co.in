@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    .login {
+      /* background: linear-gradient(120deg, #75e6da 0%, #189ab4 100%); */
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', sans-serif;
+      margin-top: 20px;
+    }
+    .login-card {
+      background: #fff;
+      padding: 40px 32px 32px 32px;
+      border-radius: 22px;
+      box-shadow: 0 8px 32px rgba(24, 154, 180, 0.18), 0 1.5px 8px rgba(0,0,0,0.08);
+      width: 100%;
+      max-width: 410px;
+      position: relative;
+      overflow: hidden;
+    }
+    .login-logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+    .login-logo img {
+      width: 90%;
+      height: 90px;
+      object-fit: contain;
+      /* border-radius: 50%; */
+      /* box-shadow: 0 2px 8px rgba(24, 154, 180, 0.12); */
+      /* background: #f5f3f1; */
+      padding: 6px;
+    }
+    .login-card h3 {
+      margin-bottom: 18px;
+      font-weight: 800;
+      text-align: center;
+      color: #189ab4;
+      letter-spacing: 1px;
+    }
+    .form-label {
+      font-weight: 600;
+      color: #222;
+    }
+    .form-control:focus {
+      border-color: #189ab4;
+      box-shadow: 0 0 0 0.15rem rgba(24, 154, 180, 0.15);
+    }
+    .input-group-text {
+      background: #f0f2f5;
+      border: none;
+      color: #189ab4;
+      font-size: 1.1rem;
+    }
+    .captcha-box {
+      background: linear-gradient(90deg, #e9ecef 60%, #d4f1f4 100%);
+      padding: 8px 18px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      display: inline-block;
+      border-radius: 7px;
+      user-select: none;
+      font-family: 'Fira Mono', monospace;
+      font-size: 1.1rem;
+      color: #189ab4;
+      border: 1.5px dashed #189ab4;
+    }
+    .btn-captcha {
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: #f0f2f5;
+      color: #189ab4;
+      margin-left: 10px;
+      transition: background 0.2s;
+    }
+    .btn-captcha:hover {
+      background: #d4f1f4;
+      color: #05445e;
+    }
+    .forgot-link {
+      color: #189ab4;
+      font-size: 0.97rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .forgot-link:hover {
+      color: #05445e;
+      text-decoration: underline;
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, #189ab4 60%, #05445e 100%);
+      border: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(24, 154, 180, 0.10);
+      transition: background 0.2s;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #05445e 60%, #189ab4 100%);
+    }
+    .signup-link {
+      color: #189ab4;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .signup-link:hover {
+      color: #05445e;
+      text-decoration: underline;
+    }
+    .input-group .form-control {
+      border-right: none;
+    }
+    .input-group .input-group-text {
+      border-left: none;
+      cursor: pointer;
+    }
+    @media (max-width: 500px) {
+      .login-card {
+        padding: 24px 8px 18px 8px;
+        max-width: 98vw;
+      }
+      .login-logo img {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="login">
+<div class="login-card">
+  <div class="login-logo">
+    <img src="/media/JINORA_logo.png" alt="jinora logo">
+  </div>
+  <h3>Welcome Back</h3>
+  <form autocomplete="off">
+    <!-- Email -->
+    <div class="mb-3">
+      <label for="email" class="form-label">Email address</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+      </div>
+    </div>
+
+    <!-- Password with show/hide -->
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa fa-lock"></i></span>
+        <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+        <span class="input-group-text" onclick="togglePassword()" style="cursor:pointer;" id="togglePassword">
+          <i class="fa fa-eye" id="eyeIcon"></i>
+        </span>
+      </div>
+    </div>
+
+    <!-- CAPTCHA -->
+    <div class="mb-3">
+      <label class="form-label">Captcha</label>
+      <div class="d-flex align-items-center mb-2">
+        <span class="captcha-box" id="captchaText">7GJ9K</span>
+        <button type="button" class="btn-captcha" onclick="generateCaptcha()" title="Refresh Captcha">
+          <i class="fa fa-sync"></i>
+        </button>
+      </div>
+      <input type="text" class="form-control" id="captchaInput" placeholder="Enter captcha" required autocomplete="off">
+    </div>
+
+    <!-- Forgot password -->
+    <div class="mb-3 text-end">
+      <a href="#" class="forgot-link">Forgot Password?</a>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
+
+    <!-- Signup -->
+    <div class="text-center">
+      <span style="color:#555;">Don't have an account?</span>
+      <a href="{% url 'register_view' %}" class="signup-link">Sign Up</a>
+    </div>
+  </form>
+</div>
+</div>
+<script>
+  // Simple captcha generator
+  function generateCaptcha() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let captcha = '';
+    for(let i=0; i<5; i++){
+      captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    document.getElementById('captchaText').innerText = captcha;
+  }
+  // On page load, generate a captcha
+  window.onload = generateCaptcha;
+
+  // Password show/hide toggle
+  function togglePassword() {
+    const pwd = document.getElementById('password');
+    const eye = document.getElementById('eyeIcon');
+    if (pwd.type === "password") {
+      pwd.type = "text";
+      eye.classList.remove('fa-eye');
+      eye.classList.add('fa-eye-slash');
+    } else {
+      pwd.type = "password";
+      eye.classList.remove('fa-eye-slash');
+      eye.classList.add('fa-eye');
+    }
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

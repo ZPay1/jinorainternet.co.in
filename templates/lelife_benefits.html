@@ -1,0 +1,140 @@
+<style>
+    /* Container Styling */
+    .container {
+        max-width: 1200px;
+    }
+    
+    /* Section Heading */
+    h1 {
+        color: #07575B;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+    .border-theme {
+        border-top: 3px solid orange;
+        width: 200px;
+        margin: 0 auto;
+        display: block;
+    }
+    
+    /* Benefit Cards */
+    .benefit {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 1s ease-out;
+    }
+    
+    .benefit.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .benefit-card {
+        /* background: linear-gradient(135deg, #75E6DA, #ACF0F2); */
+        border-radius: 20px;
+        padding: 30px 20px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+        min-width: 200px;
+    }
+    
+    .benefit-card:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+    
+    /* Icon Styling */
+    .benefit-card img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 15px;
+    }
+    
+    /* Text Styling */
+    .benefit-card p {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #07575B;
+        margin: 0;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px){
+        .benefit-card {
+            padding: 20px 15px;
+        }
+    }
+    </style>
+    
+    <!-- Benefits Section -->
+    <section class="my-5">
+    <div class="container my-5">
+        <div class="text-center mb-5">
+            <h2>Jinora Benefits</h2>
+            <span class="border-theme"></span>
+        </div>
+    
+        <div class="row g-4 justify-content-center">
+            <div class="col-12 col-md-6 col-lg-4 benefit">
+                <div class="benefit-card">
+                    <img src="media/b1.png" alt="jinora">
+                    <p>Instant and Easy Onboarding</p>
+                </div>
+            </div>
+    
+            <div class="col-12 col-md-6 col-lg-4 benefit">
+                <div class="benefit-card">
+                    <img src="media/b2.png" alt="jionra">
+                    <p>Easy to Use App</p>
+                </div>
+            </div>
+    
+            <div class="col-12 col-md-6 col-lg-4 benefit">
+                <div class="benefit-card">
+                    <img src="media/b3.png" alt="jionra">
+                    <p>Fast Cash In</p>
+                </div>
+            </div>
+    
+            <div class="col-12 col-md-6 col-lg-4 benefit">
+                <div class="benefit-card">
+                    <img src="media/b4.png" alt="jionra">
+                    <p>Secure Platform</p>
+                </div>
+            </div>
+    
+            <div class="col-12 col-md-6 col-lg-4 benefit">
+                <div class="benefit-card">
+                    <img src="media/b5.png" alt="jionra">
+                    <p>Seamless Transactions</p>
+                </div>
+            </div>
+    
+            <div class="col-12 col-md-6 col-lg-4 benefit">
+                <div class="benefit-card">
+                    <img src="media/b6.png" alt="jionra">
+                    <p>Fast Customer Support</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>    
+    
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const benefits = document.querySelectorAll(".benefit");
+    
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("show");
+                    observer.unobserve(entry.target); // animate only once
+                }
+            });
+        }, { threshold: 0.3 });
+    
+        benefits.forEach(benefit => observer.observe(benefit));
+    });
+    </script>
+    
