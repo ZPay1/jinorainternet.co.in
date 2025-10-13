@@ -3,34 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register - jinorainternet</title>
+  <title>Register</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
-    
+    body { background: #f8f9fa; }
     .register-card {
       background: #fff;
-      padding: 40px 32px 32px 32px;
+      padding: 40px 32px;
       border-radius: 22px;
       box-shadow: 0 8px 32px rgba(24, 154, 180, 0.18), 0 1.5px 8px rgba(0,0,0,0.08);
       width: 100%;
-      max-width: 700px;
-      position: relative;
-      overflow: hidden;
-      margin: 40px auto;
-     
+      max-width: 500px;
+      margin: 50px auto;
     }
     .register-card h3 {
-      margin-bottom: 18px;
+      margin-bottom: 25px;
       font-weight: 800;
       text-align: center;
       color: #189ab4;
       letter-spacing: 1px;
     }
-    .form-label {
-      font-weight: 600;
-      color: #222;
-    }
+    .form-label { font-weight: 600; color: #222; }
     .form-control:focus {
       border-color: #189ab4;
       box-shadow: 0 0 0 0.15rem rgba(24, 154, 180, 0.15);
@@ -40,10 +34,6 @@
       border: none;
       color: #189ab4;
       font-size: 1.1rem;
-    }
-    .captcha-box {
-      background: linear-gradient(90deg, #e9ecef 60%, #d4f1f4 100%);
-      border: 1.5px dashed #189ab4;
     }
     .btn-primary {
       background: linear-gradient(90deg, #189ab4 60%, #05445e 100%);
@@ -61,213 +51,115 @@
       color: #189ab4;
       font-weight: 600;
       text-decoration: none;
-      transition: color 0.2s;
     }
     .signup-link:hover {
       color: #05445e;
       text-decoration: underline;
     }
-    @media (max-width: 800px) {
-    
-      .register-card {
-        
-        max-width: 98vw;
-        padding: 24px 8px 18px 8px;
-      }
-    }
-    @media (max-width: 570px) {
-      .register-card {
-        padding: 16px 2px 10px 2px;
-       
-      }
-    }
   </style>
 </head>
 <body>
 
-<div class="container" >
+<div class="container">
   <div class="register-card">
     <h3>Register</h3>
-    <form autocomplete="off">
-      <div class="row g-3">
-        <div class="col-md-6">
-          <!-- Name -->
-          <div class="mb-2">
-            <label for="name" class="form-label">Name</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fa fa-user"></i></span>
-              <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <!-- Last Name -->
-          <div class="mb-2">
-            <label for="last_name" class="form-label">Last Name</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fa fa-user"></i></span>
-              <input type="text" class="form-control" id="last_name" placeholder="Enter your last name" required>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <!-- Email -->
-          <div class="mb-2">
-            <label for="email" class="form-label">Email address</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fa fa-envelope"></i></span>
-              <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <!-- Mobile -->
-          <div class="mb-2">
-            <label for="mobile" class="form-label">Mobile</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fa fa-phone"></i></span>
-              <input type="text" class="form-control" id="mobile" placeholder="Enter your mobile" required>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <!-- Agency Name -->
-          <div class="mb-2">
-            <label for="agency_name" class="form-label">Agency Name</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fa fa-building"></i></span>
-              <input type="text" class="form-control" id="agency_name" placeholder="Enter your agency name" required>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <!-- Business Type (optional) -->
-          <div class="mb-2">
-            <label for="business_type" class="form-label">Business Type (optional)</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fa fa-briefcase"></i></span>
-              <input type="text" class="form-control" id="business_type" placeholder="Enter your business type">
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <!-- Pan card -->
-          <div class="mb-2">
-            <label for="pancard" class="form-label">Pan card</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fa fa-id-card"></i></span>
-              <input type="text" class="form-control" id="pancard" placeholder="Enter your Pancard" required>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <!-- Address -->
-          <div class="mb-2">
-            <label for="address" class="form-label">Enter Address</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fa fa-map-marker-alt"></i></span>
-              <input type="text" class="form-control" id="address" placeholder="Enter your address" required>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <!-- City -->
-          <div class="mb-2">
-            <label for="city" class="form-label">Enter City</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fa fa-city"></i></span>
-              <input type="text" class="form-control" id="city" placeholder="Enter your city" required>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <!-- State -->
-          <div class="mb-2">
-            <label for="state" class="form-label">Enter State</label>
-            <div class="input-group captcha-box">
-              <span class="input-group-text"><i class="fa fa-map-marker-alt"></i></span>
-              <select class="form-control" id="state" required>
-                <option value="">Select State</option>
-                <option value="Andhra Pradesh">Andhra Pradesh</option>
-                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                <option value="Assam">Assam</option>
-                <option value="Bihar">Bihar</option>
-                <option value="Chhattisgarh">Chhattisgarh</option>
-                <option value="Goa">Goa</option>
-                <option value="Gujarat">Gujarat</option>
-                <option value="Haryana">Haryana</option>
-                <option value="Himachal Pradesh">Himachal Pradesh</option>
-                <option value="Jharkhand">Jharkhand</option>
-                <option value="Karnataka">Karnataka</option>
-                <option value="Kerala">Kerala</option>
-                <option value="Madhya Pradesh">Madhya Pradesh</option>
-                <option value="Maharashtra">Maharashtra</option>
-                <option value="Manipur">Manipur</option>
-                <option value="Meghalaya">Meghalaya</option>
-                <option value="Mizoram">Mizoram</option>
-                <option value="Nagaland">Nagaland</option>
-                <option value="Odisha">Odisha</option>
-                <option value="Punjab">Punjab</option>
-                <option value="Rajasthan">Rajasthan</option>
-                <option value="Sikkim">Sikkim</option>
-                <option value="Tamil Nadu">Tamil Nadu</option>
-                <option value="Telangana">Telangana</option>
-                <option value="Tripura">Tripura</option>
-                <option value="Uttar Pradesh">Uttar Pradesh</option>
-                <option value="Uttarakhand">Uttarakhand</option>
-                <option value="West Bengal">West Bengal</option>
-                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-                <option value="Chandigarh">Chandigarh</option>
-                <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
-                <option value="Delhi">Delhi</option>
-                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                <option value="Ladakh">Ladakh</option>
-                <option value="Lakshadweep">Lakshadweep</option>
-                <option value="Puducherry">Puducherry</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <!-- Pincode -->
-          <div class="mb-2">
-            <label for="pincode" class="form-label">Pincode</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fa fa-map-pin"></i></span>
-              <input type="text" class="form-control" id="pincode" placeholder="Enter your pincode" required>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <!-- Adhar Number (optional) -->
-          <div class="mb-2">
-            <label for="adhar" class="form-label">Adhar Number (optional)</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fa fa-id-badge"></i></span>
-              <input type="text" class="form-control" id="adhar" placeholder="Enter your Adhar number">
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <!-- Reference -->
-          <div class="mb-2">
-            <label for="reference" class="form-label">Reference</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fa fa-user-friends"></i></span>
-              <input type="text" class="form-control" id="reference" placeholder="Enter your Reference">
-            </div>
-          </div>
+
+    {% if message %}
+      <div class="alert alert-info text-center">{{ message }}</div>
+    {% endif %}
+
+    <form method="POST" autocomplete="off">
+      {% csrf_token %}
+
+      <div class="mb-3">
+        <label for="username" class="form-label">Full Name</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fa fa-user"></i></span>
+          <input type="text" class="form-control" id="username" name="username" placeholder="Enter your full name" required>
         </div>
       </div>
-      <!-- Submit -->
-      <button type="submit" class="btn btn-primary w-100 mt-4 mb-2">Register</button>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="mobile" class="form-label">Mobile</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fa fa-phone"></i></span>
+          <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Enter your mobile number" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="pincode" class="form-label">Pincode</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fa fa-map-pin"></i></span>
+          <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Enter your pincode" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="tpin" class="form-label">TPIN</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fa fa-key"></i></span>
+          <input type="password" class="form-control" id="tpin" name="tpin" placeholder="Enter your TPIN" required>
+          <button type="button" class="btn btn-outline-secondary" tabindex="-1" onclick="toggleShowHide('tpin', this)">
+            <i class="fa fa-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fa fa-lock"></i></span>
+          <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+          <button type="button" class="btn btn-outline-secondary" tabindex="-1" onclick="toggleShowHide('password', this)">
+            <i class="fa fa-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="confirm_password" class="form-label">Confirm Password</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fa fa-lock"></i></span>
+          <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+          <button type="button" class="btn btn-outline-secondary" tabindex="-1" onclick="toggleShowHide('confirm_password', this)">
+            <i class="fa fa-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 mt-3 mb-2">Register</button>
     </form>
-    <!-- Signup -->
-    <div class="text-center">
+
+    <div class="text-center mt-3">
       <a href="{% url 'login_view' %}" class="signup-link">Return to Sign in</a>
     </div>
   </div>
 </div>
+
+<script>
+  function toggleShowHide(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const icon = btn.querySelector('i');
+    if (input.type === "password") {
+      input.type = "text";
+      icon.classList.remove('fa-eye');
+      icon.classList.add('fa-eye-slash');
+    } else {
+      input.type = "password";
+      icon.classList.remove('fa-eye-slash');
+      icon.classList.add('fa-eye');
+    }
+  }
+</script>
 
 </body>
 </html>

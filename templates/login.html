@@ -150,54 +150,56 @@
     <img src="/media/JINORA_logo.png" alt="jinora logo">
   </div>
   <h3>Welcome Back</h3>
-  <form autocomplete="off">
-    <!-- Email -->
-    <div class="mb-3">
-      <label for="email" class="form-label">Email address</label>
-      <div class="input-group">
-        <span class="input-group-text"><i class="fa fa-envelope"></i></span>
-        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
-      </div>
+  <form id="signinForm" method="POST" action="{% url 'login_view' %}">
+    {% csrf_token %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  
+    <!-- Identifier -->
+    <label for="identifier" class="form-label">Mobile</label>
+    <div class="input-group mb-3">
+      <span class="input-group-text"><i class="fa fa-mobile-alt"></i></span>
+      <input type="text" name="identifier" class="form-control" placeholder="Enter your mobile number" required>
     </div>
-
-    <!-- Password with show/hide -->
+  
+    <!-- Password -->
     <div class="mb-3">
       <label for="password" class="form-label">Password</label>
       <div class="input-group">
         <span class="input-group-text"><i class="fa fa-lock"></i></span>
-        <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+        <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password" required>
         <span class="input-group-text" onclick="togglePassword()" style="cursor:pointer;" id="togglePassword">
           <i class="fa fa-eye" id="eyeIcon"></i>
         </span>
       </div>
     </div>
-
-    <!-- CAPTCHA -->
-    <div class="mb-3">
-      <label class="form-label">Captcha</label>
-      <div class="d-flex align-items-center mb-2">
-        <span class="captcha-box" id="captchaText">7GJ9K</span>
-        <button type="button" class="btn-captcha" onclick="generateCaptcha()" title="Refresh Captcha">
-          <i class="fa fa-sync"></i>
-        </button>
+  
+    <!-- Remember Me + Forgot Password -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="remember_me" id="rememberMe">
+        <label class="form-check-label" for="rememberMe">
+          Remember Me
+        </label>
       </div>
-      <input type="text" class="form-control" id="captchaInput" placeholder="Enter captcha" required autocomplete="off">
-    </div>
-
-    <!-- Forgot password -->
-    <div class="mb-3 text-end">
       <a href="#" class="forgot-link">Forgot Password?</a>
     </div>
-
+  
     <!-- Submit -->
     <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
-
+  
     <!-- Signup -->
     <div class="text-center">
       <span style="color:#555;">Don't have an account?</span>
       <a href="{% url 'register_view' %}" class="signup-link">Sign Up</a>
     </div>
   </form>
+  
 </div>
 </div>
 <script>
