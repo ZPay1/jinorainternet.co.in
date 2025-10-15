@@ -29,6 +29,7 @@ urlpatterns = [
     # Homeppage url  =========================================
     path('', views.homepage_view, name='homepage_view'),
     path('homepage', views.new_homepage_view, name='new_homepage'),
+    path('logout/',views.logout_view, name='logout'),
     
     path('our-service', views.our_service_view, name='our_service'),
     path('about-us', views.about_us_view, name='about_us'),

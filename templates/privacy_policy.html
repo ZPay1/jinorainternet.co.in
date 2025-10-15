@@ -3,58 +3,72 @@
 
 {% block content %}
 <style>
- 
   .policy-container {
     max-width: 1000px;
     margin: 0 auto;
     padding: 60px 20px;
-    /* background-color: #fefefe; */
+    /* background-color: #ffffff; */
     border-radius: 10px;
     /* box-shadow: 0 0 20px rgba(0,0,0,0.05); */
     color: #333;
-    margin-bottom: 20px;
-    margin-top: 10px;
-  }
-  h2 {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #cc0000;
-    margin-bottom: 15px;
-  }
-  .last-updated {
-    font-size: 0.9rem;
-    text-align: right;
-    font-weight: 600;
     margin-bottom: 30px;
+    margin-top: 20px;
   }
-  p, ul, li {
-    line-height: 1.8;
-    font-size: 1.05rem;
-    margin-bottom: 15px;
-  }
-  ul {
-    padding-left: 25px;
-    margin-bottom: 20px;
-  }
-  li {
+
+  .policy-title {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #b30000;
     margin-bottom: 10px;
   }
-  @media (max-width: 576px) {
-    h2 {
-      font-size: 2rem;
-    }
-    .policy-container {
-      padding: 40px 15px;
-    }
+
+  .policy-subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 25px;
+    font-style: italic;
   }
+
+  .policy-section {
+    margin-bottom: 25px;
+  }
+
+  .policy-section h4 {
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 10px;
+  }
+
+  .policy-section ul {
+    padding-left: 20px;
+    list-style-type: disc;
+  }
+
+  .policy-section p,
+  .policy-section li {
+    line-height: 1.6;
+    text-align: justify;
+  }
+
+  .last-updated {
+    font-size: 0.9rem;
+    color: #666;
+    text-align: right;
+    margin-bottom: 20px;
+  }
+
+  /* ===============================
+       selectionStyles 
+    =============================== */  
   ::selection {
     background: purple;
     color: #fff;
   }
 
-      /* Hero Section */
-      .our_services {
+   /* Hero Section */
+   .our_services {
       background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNFpZUusVnBdUffCn-Z5tFD9Htx_fYwkA2Eg&s') center/cover no-repeat;
       height: 60vh;
       display: flex;

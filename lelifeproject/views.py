@@ -134,6 +134,50 @@ def register_view(request):
     return render(request, 'register.html', { 'message': message})
 
 
+
+
+
+'''
+===============================================================================================================
+                      Logout Method
+===============================================================================================================
+'''
+
+from django.shortcuts import redirect
+from django.contrib import messages
+import requests
+
+def logout_view(request):
+    # Logout API ka use kare
+    try:
+        # Maan lijiye ki session me token ya user_id hai, use bhejna ho sakta hai API ko
+        access_token = request.session.get('access_token')
+     
+        headers = {
+                'Authorization': f'Bearer {access_token}',
+                'Content-Type': 'application/json'
+            }
+        # API endpoint (change Baseurl to your actual value or import from settings)
+        API_LOGOUT_URL = f"{Baseurl}/user/logout/"
+
+        # API call karein
+        response = requests.post(API_LOGOUT_URL, headers=headers)
+        api_result = response.json()
+        if response.status_code == 200:
+            # Agar API logout successful ho
+            messages.success(request, api_result.get('message', 'Logged out successfully.'))
+        else:
+            # Agar API ne koi aur message diya ho to
+            messages.warning(request, api_result.get('message', 'Logout failed.'))
+    except Exception as e:
+        # Exception ke case me ek generic message dikha de
+        messages.error(request, f"Logout failed: {str(e)}")
+
+    # Clear all session data
+    request.session.flush()
+    return redirect('homepage_view')  
+
+
 import requests
 from django.shortcuts import render
 
