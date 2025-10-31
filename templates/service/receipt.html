@@ -1,0 +1,312 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+<link rel="icon" type="/media/JINORA_logo" href="/media/JINORA_logo.png">
+<title>{% block title %} Receipt {% endblock %} </title> 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+    body {
+        background: #f4f6f8 !important;
+    }
+    .receipt-container {
+        background: #fff;
+        padding: 35px;
+        border-radius: 14px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        margin: 40px auto 60px auto;
+        max-width: 750px;
+    }
+    .receipt-header,
+    .receipt-detail-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .receipt-logo {
+        height: 60px;
+        width: auto;
+        mix-blend-mode: multiply;
+    }
+    .receipt-bbps-logo {
+        height: 100px;
+        width: auto;
+        mix-blend-mode: multiply;
+    }
+    .receipt-title {
+        text-align: center;
+        text-decoration: underline;
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: #2c3e50;
+        margin: 20px 0 18px 0;
+        width: 100%;
+        letter-spacing: 1px;
+    }
+    .receipt-info-table {
+        width: 100%;
+        margin: 25px 0;
+        border-collapse: collapse;
+        font-size: 0.98rem;
+    }
+    .receipt-info-table th, 
+    .receipt-info-table td {
+        padding: 10px 16px;
+        border: 1px solid #e2e6ea;
+        text-align: left;
+    }
+    .receipt-info-table th {
+        background: #f1f3f6;
+        color: #333;
+        width: 40%;
+        font-weight: 600;
+    }
+    .receipt-info-table td {
+        background: #fff;
+        color: #2c3e50;
+    }
+    .receipt-footer {
+        text-align: center;
+        color: #777;
+        font-size: 0.93rem;
+        margin-top: 28px;
+        line-height: 1.6;
+    }
+
+    .receipt-footer {
+        text-align: center;
+        color: #fff;
+        font-size: 1.40rem;
+        margin-top: 28px;
+        line-height: 1.6;
+        font-weight: 500;
+    }
+    
+    
+    .btn-orange {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: rgb(28, 122, 159);
+        color: white;
+        font-weight: 500;
+        padding: 8px 15px;
+        border-radius: 6px;
+        border: none;
+        transition: 0.2s;
+        text-align: center;
+    }
+    .btn-orange:hover {
+        color: #fff;
+        background-color: rgb(9, 114, 155);
+    }
+    @media (max-width: 650px) {
+        .receipt-container {
+            padding: 15px;
+        }
+        .receipt-title {
+            font-size: 1.3rem;
+            margin: 12px 0;
+        }
+        .receipt-info-table th, .receipt-info-table td {
+            padding: 7px 8px;
+        }
+        .receipt-header,
+        .receipt-detail-row {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .receipt-header > div, .receipt-detail-row > div {
+            margin-bottom: 10px;
+        }
+    }
+</style>
+
+<div class="receipt-container">
+
+    <!-- Header row -->
+    <div class="receipt-header mb-3">
+        <div>
+            <img src="/media/JINORA_logo.png" class="receipt-logo" alt="Logo">
+        </div>
+        <div class="text-end">
+            <h5 class="mb-1 text-dark fw-semibold">Technical</h5>
+            <p class="mb-1 text-secondary">6260606372</p>
+            <p class="mb-0 text-secondary">jinorainternet.co.in</p>
+        </div>
+    </div>
+
+    <!-- Title + BBPS logo -->
+    <div class="receipt-detail-row mb-4">
+        <div class="receipt-title"> Receipt</div>
+        <div class="ms-auto">
+            <img src="/media/Bbps_assured_logo.png" class="receipt-bbps-logo" alt="BBPS Logo">
+        </div>
+    </div>
+
+    <!-- Info Table -->
+    <table class="receipt-info-table">
+        <tr>
+            <th>Name of the Biller: </th>
+            <td> P.B Paschim  keshetra  Vidyut Vitaran</td>
+        </tr>
+        <tr>
+            <th>Customer Name: </th>
+            <td>DHAMENDRA YADAV</td>
+        </tr>
+        <tr>
+            <th>Bill Number: </th>
+            <td>N3474023883</td>
+        </tr>
+        <tr>
+            <th>Bill Date: </th>
+            <td>26 Aug 2025</td>
+        </tr>
+        <tr>
+            <th>Bill Due Date: </th>
+            <td>26 Aug 2025</td>
+        </tr>
+        <tr>
+            <th>B-connect txn ID: </th>
+            <td>Mock142663BAAIYKUPC0345</td>
+        </tr>
+        <tr>
+            <th>Payment Mode: </th>
+            <td>Internet Banking</td>
+        </tr>
+        <tr>
+            <th>Payment Channel: </th>
+            <td>Internet Banking ( Logged In)</td>
+        </tr>
+        <tr>
+            <th>Bill Amount: </th>
+            <td>2146.0</td>
+        </tr>
+        <tr>
+            <th>Customer Convenience Fee: </th>
+            <td>0.00</td>
+        </tr>
+        <tr>
+            <th>Transaction date & Time: </th>
+            <td>26-Aug-2025 12:04:11 AM</td>
+        </tr>
+        <tr>
+            <th>Transaction Numnber: </th>
+            <td>TXN6540570</td>
+        </tr>
+        <tr>
+            <th>Order ID: </th>
+            <td>24015636208799</td>
+        </tr>
+        <tr>
+            <th>Service: </th>
+            <td>ELECTRICITY</td>
+        </tr>
+        <tr>
+            <th>Transaction Status: </th>
+            <td class="text-success">SUCCESS</td>
+        </tr>
+        </table>
+        
+
+
+
+
+
+
+
+
+<!-- 
+        <tr>
+            <th>Biller: </th>
+            <td> ICICI Biller Card</td>
+        </tr>
+        <tr>
+            <th>Credit Card Number: </th>
+            <td>XXXX XXXX XXXX 4567</td>
+        </tr>
+        <tr>
+            <th>Subscriber: </th>
+            <td>6575768798</td>
+        </tr>
+        <tr>
+            <th>Status: </th>
+        <td>
+          
+            {% if t.status == "Success" %}
+                <span class="text- success fw-bold">Success</span>
+            {% elif t.status == "Pending" %}
+                <span class="text- warning fw-bold text-dark">Pending</span>
+            {% else %}
+                <span class="text- danger fw-bold">Failed</span>
+            {% endif %}
+        </td>
+        </tr>
+        <tr>
+            <th>Date: </th>
+            <td>29-Oct-2025</td>
+        </tr>
+        <tr>
+            <th>Reference ID: </th>
+            <td>TXN98452136</td>
+        </tr>
+        <tr>
+            <th>B-Connect TXN ID: </th>
+            <td>BCN20251029001</td>
+        </tr>
+        <tr>
+            <th>Amount: </th>
+            <td>₹5,000.00</td>
+        </tr>
+        <tr>
+            <th>Customer Convenience Fees: </th>
+            <td>₹15.00</td>
+        </tr>
+        <tr>
+            <th>Net Amount: </th>
+            <td><b>₹5,015.00</b></td>
+        </tr>
+        <tr>
+            <th>Remark: </th>
+            <td>Payment Successful</td>
+        </tr>
+
+    </table>
+
+    <div class="receipt-footer">
+         Thank you 
+        
+    </div> -->
+    <div class="center-btns">
+        <a href="javascript:history.back()" class="btn btn-secondary px-4 py-2">
+            <i class="bi bi-arrow-left-circle"></i> CLOSE
+        </a>
+        <button type="button" class="btn btn-orange" onclick="printReceipt()">PRINT RECEIPT</button>
+    </div>
+    
+   
+    
+      
+      
+</div>
+    <script>
+    function printReceipt() {
+        // Hide the button before printing
+        const btn = document.querySelector('.btn-orange');
+        btn.style.display = 'none';
+    
+        window.print();
+    
+        // Show the button again after printing
+        btn.style.display = 'inline-block';
+    }
+    </script>
+    
+
+
+</body>
+</html>

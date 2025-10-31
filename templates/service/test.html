@@ -1,0 +1,699 @@
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<!-- Bootstrap 5 CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<style>
+   /* ===== HEADER BAR ===== */
+    .top-bar {
+      background: #e1e4e7;
+      color: white;
+      padding: 8px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+  
+    .top-bar .logo img {
+      height: 50px;
+    }
+  
+    .wallet-info {
+      text-align: right;
+      margin-right: 15px;
+    }
+  
+    .wallet-info .amount {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #333;
+    }
+  
+    .wallet-info .lock {
+      font-size: 0.8rem;
+      color: red;
+    }
+  
+    .user-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+  
+    .username {
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-align: right;
+      color: #fff;
+      line-height: 1.1;
+    }
+  
+    /* ===== PROFILE IMAGE FIX ===== */
+    .profile-img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #fff;
+      cursor: pointer;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+    .profile-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  
+  /* ===== NAVBAR ===== */
+  .navbar {
+    background-color: #0A2535;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+  }
+
+  .navbar-nav .nav-link {
+    color: #333 !important;
+    font-weight: 600;
+    padding: 12px 18px;
+    transition: all 0.3s;
+  }
+
+  .navbar-nav .nav-link:hover {
+    color: #007bff !important;
+    background: rgba(0,123,255,0.1);
+    border-radius: 6px;
+  }
+
+  .dropdown-menu {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  /* Responsive */
+  @media (max-width: 992px) {
+   .wallet-info { display: none; }
+     /* .username { display: none; } */
+  }
+</style>
+ <style>
+  /* Navbar Styling */
+ 
+  .navbar-nav .nav-link {
+    color: #fff !important;
+    font-weight: 400;
+    margin-right: 10px;
+  }
+  .navbar-nav .nav-link:hover {
+    color: #ffe6f0 !important;
+  } 
+  /* .nav-link i {
+    margin-right: 6px;
+  } */
+
+  /* Services Section */
+  .service-box {
+    background: #fff;
+    border-radius: 8px;
+    text-align: center;
+    padding: 30px 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    height: 100%;
+  }
+  .service-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  }
+  .service-icon {
+    font-size: 40px;
+    /* background-color: #b50e5a; */
+    background-color: #0A2535;
+    color: #fff;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+  .service-title {
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  .service-text {
+    color: #666;
+    font-size: 0.95rem;
+  }
+  body {
+    background-color: #f8f9fa;
+  }
+</style>
+
+<header>
+
+<!-- ===== HEADER ===== -->
+<div class="top-bar d-flex align-items-center justify-content-between px-3 py-2 bg-light shadow-sm">
+
+  <!-- Logo -->
+   <a href="{% url 'dashboard_view' %}">
+      <div class="logo">
+        <img src="/media/JINORA_logo.png" alt="Logo" height="40">
+      </div>
+    </a>
+
+  <div class="user-section d-flex align-items-center gap-3">
+
+    <!-- Wallet Info -->
+    <div class="wallet-info text-end">
+      <div class="amount fw-bold text-dark">₹ 10,233.55 (Main)</div>
+      <div class="lock small text-muted">Lock Amount: 500</div>
+    </div>
+  <li class="nav-item dropdown pe-3">
+    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+      {% if user_data %}
+        <div class="username text-dark text-end fw-bold" style="font-weight: bold; margin-right: 15px;">
+          <div>{{ user_data.username }}</div>
+          <small class="text-muted">{{ user_data.userid }}</small>
+        </div>
+        <span id="profile-container" class="d-flex align-items-center">
+          <!-- Bootstrap Icons CDN -->
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+          {% if user_data.profile %}
+            <img src="https://api.jinora.co.in{{ user_data.profile }}"
+              alt="Profile"
+              class="rounded-circle"
+              style="width: 35px; height: 35px;"
+              onerror="this.style.display='none'; document.getElementById('fallback-icon').style.display='inline-block';">
+            <i id="fallback-icon" class="bi bi-person-circle" style="display: none; font-size: 1.9rem; color: #6c757d; vertical-align: middle;"></i>
+          {% else %}
+            <i class="bi bi-person-circle" style="font-size: 1.9rem; color: #6c757d; vertical-align: middle;"></i>
+          {% endif %}
+          <i class="bi bi-caret-down-fill ms-2" style="font-size:1.0rem; color: rgb(4, 4, 51);"></i>
+        </span>
+      {% else %}
+        <span class="fw-semibold text-dark me-2" style="margin-right:15px;">Guest</span>
+        <span id="profile-container" class="d-flex align-items-center">
+          <!-- Bootstrap Icons CDN -->
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+          <i class="bi bi-person-circle" style="font-size: 1.9rem; color: #6c757d; vertical-align: middle;"></i>
+          <i class="bi bi-caret-down-fill ms-2" style="font-size:1.0rem; color: rgb(4, 4, 51);"></i>
+        </span>
+      {% endif %}
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+    
+  
+      <li>
+        <a class="dropdown-item d-flex align-items-center" href="{% url 'profile_view' %}">
+          <i class="bi bi-person"></i>
+          <span style="margin-left: 8px;">My Profile</span>
+        </a>
+      </li>
+      <li>
+        <hr class="dropdown-divider">
+      </li>
+      <li>
+        <a class="dropdown-item d-flex align-items-center" href="#">
+          <i class="bi bi-gear"></i>
+          <span style="margin-left: 8px;">Account Settings</span>
+        </a>
+      </li>
+      <li>
+        <hr class="dropdown-divider">
+      </li>
+      <li>
+        <a class="dropdown-item d-flex align-items-center" href="#">
+          <i class="bi bi-question-circle"></i>
+          <span style="margin-left: 8px;">Need Help?</span>
+        </a>
+      </li>
+      <li>
+        <hr class="dropdown-divider">
+      </li>
+      <li>
+        <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
+          <i class="bi bi-box-arrow-right"></i>
+          <span style="margin-left: 8px;">Sign Out</span>
+        </a>
+      </li>
+    </ul><!-- End Profile Dropdown Items -->
+  </li><!-- End Profile Nav -->
+  </div>
+</div>
+
+
+
+</header>
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar navbar-expand-lg ">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: #fff;">
+          <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+          <ul class="navbar-nav">
+            <!-- <li class="nav-item"><a href="#" class="nav-link"><i class="bi bi-house-door home-icons"></i> </a></li> -->
+            <li class="nav-item"><a href="#" class="nav-link">Flight</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">IRCTC</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Hotel</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Bus</a></li>
+
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Tour Packages</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Change Password</a></li>
+                <li><a class="dropdown-item" href="#">Security</a></li>
+              </ul>
+            </li>
+            <li class="nav-item"><a href="#" class="nav-link">Money Transfer</a></li>
+            <!-- <li class="nav-item"><a href="#" class="nav-link"> 
+              <img src="/media/Bbps.jpg" alt="logo" style="width: 20px; height: 25px; mix-blend-mode:multiply;">
+            Pay Bills</a>
+            </li> -->
+  
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Report</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Transaction Report</a></li>
+                <li><a class="dropdown-item" href="#">Recharge Report</a></li>
+              </ul>
+            </li>
+  
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Accounts</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'profile_view' %}">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Logout</a></li>
+              </ul>
+            </li>
+  
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Setting</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Change Password</a></li>
+                <li><a class="dropdown-item" href="#">Security</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>  
+  
+
+
+
+    
+<!--     
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
+
+<!-- Check_complain_status.html -->
+
+{% extends 'service/service_base.html' %}
+{% block title %}Complaint Page{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background: #f8f8f8;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .complaint-form-container {
+        max-width: 700px;
+        margin: 30px auto 0 auto;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0,0,0,.07);
+        padding: 32px 35px 28px 35px;
+    }
+    .complaint-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 28px;
+        color:#fff;
+        padding: 5px 20px;
+        border-radius: 5px;
+        padding-left: 12px;
+        background-color: rgb(6, 171, 171);
+    }
+    .complaint-title1 {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 28px;
+        color:#fff;
+        padding: 10px;
+        padding-left: 12px;
+        background-color: black;
+    }
+    .complaint-form-row {
+        display: flex;
+        gap: 18px;
+        margin-bottom: 16px;
+        align-items: flex-end;
+    }
+    .complaint-form-row > div {
+        flex: 1;
+        min-width: 0px;
+        display: flex;
+        flex-direction: column;
+    }
+    .complaint-form-row label {
+        font-weight: 500;
+        font-size: 1rem;
+        margin-bottom: 6px;
+        color: #444;
+    }
+    .complaint-form-row input, 
+    .complaint-form-row select, 
+    .complaint-form-row textarea {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        font-size: 1rem;
+        background: #fafcfe;
+    }
+    .complaint-form-row textarea {
+        resize: vertical;
+        min-height: 40px;
+        max-height: 100px;
+    }
+    .complaint-btn-row {
+        display: flex;
+        gap: 18px;
+        justify-content: flex-start;
+        margin-top: 22px;
+    }
+    .btn-blue {
+        background-color: rgb(6, 171, 171);
+        color: white;
+        font-weight: 500;
+        padding: 8px 28px;
+        border: none;
+        transition: background 0.2s;
+        font-size: 1.02rem;
+        cursor: pointer;
+        letter-spacing: 0.5px;
+    }
+    .btn-orange:hover {
+        background-color: rgb(5, 133, 133);
+    }
+    .btn-serch_transaction {
+        background-color: rgb(6, 171, 171);
+        color: white;
+        font-weight: 500;
+        border: none;
+        transition: background 0.2s;
+        font-size: 1.02rem;
+        cursor: pointer;
+        letter-spacing: 0.5px;
+        padding: 8px 16px;
+        border-radius: 4px;
+        margin-left: 14px;
+    }
+    .btn-serch_transaction:hover {
+        background-color: rgb(9, 132, 132);
+     }
+     /*
+    .custom-btn1 {
+        padding: 9px 28px;
+        font-size: 1.02rem;
+        border-radius: 5px;
+        border: none;
+        background-color: rgb(28, 122, 159);
+        color: #fff;
+        font-weight: 500;
+        letter-spacing: .5px;
+        cursor: pointer;
+        transition: background 0.15s;
+    } */
+    .btn-btn-secondary {
+        padding: 9px 18px;
+        font-size: 1rem;
+        border-radius: 5px;
+        border: none;
+        background-color: #c4c4c4;
+        color: #222;
+        font-weight: 500;
+        margin-left: 15px;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+    .btn-btn-secondary:hover {
+        background-color: #a0a0a0;
+    }
+    @media (max-width: 900px) {
+        .complaint-form-container {
+            padding: 16px 8px 19px 8px;
+        }
+    }
+    @media (max-width: 700px) {
+        .complaint-form-row {
+            flex-direction: column;
+            gap: 12px;
+        }
+        .complaint-btn-row {
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+
+    /* Styles for Complaint Status Table */
+    .complaint-status-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 40px;
+        background: #ececec;
+        border-radius: 10px;
+        overflow: hidden;
+        font-size: 1rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    .complaint-status-table th,
+    .complaint-status-table td {
+        padding: 12px 18px;
+        text-align: left;
+    }
+    .complaint-status-table th {
+        background: #bbb;
+        color: #222;
+        font-weight: 600;
+    }
+    .complaint-status-table td {
+        background: #f6f6f6;
+        color: #313131;
+    }
+    .complaint-status-table tr {
+        border-bottom: 1px solid #ddd;
+    }
+    .complaint-status-table tr:last-child {
+        border-bottom: none;
+    }
+</style>
+
+<style>
+    .receipt-container {
+        /* background: #fff; */
+        padding: 35px;
+        border-radius: 14px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        margin: 40px auto 60px auto;
+        max-width: 650px;
+    }
+    .receipt-logo {
+        height: 60px;
+        width: auto;
+        mix-blend-mode: multiply;
+    }
+    .receipt-bbps-logo {
+        height: 100px;
+        width: auto;
+        mix-blend-mode: multiply;
+    }
+    .receipt-title {
+        text-align: center;
+        text-decoration: underline;
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: #2c3e50;
+        margin: 20px 0 18px 0;
+        width: 100%;
+        letter-spacing: 1px;
+    }
+    .receipt-info-table {
+        width: 100%;
+        margin: 25px 0;
+        border-collapse: collapse;
+        font-size: 0.98rem;
+    }
+    .receipt-info-table th, 
+    .receipt-info-table td {
+        padding: 10px 16px;
+        border: 1px solid #e2e6ea;
+        text-align: left;
+    }
+    .receipt-info-table th {
+        background: #f1f3f6;
+        color: #333;
+        width: 40%;
+        font-weight: 600;
+    }
+    .receipt-info-table td {
+        background: #fff;
+        color: #2c3e50;
+    }
+    .receipt-footer {
+        text-align: center;
+        color: #777;
+        font-size: 0.93rem;
+        margin-top: 28px;
+        line-height: 1.6;
+    }
+    .receipt-footer {
+        text-align: center;
+        color: #fff;
+        font-size: 1.40rem;
+        margin-top: 28px;
+        line-height: 1.6;
+        font-weight: 500;
+    }
+    .btn-orange {
+        display: inline-block;
+        background-color: rgb(28, 122, 159);
+        color: white;
+        font-weight: 500;
+        padding: 8px 35px;
+        border: none;
+        transition: 0.2s;
+        text-align: center;
+    }
+    .center-btns {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+    }
+    .btn-orange:hover {
+        color: #fff;
+        background-color: rgb(9, 114, 155);
+    }
+    @media (max-width: 650px) {
+        .receipt-container {
+            padding: 15px;
+        }
+        .receipt-title {
+            font-size: 1.3rem;
+            margin: 12px 0;
+        }
+        .receipt-info-table th, .receipt-info-table td {
+            padding: 7px 8px;
+        }
+        .receipt-header,
+        .receipt-detail-row {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .receipt-header > div, .receipt-detail-row > div {
+            margin-bottom: 10px;
+        }
+    }
+</style>
+
+<div class="complaint-title1">Bill Complain</div>
+<div class="container d-flex align-items-center justify-content-between">
+    <!-- Logo (Right Aligned) -->
+     <div class="logo ms-auto">
+        <img src="/media/bharat_connect_images.png" alt="Logo" style="height:60px; width:auto; mix-blend-mode: multiply;">
+    </div>
+</div>
+
+
+
+<div class="container bg-white shadow rounded p-4 mb-5">
+    <div class="complaint-title">Check Complain Status</div>
+    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+
+        <!-- <p style="margin: 0; font-size: 1.10rem; font-weight: 500; color: #127;">Query Transaction</p> -->
+        <!-- Search Transaction Button -->
+        <!-- <div class="btn-serch_transaction d-flex align-items-center justify-content-between" style=" background-color: rgb(6, 171, 171); color: #fff; font-weight: 600; font-size: 1rem; padding: 10px 12px; border-radius: 8px; border: none;">
+            <span>Check Complain Status</span>
+        </div> -->
+    </div>
+    
+
+    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+        <p style="margin: 0; font-size: 1.18rem; font-weight: 500; color: #127;">Raise Complaint</p>
+        <!-- Search Transaction Button -->
+        <button class="btn-serch_transaction" id="searchTransactionBtn">
+            Transaction
+        </button>
+        <button class="btn-secondary" id="searchTransactionBtn" style="padding: 8px 18px; border: none; margin-left: 5px;">
+            Service
+        </button>
+    </div>
+
+
+    <form method="post" autocomplete="off">
+        {% csrf_token %}
+        <div class="complaint-form-row">
+            <p style="margin: 0; font-size: 1.18rem; font-weight: 500; color: #127;">Check Complain Status</p>
+            <div>
+                <label for="mobile_number">Complain ID:</label>
+                <input type="text" id="mobile_number" name="mobile_number" placeholder="Enter Complain ID" required>
+            </div>
+            <div>
+                <!-- Empty for spacing or add more fields in future -->
+            </div>
+            <button type="submit" class="btn-blue">Search</button>
+        </div>
+    </form>
+
+    <!-- Complaint Status Table (Fixed data as placeholder; replace with actual data if available) -->
+    <div style="overflow-x: auto; width: 100%;">
+        <table class="complaint-status-table" style="min-width: 600px;">
+            <thead>
+                <tr>
+                    <th>Complain ID</th>
+                    <th>Reason</th>
+                    <th>Complaint </th>
+                    <th>Status</th>
+                    <th>Reply</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dummy data, replace with forloop for actual context -->
+                <tr>
+                    <td>CP175</td>
+                    <td>TXN PENDING</td>
+                    <td>not paid bill yet</td>
+                    <td>Working On</td>
+                    <td></td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+    <style>
+    /* Make table horizontally scrollable on small screens */
+    @media (max-width: 768px) {
+        .complaint-status-table {
+            min-width: 600px;
+            font-size: 0.98rem;
+        }
+    }
+    </style>
+</div>
+
+
+{% endblock %}

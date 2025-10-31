@@ -1,0 +1,173 @@
+{% extends 'service/service_base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<style>
+    .search-container {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        margin-top: 30px;
+    }
+
+    .search-label {
+        font-weight: 500;
+        color: #2c3e50;
+        font-size: 0.95rem;
+    }
+
+    .form-control {
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    .btn-orange {
+        background-color: orange;
+        color: white;
+        font-weight: 500;
+        padding: 8px 22px;
+        border-radius: 6px;
+        border: none;
+        transition: 0.2s;
+    }
+    .btn-orange:hover {
+        background-color: #e69500;
+    }
+
+    .table-container {
+        margin-top: 30px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        overflow-x: auto;
+    }
+
+    table th {
+        background-color: #1647b8;
+        color: white;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    table td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    @media (max-width: 768px) {
+        .form-row {
+            flex-direction: column;
+        }
+    }
+</style>
+</head>
+<body>
+
+  
+<div class="container d-flex align-items-center justify-content-between" >
+  <!-- Logo (Right Aligned) -->
+  <div class="logo ms-auto">
+    <img src="/media/bharat_connect_images.png" alt="Logo"  style="height:60px; width: auto; mix-blend-mode: multiply;">
+  </div>
+</div>
+<div class="container bg-white shadow rounded p-4">
+   
+    <div class="container">
+        <h4 class="text-center mt-4 fw-bold text-primary">Transaction Search</h4>
+    
+        <!-- 🔹 Search Form -->
+        <div class="search-container">
+            <form method="GET" action="">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-5">
+                        <label class="search-label" for="mobile">Mobile Number or Refferance ID</label>
+                        <input type="text" id="mobile" name="mobile" class="form-control" style="min-width:300px;" placeholder="Mobile Number or Refferance id">
+                    </div>
+                    <!-- <div class="col-md-3">
+                        <label class="search-label" for="refid">Reference ID</label>
+                        <input type="text" id="refid" name="refid" class="form-control" placeholder="Enter reference ID">
+                    </div> -->
+                    <div class="col-md-2">
+                        <label class="search-label" for="start_date">Start Date</label>
+                        <input type="date" id="start_date" name="start_date" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="search-label" for="end_date">End Date</label>
+                        <input type="date" id="end_date" name="end_date" class="form-control">
+                    </div>
+                    <div class="col-md-2 text-end ">
+                        <button type="submit" class="btn btn-orange w-100">
+                            <i class="fa fa-search me-1"></i> Search
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    
+        <!-- 🔹 Transaction Table -->
+        <div class="table-container">
+            <table class="table table-bordered table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Transaction Time</th>
+                        <th>Reference ID</th>
+                        <th>Status</th>
+                        <th>Customer Name</th>
+                        <th>Mobile Number</th>
+                        <th>Service</th>
+                        <th>Amount</th>
+                        <th>Remark</th>
+                    </tr>
+                </thead>
+                <tbody>
+                 
+                    <tr>
+                        <td>12-Mar-2025 01::31:48 PM</td>
+                        <td class="text-primary">1233564167</td>
+                        <td>
+                            <span class="text-success fw-bold">Success</span>
+                        </td>
+                        <td>Amit Kumar</td>
+                        <td >5260606375</td>
+                        <td>Credt Card</td>
+                        <td>200</td>
+                        <td>Bill payment success</td>
+                    </tr>
+                   
+             
+                
+                    <!-- {% if transactions %}
+                        {% for t in transactions %}
+                            <tr>
+                                <td>{{ t.transaction_time }}</td>
+                                <td>{{ t.reference_id }}</td>
+                                <td>
+                                    {% if t.status == "Success" %}
+                                        <span class="badge bg-success">Success</span>
+                                    {% elif t.status == "Pending" %}
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Failed</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ t.customer_name }}</td>
+                                <td>{{ t.mobile }}</td>
+                                <td>{{ t.service }}</td>
+                                <td>{{ t.amount }}</td>
+                                <td>{{ t.remark }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center text-muted">No transactions found</td>
+                        </tr>
+                    {% endif %} -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+  
+
+{% endblock %}

@@ -1,0 +1,165 @@
+{% extends 'service/service_base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<style>
+    .credit-form-container {
+        margin: 40px auto;
+        background: #fff;
+        padding: 32px 32px 24px 32px;
+        border-radius: 16px;
+        box-shadow: 0 7px 28px rgba(0,0,0,0.11);
+    }
+    .credit-form-title {
+        text-align: center;
+        margin-bottom: 28px;
+        font-weight: 600;
+        font-size: 1.40rem;
+        color: #383e4a;
+        letter-spacing: 1px;
+    }
+    .custom-form label {
+        display: block;
+        font-size: 1.03rem;
+        color: #263046;
+        margin-bottom: 6px;
+        margin-top: 18px;
+    }
+    .custom-form input, 
+    .custom-form select {
+        width: 100%;
+        padding: 9px 12px;
+        font-size: 1rem;
+        border: 1px solid #bfc9de;
+        border-radius: 4px;
+        background: #fafcff;
+        transition: border 0.2s;
+        margin-bottom: 4px;
+    }
+    .custom-form input:focus, 
+    .custom-form select:focus {
+        outline: none;
+        border: 1.5px solid #3276ff;
+        background: #f0f8ff;
+    }
+    .form-row {
+        display: flex;
+        gap: 16px;
+    }
+    .form-row > div {
+        flex: 1 1 0;
+    }
+    .custom-btn-group {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 30px;
+    }
+    .custom-btn {
+        padding: 9px 28px;
+        font-size: 1.02rem;
+        border-radius: 5px;
+        border: none;
+        background: orange;
+        color: #fff;
+        font-weight: 500;
+        letter-spacing: .5px;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+    .custom-btn1 {
+        padding: 9px 28px;
+        font-size: 1.02rem;
+        border-radius: 5px;
+        border: none;
+        background-color: rgb(28, 122, 159);
+        color: #fff;
+        font-weight: 500;
+        letter-spacing: .5px;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+    .custom-btn:active,
+    .custom-btn:focus {
+        background: orange;
+    }
+    .custom-btn.secondary {
+        background: #e7eaf0;
+        color: #223;
+        border: 1px solid #b4bed7;
+    }
+    
+    @media (max-width: 600px) {
+        .credit-form-container {
+            padding: 18px 8px 18px 8px;
+        }
+        .form-row {
+            flex-direction: column;
+            gap: 12px;
+        }
+        .form-row > div.responsive-input {
+            min-width: 90px;
+            max-width: 100%;
+            flex-basis: 100%;
+        }
+    }
+    .form-row > div.responsive-input {
+        min-width: 180px;
+        flex: 1 1 0%;
+    }
+    .form-row label{
+        font-weight: bold;
+        color: rgb(95, 92, 92);
+    }
+</style>
+
+<div class="container d-flex align-items-center justify-content-between">
+  
+  <div class="logo ms-auto">
+    <img src="/media/bharat_connect_images.png" alt="Logo"  style="height:60px; width:auto; mix-blend-mode: multiply;">
+  </div>
+</div>
+
+<div class="container bg-white shadow rounded p-4">
+
+  <!-- <div class="credit-form-title" >Credit Card Bill Payment</div> -->
+  
+    <form id="paymentForm" class="custom-form" action="{% url 'pay_bill' %}">
+
+      <label for="ccbill-provider" style="font-weight: bold; color: rgb(95, 92, 92);">Credit Card Bill <span style="color:red">*</span></label>
+      <select name="ccbill-provider" id="ccbill-provider" required>
+          <option value="">-- Select Card --</option>
+          <option value="ICICI">ICICI card</option>
+          <option value="HDFC">HDFC card</option>
+      </select>
+    
+      <!-- 1st Row: Registered mobile, Last 4 digits, Amount -->
+      <div class="form-row">
+        <div>
+          <label for="reg-mobile text-secondary">Registered Mobile Number</label>
+          <input type="text" name="reg-mobile" id="reg-mobile" placeholder="Enter mobile number" required>
+        </div>
+        <div>
+          <label for="card-last4 text-secondary">Last 4 digits of Primary Credit card</label>
+          <input type="text" name="card-last4" id="card-last4" maxlength="4" placeholder="Last 4 digits of primary credit card" required>
+        </div>
+        
+      </div>
+    
+      <div class="custom-btn-group">
+        <a href="">
+        <button type="submit" class="custom-btn">Fetch Bill</button>
+        </a>
+        <button type="reset" class="custom-btn1">Reset</button>
+      </div>
+      
+      </div>
+    
+  </form>
+
+</div>
+
+
+
+
+{% endblock %}

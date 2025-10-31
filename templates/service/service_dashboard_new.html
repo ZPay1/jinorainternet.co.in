@@ -1,0 +1,205 @@
+{% extends 'service/service_base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Dashboard</title>
+
+    <style>
+        body {
+            /* background: #f4f7fa; */
+            font-family: 'Poppins', sans-serif;
+        }
+        
+
+    .service-card {
+        background: #fff;
+        border-radius: 5px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        text-align: center;
+        padding: 30px 20px;
+        transition: all 0.3s ease;
+        height: 100%;
+        border-left: 1px solid rgb(225, 224, 224);
+        opacity: 0;
+        transform: translateY(-50px);
+        transition: all 1s ease-out; 
+    }
+    .service-card a{
+      text-decoration: none;
+    }
+ 
+
+
+    .service-card.show {
+    opacity: 1;
+    transform: translateY(0);
+    }
+    .service-card:hover {
+      box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+    }
+    .service-icon {
+      background-color: #9b0056;
+      color: #fff;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 20px;
+    }
+    .service-icons {
+
+      color: #fff;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 20px;
+    }
+    .service-title {
+      font-weight: 600;
+      font-size: 1rem;
+      color: #343a40;
+    }
+    .service-desc {
+      color: #606161;
+      font-size: 0.90rem;
+      margin-top: 5px;
+    }
+    /* Icons */
+    .navbar-icons{
+        font-size: 0.85rem;
+    }
+    .icons{
+        font-size: 2.5rem;
+   
+    }
+
+    .btn-orange {
+        background-color: orange;
+        color: white;
+        font-weight: 500;
+        padding: 8px 22px;
+        border-radius: 6px;
+        border: none;
+        transition: 0.2s;
+    }
+    .btn-orange:hover {
+        background-color: #e69500;
+    }
+    </style>
+</head>
+<body>
+
+   
+
+<!--  -->
+<div class="container py-5 mt-5 shadow-lg">
+    <div class="row gx-1 gy-4 justify-content-center">
+    
+        <!-- <div class="row gx-1 gy-1">      -->
+          <!-- Railway Tickets -->
+              <div class="col-12 col-sm-6 col-md-3 ">
+            <div class="service-card">
+              <div class="service-icon">
+                <i class="fa-solid fa-train icons" ></i>
+              </div>
+              <div class="service-title">Railway Tickets</div>
+              <div class="service-desc">Authorized IRCTC E-Ticket Booking</div>
+            </div>
+          </div>
+    
+          <!-- Air Tickets -->
+              <div class="col-12 col-sm-6 col-md-3 ">
+            <div class="service-card">
+              <div class="service-icon">
+                <i class="fa-solid fa-plane icons" ></i>
+              </div>
+              <div class="service-title">Air Tickets</div>
+              <div class="service-desc">Domestic and International</div>
+            </div>
+          </div>
+    
+          <!-- Hotel / Tour Packages -->
+              <div class="col-12 col-sm-6 col-md-3 ">
+            <div class="service-card">
+              <div class="service-icon">
+                <i class="fa-solid fa-hotel icons" ></i>
+              </div>
+              <div class="service-title">Hotel / Tour Packages</div>
+              <div class="service-desc">Inbound/Domestic and Outbound</div>
+            </div>
+          </div>
+    
+          <!-- Bus Booking -->
+              <div class="col-12 col-sm-6 col-md-3 ">
+            <div class="service-card">
+              <div class="service-icon">
+                <i class="fa-solid fa-bus-simple icons" ></i>
+              </div>
+              <div class="service-title">Bus Booking</div>
+              <div class="service-desc">Book Online Bus Ticket</div>
+            </div>
+          </div>
+        </div>
+        <div class="row gx-1 gy-1 mt-1">
+          <!-- Recharge -->
+              <div class="col-12 col-sm-6 col-md-3 ">
+            <div class="service-card">
+              <div class="service-icon">
+                <i class="fa-solid fa-mobile-screen-button icons" ></i>
+                
+              </div>
+              <div class="service-title">Recharge</div>
+              <div class="service-desc">All Mobile/DTH Recharge</div>
+            </div>
+          </div> 
+    
+          <!-- Pay Bills -->
+              <div class="col-12 col-sm-6 col-md-3 ">
+            <div class="service-card">
+              <a href="{% url 'recharge_view' %}">
+                <div class="service-icons">
+                  <img src="/media/Bbps.jpg" width="50px" height="60px" style="mix-blend-mode: multiply;" alt="Bbps">
+                  <!-- <i class="bi bi-currency-exchange icons"></i> -->
+                </div>
+              </a>
+                <div class="service-title">Pay Bills</div>
+                <div class="service-desc">All Type Of Bill Payment</div>
+
+             
+             
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          // Select all elements with the class 'service-card'
+          const serviceCards = document.querySelectorAll(".service-card");
+        
+          const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("show"); // add animation class
+                observer.unobserve(entry.target); // optional: animate only once
+              }
+            });
+          }, { threshold: 0.3 }); // trigger when 30% visible
+        
+          // Observe each card
+          serviceCards.forEach(card => {
+            observer.observe(card);
+          });
+        });
+    </script>
+      
+
+      {% endblock %}      

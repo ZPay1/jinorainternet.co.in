@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JINORA • Loader</title>
+
+  <!-- Optional fonts (you can remove if not needed) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600&family=Noto+Sans+Devanagari:wght@600&display=swap" rel="stylesheet">
+
+  <style>
+    a { text-decoration: none; }
+
+    /* Overlay that dims the page and centers the loader card */
+    #loader-overlay{
+      position:fixed; inset:0; display:none; z-index:9999;
+      place-items:center;
+      background: rgba(13,16,24,0.28); /* subtle dim */
+      backdrop-filter: blur(2px);
+    }
+    #loader-card{
+      display:grid; place-items:center; gap:.6rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding:16px 18px; border-radius:14px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.25);
+      color:#f7f7fb;
+      text-align:center;
+      min-width: 220px;
+    }
+    /* Light mode adjustment */
+    @media (prefers-color-scheme: light){
+      #loader-overlay{ background: rgba(255,255,255,0.55); }
+      #loader-card{
+        background: rgba(255,255,255,0.9);
+        color:#0d1018; border-color:#e6e8f0;
+      }
+    }
+
+    .blur-content{ filter: blur(2px); opacity:.6; pointer-events:none; }
+
+    /* Loader figure (compact) */
+    .jinora-loader{ width:120px; height:120px; position:relative; }
+    .jinora-loader svg{ width:100%; height:100%; display:block; overflow:visible; }
+
+    /* Stroke drawing animation */
+    /* FAST repeat draw animation */
+    .draw{
+      stroke-dasharray: var(--len, 800);
+      stroke-dashoffset: var(--len, 800);
+      animation: jl-draw 1.1s cubic-bezier(.60,0,.40,1) infinite;
+    }
+    /* Jet trail start slightly later */
+    .draw.delay-1{
+      animation-delay:.15s;
+    }
+    /* Faster Jet Nose pulse */
+  .pulse{
+    animation: jl-pulse 1.1s ease-in-out infinite;
+  }
+    /* Glow stays same */
+  .glow{
+    filter: drop-shadow(0 0 8px rgba(4, 32, 90, 0.45))
+            drop-shadow(0 0 20px rgba(15, 1, 78, 0.767));
+  }
+
+    /* Wordmark + tagline */
+    .brand{
+        font:600 12px/1.1 Poppins, Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        letter-spacing:.42rem; text-indent:.42rem; opacity:.95;
+        color:#ffffff;
+        text-shadow:
+          0px 0px 4px rgba(4, 32, 90, 0.45),
+          0px 0px 10px rgba(15, 1, 78, 0.767);
+      }
+
+      .tag{
+        font:600 11px/1.2 "Noto Sans Devanagari", Inter, system-ui, sans-serif;
+        opacity:.7; margin-top:-2px;
+        color:#ffffff;
+        text-shadow:
+          0px 0px 4px rgba(4, 32, 90, 0.45),
+          0px 0px 10px rgba(15, 1, 78, 0.767);
+      }
+
+
+    /* Motion safety */
+    @media (prefers-reduced-motion: reduce){
+      .draw,.pulse{ animation:none !important; stroke-dashoffset:0 !important; }
+    }
+
+    /* FAST draw frame */
+@keyframes jl-draw{
+  0%{
+    stroke-dashoffset: var(--len, 800);
+    opacity:.9;
+  }
+  50%{
+    stroke-dashoffset: 0;
+    opacity:1;
+  }
+  100%{
+    stroke-dashoffset: var(--len, 800);
+    opacity:.9;
+  }
+}
+
+/* Pulse smoother */
+@keyframes jl-pulse{
+  0%,100%{ opacity:.55 }
+  50%{ opacity:1 }
+}
+
+    /* Demo page content (you can remove this) */
+
+    .demo-actions a, .demo-actions button{
+      appearance:none; border:1px solid #e5e7eb; background:#fff; color:#111827;
+      padding:10px 14px; border-radius:10px; cursor:pointer;
+      box-shadow:0 2px 10px rgba(0,0,0,.05);
+    }
+    .demo-actions a:hover, .demo-actions button:hover{ background:#f9fafb; }
+  </style>
+
+
+
+  <!-- Loader Overlay -->
+  <div id="loader-overlay" aria-live="polite" aria-busy="true">
+    <div id="loader-card" role="status" aria-label="Loading">
+      <div class="jinora-loader" aria-hidden="true">
+        <!-- JINORA-style mini mark (hexagon + stylized J/jet) -->
+        <svg viewBox="0 0 256 256">
+          <!-- Hexagon outline -->
+          <path class="draw glow" style="--len:640"
+                d="M128 16 L214 66 L214 166 L128 216 L42 166 L42 66 Z"
+                fill="none" stroke="currentColor" stroke-width="10"
+                stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Stylized J trail -->
+          <path class="draw delay-1"
+                style="--len:380"
+                d="M160 84 h-54 c-8 0 -12 10 -4 14 l36 0 c8 0 10 10 2 14 c-6 3 -14 5 -22 8 c-10 4 -18 11 -18 22 c0 16 14 26 30 26 c14 0 26 -5 34 -16"
+                fill="none" stroke="currentColor" stroke-width="10"
+                stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Jet nose pulse -->
+          <circle class="pulse" cx="164" cy="84" r="4" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="brand">J I N O R A</div>
+      <div class="tag">सफलता का AURA</div>
+    </div>
+  </div>
+
+  <!-- Hidden iframe for download -->
+  <iframe id="download-frame" style="display:none;"></iframe>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const overlay = document.getElementById('loader-overlay');
+      const content = document.getElementById('main-content');
+      const downloadFrame = document.getElementById('download-frame');
+
+      function showLoader(){
+        overlay.style.display = 'grid';
+        content.classList.add('blur-content');
+      }
+      function hideLoader(){
+        overlay.style.display = 'none';
+        content.classList.remove('blur-content');
+      }
+
+      // Show loader on all form submits
+      document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function () { showLoader(); });
+      });
+
+      // Utility to get a cookie value
+      function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]+)'));
+        return match ? decodeURIComponent(match[1]) : null;
+      }
+
+      // Handle all anchor clicks
+      document.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function (e) {
+          const href = link.getAttribute('href');
+          const target = link.getAttribute('target');
+
+          // Ignore empty or hash links or javascript pseudo-links
+          if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
+
+          const isExcel = /\.(xlsx?|csv|xls)(?:\?|$)/i.test(href);
+          const isNewTab = e.ctrlKey || e.metaKey || e.button === 1 || (target && target === '_blank');
+
+          if (isExcel && !isNewTab) {
+            e.preventDefault();
+            showLoader();
+
+            // Clear cookie first
+            document.cookie = "fileDownload=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+
+            // Trigger download via hidden iframe
+            downloadFrame.src = href;
+
+            // Poll for fileDownload cookie set by server when file starts/completes
+            const poll = setInterval(() => {
+              if (getCookie("fileDownload") === "true") {
+                clearInterval(poll);
+                hideLoader();
+                // Clear cookie again
+                document.cookie = "fileDownload=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+              }
+            }, 400);
+            return;
+          }
+
+          // For non-excel links (same tab), show loader
+          if (!isNewTab) {
+            showLoader();
+          }
+        });
+      });
+
+      // Hide loader on BFCache restore (back/forward)
+      window.addEventListener('pageshow', function () { hideLoader(); });
+
+      // Optional: expose controls for manual use
+      window.JINORA_LOADER = { show: showLoader, hide: hideLoader };
+
+      // Demo: fake submit button to show loader
+      const fakeSubmit = document.getElementById('fake-submit');
+      if (fakeSubmit){
+        fakeSubmit.addEventListener('click', () => {
+          showLoader();
+          setTimeout(hideLoader, 1800);
+        });
+      }
+    });
+  </script>
+

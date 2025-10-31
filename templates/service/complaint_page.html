@@ -1,0 +1,189 @@
+{% extends 'service/service_base.html' %}
+{% block title %}Complaint Page{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+      background: #f8f8f8;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .complaint-form-container {
+        max-width: 700px;
+        margin: 30px auto 0 auto;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0,0,0,.07);
+        padding: 32px 35px 28px 35px;
+    }
+    .complaint-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 28px;
+        color: #b50e5a;
+        padding-left: 12px;
+    }
+
+    .complaint-form-row {
+        display: flex;
+        gap: 18px;
+        margin-bottom: 16px;
+    }
+    .complaint-form-row > div {
+        flex: 1;
+        min-width: 0px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .complaint-form-row label {
+        font-weight: bold;
+        font-size: 1rem;
+        margin-bottom: 6px;
+        color: #6e6d6d;
+    }
+
+    .complaint-form-row input, 
+    .complaint-form-row select, 
+    .complaint-form-row textarea {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        font-size: 1rem;
+        background: #fafcfe;
+    }
+    .complaint-form-row textarea {
+        resize: vertical;
+        min-height: 40px;
+        max-height: 100px;
+    }
+
+    .complaint-btn-row {
+        display: flex;
+        gap: 18px;
+        justify-content: flex-end;
+        margin-top: 22px;
+    }
+    .btn-submit{
+        background-color: orange;
+        color: white;
+        font-weight: 500;
+        padding: 8px 28px;
+        border-radius: 7px;
+        border: none;
+        transition: background 0.2s;
+        font-size: 1.02rem;
+        cursor: pointer;
+        letter-spacing: 0.5px;
+    }
+    .btn-submit:hover {
+        background: #e69500;
+    }
+    
+    .custom-btn1 {
+        padding: 9px 28px;
+        font-size: 1.02rem;
+        border-radius: 5px;
+        border: none;
+        background-color: rgb(28, 122, 159);
+        color: #fff;
+        font-weight: 500;
+        letter-spacing: .5px;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+    @media (max-width: 900px) {
+        .complaint-form-container {
+            padding: 16px 8px 19px 8px;
+        }
+    }
+    @media (max-width: 700px) {
+        .complaint-form-row {
+            flex-direction: column;
+            gap: 12px;
+        }
+        .complaint-btn-row {
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+</style>
+
+<div class="container d-flex align-items-center justify-content-between">
+  <!-- Logo (Right Aligned) -->
+  <div class="logo ms-auto">
+    <img src="/media/bharat_connect_images.png" alt="Logo" style="height:60px; width:auto; mix-blend-mode: multiply;">
+  </div>
+</div>
+
+<div class="container bg-white shadow rounded p-4">
+    <div class="complaint-title">Register a Complaint</div>
+    <form method="post" autocomplete="off">
+      {% csrf_token %}
+      <div class="complaint-form-row">
+        <div>
+          <label for="reference_id">Reference Id</label>
+          <input type="text" id="reference_id" name="reference_id" placeholder="Enter reference id" required>
+        </div>
+        <div>
+          <label for="mobile_number">Mobile Number</label>
+          <input type="text" id="mobile_number" name="mobile_number" placeholder="Enter mobile number" required>
+        </div>
+        <div>
+          <label for="txn_date">Date & Time</label>
+          <input type="datetime-local" id="txn_date" name="txn_date" required>
+        </div>
+      </div>
+
+      <div class="complaint-form-row">
+        <div>
+          <label for="amount">Amount</label>
+          <input type="number" id="amount" name="amount" placeholder="Enter amount" required>
+        </div>
+        <div>
+          <label for="biller">Biller</label>
+          <input type="text" id="biller" name="biller" placeholder="Biller Name" required>
+        </div>
+        <div>
+          <label for="status">Status</label>
+          <select id="status" name="status" required>
+            <option value="">--Select--</option>
+            <option value="pending">Pending</option>
+            <option value="failed">Failed</option>
+            <option value="success">Success</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="complaint-form-row">
+        <div>
+          <label for="reason">Reason of Complaint</label>
+          <select id="reason" name="reason" required>
+            <option value="">--Select Reason--</option>
+            <option value="transaction_not_completed">Transaction not completed</option>
+            <option value="amount_deducted_not_credited">Amount deducted but not credited</option>
+            <option value="wrong_biller">Wrong biller selected</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div>
+          <label for="comments">Comments</label>
+          <textarea id="comments" name="comments" placeholder="Enter comments" rows="2"></textarea>
+        </div>
+        <div>
+          <!-- Empty div for 3-column alignment -->
+        </div>
+      </div>
+
+      <div class="complaint-btn-row">
+        <button type="submit" class="btn-submit">Submit</button>
+        <button type="reset"  class="custom-btn1" >Reset</button>
+      </div>
+    </form>
+
+    
+</div>
+
+{% endblock %}

@@ -22,24 +22,58 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+
+    
     # Sigin url  =========================================
-    path('login', views.login_view, name='login_view'),
-    path('register', views.register_view, name='register_view'),
+    path('login/', views.login_view, name='login'),
+    path('register/', views.register_view, name='register_view'),
+    path('logout/',views.logout_view, name='logout'),
+    # path("forgot-password/",views.forgot_password_view, name="forgot_password"),
+
+    # Dashboard url  =========================================
+    path('dashboard/', views.dashboard_view, name='dashboard_view'),
+    path('recharge/', views.recharge_view, name='recharge_view'),
+    path('pay-bill/', views.pay_bill_view, name='pay_bill'),
+    path('payment-success/', views.payment_success_view, name='payment_success'),
+    
+    
+    path('transaction-search/', views.transaction_search_view, name='transaction_search'),
+    path('receipt/', views.receipt_view, name='receipt'),
+    path('complaint/', views.complaint_view, name='complaint_view'),
+
+   # Profile url  =========================================
+    path('profile/', views.profile_view, name='profile_view'),
+    path('bills/', views.bills_form_view, name='bills_form'),
+    path('fetch-bills/', views.fetch_bill_view, name='fetch_bill'),
+    path('raise-complain/', views.raise_complain_view, name='raise_complain'),
+    path('check-complaint-status/', views.check_complaint_status, name='check_complaint_status'),
+    path('query-transaction/', views.query_transaction, name='query_transaction'),
+    
+    
+    
+    
+    
+    # path('edit-profile/', views.edit_profile_view, name='edit_profile'),
+    
+    
+    
+    
+    
+
+
 
     # Homeppage url  =========================================
     path('', views.homepage_view, name='homepage_view'),
-    path('homepage', views.new_homepage_view, name='new_homepage'),
-    path('logout/',views.logout_view, name='logout'),
-    
-    path('our-service', views.our_service_view, name='our_service'),
-    path('about-us', views.about_us_view, name='about_us'),
-    path('career', views.career_view, name='career_view'),
-    path('contact-us', views.contact_us_view, name='contact_us'),
+    path('our-service/', views.our_service_view, name='our_service'),
+    path('about-us/', views.about_us_view, name='about_us'),
+    path('career/', views.career_view, name='career_view'),
+    path('contact-us/', views.contact_us_view, name='contact_us'),
 
     
-    path('privacy-policy', views.privacy_policy_view, name='privacy_policy'),
-    path('refund-policy', views.refund_policy_view, name='refund_policy'),
-    path('term-condition', views.term_condition_view, name='term_condition'),
+    path('privacy-policy/', views.privacy_policy_view, name='privacy_policy'),
+    path('refund-policy/', views.refund_policy_view, name='refund_policy'),
+    path('term-condition/', views.term_condition_view, name='term_condition'),
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # urls.py

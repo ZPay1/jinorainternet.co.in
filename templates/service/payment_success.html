@@ -1,0 +1,248 @@
+{% extends 'service/service_base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .credit-form-container {
+        margin: 40px auto;
+        background: #fff;
+        padding: 32px 32px 24px 32px;
+        border-radius: 16px;
+        box-shadow: 0 7px 28px rgba(0,0,0,0.11);
+    }
+    .credit-form-title {
+        text-align: center;
+        margin-bottom: 28px;
+        font-weight: 600;
+        font-size: 1.40rem;
+        color: #383e4a;
+        letter-spacing: 1px;
+    }
+    .custom-form label {
+        display: block;
+        font-size: 1.03rem;
+        color: #263046;
+        margin-bottom: 6px;
+        margin-top: 18px;
+    }
+    .custom-form input, 
+    .custom-form select {
+        width: 100%;
+        padding: 9px 12px;
+        font-size: 1rem;
+        border: 1px solid #bfc9de;
+        border-radius: 4px;
+        background: #fafcff;
+        transition: border 0.2s;
+        margin-bottom: 4px;
+    }
+    .custom-form input:focus, 
+    .custom-form select:focus {
+        outline: none;
+        border: 1.5px solid #3276ff;
+        background: #f0f8ff;
+    }
+    .form-row {
+        display: flex;
+        gap: 16px;
+    }
+    .form-row > div {
+        flex: 1 1 0;
+    }
+    .custom-btn-group {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 30px;
+    }
+    .custom-btn {
+        padding: 9px 28px;
+        font-size: 1.02rem;
+        border-radius: 5px;
+        border: none;
+        background: orange;
+        color: #fff;
+        font-weight: 500;
+        letter-spacing: .5px;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+    .custom-btn1 {
+        padding: 9px 28px;
+        font-size: 1.02rem;
+        border-radius: 5px;
+        border: none;
+        background-color: rgb(28, 122, 159);
+        color: #fff;
+        font-weight: 500;
+        letter-spacing: .5px;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+    .custom-btn:active,
+    .custom-btn:focus {
+        background: orange;
+    }
+    .custom-btn.secondary {
+        background: #e7eaf0;
+        color: #223;
+        border: 1px solid #b4bed7;
+    }
+    
+    @media (max-width: 600px) {
+        .credit-form-container {
+            padding: 18px 8px 18px 8px;
+        }
+        .form-row {
+            flex-direction: column;
+            gap: 12px;
+        }
+        .form-row > div.responsive-input {
+            min-width: 90px;
+            max-width: 100%;
+            flex-basis: 100%;
+        }
+    }
+    .form-row > div.responsive-input {
+        min-width: 180px;
+        flex: 1 1 0%;
+    }
+</style>
+
+<div class="container d-flex align-items-center justify-content-between">
+  
+  <div class="logo ms-auto">
+    <img src="/media/bharat_connect_images.png" alt="Logo"  style="height:60px; width:auto; mix-blend-mode: multiply;">
+  </div>
+</div>
+
+
+
+<div class="container bg-white shadow rounded p-4">
+    <form id="paymentForm" class="custom-form">
+      <label for="ccbill-provider">Credit Card bill <span style="color:red">*</span></label>
+      <select name="ccbill-provider" id="ccbill-provider" required>
+          <option value="">-- Select Card --</option>
+          <option value="ICICI">ICICI card</option>
+          <option value="HDFC">HDFC card</option>
+      </select>
+
+      <!-- 1st Row: Registered mobile, Last 4 digits, Amount -->
+      <div class="form-row">
+        <div>
+          <label for="reg-mobile">Registered mobile number</label>
+          <input type="text" name="reg-mobile" id="reg-mobile" placeholder="Enter mobile number" required>
+        </div>
+        <div>
+          <label for="card-last4">Last 4 digits of Primary Credit card</label>
+          <input type="text" name="card-last4" id="card-last4" maxlength="4" placeholder="xxxx" required>
+        </div>
+        <div>
+          <label for="amount">Amount</label>
+          <input type="text" name="amount" id="amount" placeholder="Enter amount" required>
+        </div>
+      </div>
+      <!-- 2nd Row: Account holder, Due Date, Bill Date -->
+      <div class="form-row">
+        <div>
+          <label for="acc-holder">AccountHolder name</label>
+          <input type="text" name="acc-holder" id="acc-holder" placeholder="Full name" required>
+        </div>
+        <div>
+          <label for="duedate">dueDate</label>
+          <input type="date" name="duedate" id="duedate" placeholder="Due date" required>
+        </div>
+        <div>
+          <label for="billdate">billDate</label>
+          <input type="date" name="billdate" id="billdate" placeholder="Bill date" required>
+        </div>
+      </div>
+      <!-- 3rd Row: Bill Period, Bill Number, EarlyPayment -->
+      <div class="form-row">
+        <div>
+          <label for="billperiod">billPeriod</label>
+          <input type="text" name="billperiod" id="billperiod" placeholder="e.g. Jan-Feb 2024" required>
+        </div>
+        <div>
+          <label for="billnumber">billNumber</label>
+          <input type="text" name="billnumber" id="billnumber" placeholder="Bill number" required>
+        </div>
+        <div>
+          <label for="earlypay">EarlyPayment Amount</label>
+          <input type="text" name="earlypay" id="earlypay" placeholder="Early payment amount" required>
+        </div>
+      </div>
+      <!-- 4th Row: LatePayment, Provider Name, Location -->
+      <div class="form-row">
+        <div>
+          <label for="latepay">LatePayment Amount</label>
+          <input type="text" name="latepay" id="latepay" placeholder="Late payment amount" required>
+        </div>
+        <div>
+          <label for="providername">Service Provider Name</label>
+          <input type="text" name="providername" id="providername" placeholder="eg: ICICI" required>
+        </div>
+        <div>
+          <label for="location">Location/Circle</label>
+          <input type="text" name="location" id="location" placeholder="eg: Mumbai" required>
+        </div>
+      </div>
+      <!-- 5th Row: Bill Reference Number (kept single for consistency, but wrapped in row for layout) -->
+      <div class="form-row">
+        <div>
+
+      
+      <div class="form-row col-6">
+        <div>
+          <label for="providername">Bill Refferance number</label>
+          <input type="text" name="providername" id="providername" placeholder="eg: ICICI" required>
+        </div>
+      
+      </div>
+      <p class="text-success fw-bold">payment successfull</p>
+      <div class="custom-btn-group">
+        <button type="button" class="custom-btn"  onclick="printPayment_Receipt()">Print</button>
+        <button type="reset" class="custom-btn1">Reset</button>
+      </div>
+  </form>
+
+</div>
+
+
+<!-- ✅ Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center p-4">
+      <img src="/media/Bbps_assured_logo.png" alt="Success" style="height:150px; width:auto; margin:auto;">
+      <h4 class="mt-3 text-success fw-bold">Payment Successful!</h4>
+      <p class="text-muted">Your credit card bill has been paid successfully.</p>
+      <button type="button" class="btn btn-success " data-bs-dismiss="modal">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ✅ Auto show modal on page load -->
+<script>
+window.addEventListener('load', function() {
+    var myModal = new bootstrap.Modal(document.getElementById('successModal'));
+    myModal.show();
+});
+</script>
+
+<script>
+  function printPayment_Receipt() {
+      // Hide the button before printing
+      const btn = document.querySelector('.custom-btn');
+      btn.style.display = 'none';
+  
+      window.print();
+  
+      // Show the button again after printing
+      btn.style.display = 'inline-block';
+  }
+  </script>
+{% endblock %}

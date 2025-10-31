@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'lelifeproject.staticmedia_middleware.StaticMediaMiddleware', # ye midea aur stetic direct serve k liye he
+    # 'lelifeproject.context_processors.api_base_url',
 ]
 
 ROOT_URLCONF = 'lelifeproject.urls'
