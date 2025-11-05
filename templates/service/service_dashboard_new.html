@@ -144,13 +144,54 @@
           }
         }
    
+/* service icon */
+
+/* .service-icon {
+    background: #fff;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  } */
+  .service-icon img{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+  }
+
+  .service-icon i {
+    font-size: 1.8rem;
+    color: #0052cc;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+
+                @media (max-width: 576px) {
+                  .op-card h6 {
+                    font-size: 0.92rem !important;
+                  }
+                }
+                @media (max-width: 400px) {
+                  .op-card h6 {
+                    font-size: 0.85rem !important;
+                  }
+                }
+  
+
   </style>
 </head>
 
 <body>
 
  
+  <div class="container-fluid mt-3 mb-4 text-center" style="width:100%;">
+    <img src="/media/recharge/bbpsdesktop.png" alt="" class="img-fluid rounded shadow-sm" style="max-width:100%; width:100%;">
+  </div>
 
+ 
   <!-- SERVICES -->
   <section id="services" class="py-5">
     <div class="container">
@@ -160,88 +201,109 @@
         <p class="muted">Mobile, DTH, Electricity, Gas, Water, Broadband, FASTag, Insurance, Loan EMI & more.</p>
       </div>
 
+
       <div class="row g-3">
         <!-- 8 service cards -->
-        <div class="col-6 col-md-4 col-lg-3">
+        <div class="col-3 col-md-4 col-lg-3">
          
           <div class="card-x p-3 h-100 op-card">
-            <a href="{% url 'mobile_prepaid' %}">
-              <i class="fa fa-mobile-screen"></i>
-              <h6 class="mt-3 mb-1">Prepaid Mobile</h6>
-              <p class="small muted mb-0">All operators • Instant</p>
+                <div class="service-icon">
+                  <a href="{% url 'mobile_prepaid' %}">
+                  <img src="/media/recharge/m_prepaid.svg" alt="Mobile Prepaid" >
+                </div>
+              <h6 class="mt-3 mb-1" style="font-size: 1.05rem;">
+                Prepaid Mobile
+              </h6>
             </a>
           </div>
         
         </div>
-        <div class="col-6 col-md-4 col-lg-3">
-         
+        <div class="col-3 col-md-4 col-lg-3">
           <div class="card-x p-3 h-100 op-card">
-            <a href="{% url 'dth_recharge' %}">
-              <i class="fa fa-tower-broadcast"></i>
-              <h6 class="mt-3 mb-1">DTH</h6>
-              <p class="small muted mb-0">Tata Play, Airtel, Dish, D2H</p>
+            
+              <div class="service-icon">
+                <a href="{% url 'dth_recharge' %}">
+                <img src="/media/recharge/dth.svg" alt="DTH Recharge"> 
+              </div>
+              <h6 class="mt-3 mb-1">DTH Recharge</h6>
+           
             </a>
           </div>
          
         </div>
-        <div class="col-6 col-md-4 col-lg-3">
-          
+        <div class="col-3 col-md-4 col-lg-3">
           <div class="card-x p-3 h-100 op-card">
-            <a href="{% url 'electricity_bill' %}">
-              <i class="fa fa-plug"></i>
+            
+              <div class="service-icon">
+                <a href="{% url 'electricity_bill' %}">
+                <img src="/media/recharge/electricity_bill.svg" alt="Electricity Bill" >
+              </div>  
               <h6 class="mt-3 mb-1">Electricity</h6>
-              <p class="small muted mb-0">State boards • Fetch bill</p>
+             
             </a>
           </div>
           
         </div>
-        <div class="col-6 col-md-4 col-lg-3">
-          
+        <div class="col-3 col-md-4 col-lg-3">
           <div class="card-x p-3 h-100 op-card">
-            <a href="{% url 'lpg_book_gas' %}">
-              <i class="fa fa-gas-pump"></i>
+            
+              <div class="service-icon">
+                <a href="{% url 'lpg_book_gas' %}">
+                <img src="/media/recharge/book_gas_cylinder.svg" alt="Book Gas Cylinder" >
+              </div>
               <h6 class="mt-3 mb-1">Gas Cylinder</h6>
-              <p class="small muted mb-0">HP/Indane/Bharat</p>
+           
             </a>
           </div>
          
         </div>
-        <div class="col-6 col-md-4 col-lg-3">
+        <div class="col-3 col-md-4 col-lg-3">
           <div class="card-x p-3 h-100 op-card">
-            <a href="{% url 'water' %}">
-              <i class="fa fa-water"></i>
+            
+              <div class="service-icon">
+                <a href="{% url 'water' %}">
+                <img src="/media/recharge/water_bill.svg" alt="Water Bill" >
+              </div>
               <h6 class="mt-3 mb-1">Water</h6>
-              <p class="small muted mb-0">Municipal payments</p>
+             
             </a>
           </div>
          
         </div>
-        <div class="col-6 col-md-4 col-lg-3">
-        
+        <div class="col-3 col-md-4 col-lg-3">
           <div class="card-x p-3 h-100 op-card">
-            <a href="{% url 'not_found_page' %}">
-              <i class="fa fa-wifi"></i>
+           
+              <div class="service-icon">
+                <a href="{% url 'not_found_page' %}">
+                <img src="/media/recharge/bradband_postpaid.svg" alt="Housing Society" >
+              </div>
               <h6 class="mt-3 mb-1">Broadband</h6>
-              <p class="small muted mb-0">Top ISPs supported</p>
+           
             </a>
           </div>
          
         </div>
-        <div class="col-6 col-md-4 col-lg-3">
+        <div class="col-3 col-md-4 col-lg-3">
           <div class="card-x p-3 h-100 op-card">
-            <a href="{% url 'fastag_recharge' %}">
-            <i class="fa fa-road"></i>
+           
+              <div class="service-icon">
+                <a href="{% url 'fastag_recharge' %}">
+                <img src="/media/recharge/fastag.svg" alt="FASTag Recharge" >
+              </div>
             <h6 class="mt-3 mb-1">FASTag</h6>
-            <p class="small muted mb-0">Recharge instantly</p>
+           
             </a>
           </div>
         </div>
-        <div class="col-6 col-md-4 col-lg-3">
+        <div class="col-3 col-md-4 col-lg-3">
           <div class="card-x p-3 h-100 op-card">
-            <a href="{% url 'not_found_page' %}">
-            <i class="fa fa-shield-heart"></i>
-            <h6 class="mt-3 mb-1">Insurance & EMI</h6>
-            <p class="small muted mb-0">Loan EMI, Insurance</p>
+            
+              <div class="service-icon">
+                <a href="{% url 'recharge_view' %}">
+                <img src="/media/recharge/see_all.svg" alt="FASTag Recharge" width="38px" height="38px" >
+              </div>
+            <h6 class="mt-3 mb-1">See All</h6>
+         
             </a>
           </div>
         </div>
@@ -545,4 +607,4 @@
   
 </body>
 </html>
-      {% endblock %}      
+{% endblock %}      

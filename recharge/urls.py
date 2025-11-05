@@ -23,15 +23,6 @@ urlpatterns = [
     path('education/', views.education_view, name='education'),
     path('water/', views.water_view, name='water'),
     path('lpg-book-gas/', views.lpg_book_gas_view, name='lpg_book_gas'),
-  
-    
-    
-    
-    
-    
-    
-    
-     
     path('', views.recharge_view, name='recharge_view'),
     
     

@@ -20,3 +20,10 @@ class State(models.Model):
         choices=STATE_CHOICES,
         unique=True
     )
+
+'''
+https://jinorainternet.co.in/admin
+
+Usernmae:      Jinorainternet
+Email address: jinorainternet@gmail.com
+Password :     jinorainternet@12    '''
