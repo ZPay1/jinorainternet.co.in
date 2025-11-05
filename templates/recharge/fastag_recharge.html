@@ -1,0 +1,46 @@
+{% extends 'service/service_base.html' %}
+{% block title %}Recharge{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+  <title>Recharge Page</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .recharge_image{
+      width: 300px; 
+      height: 300px;
+      object-fit: contain;
+    }
+    @media (max-width: 768px) {
+      .recharge_image{
+        width: 300px; 
+        height: 250px;
+        object-fit: contain;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-900 font-sans leading-normal tracking-normal">
+
+  <div class="container">
+    <div class="flex flex-col md:flex-row items-center justify-center min-h-screen py-10 px-4">
+      <!-- Left (Text) -->
+      <div class="w-full md:w-1/2 flex flex-col justify-center items-start mb-8 md:mb-0 md:pr-14">
+        <h1 class="font-bold mb-4 text-green-700" style="font-size:28px; font-weight:bold;">Recharge Services</h1>
+        <p class="mb-4 text-[12px] md:text-[18px]">
+          Recharge your Mobile, FASTag, DTH or pay your Electricity Bill easily and instantly from here. Choose the service below, enter your details and proceed to make a secure recharge or payment.
+        </p>
+        <a href="{% url 'dashboard_view' %}" class="inline-block mt-2 px-6 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition">Back to Dashboard</a>
+      </div>
+      <!-- Right (Image) -->
+      <div class="w-full md:w-1/2 flex justify-center items-center">
+        <img src="/media/404.png" alt="recharge image" class="recharge_image" >
+      </div>
+    </div>
+  </div>
+
+  {% endblock %}

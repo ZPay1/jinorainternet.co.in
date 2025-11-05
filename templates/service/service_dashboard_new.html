@@ -1,205 +1,548 @@
 {% extends 'service/service_base.html' %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Service Dashboard</title>
+<!doctype html>
+<html lang="en">
 
-    <style>
-        body {
-            /* background: #f4f7fa; */
-            font-family: 'Poppins', sans-serif;
-        }
-        
+<head>
+  <meta charset="utf-8" />
+  <title>PayZilla — All Bills & Recharge in One Place</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Recharge mobile, DTH, FASTag & pay electricity, water, gas, broadband bills. Secure & instant payments." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-    .service-card {
-        background: #fff;
-        border-radius: 5px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        text-align: center;
-        padding: 30px 20px;
-        transition: all 0.3s ease;
-        height: 100%;
-        border-left: 1px solid rgb(225, 224, 224);
-        opacity: 0;
-        transform: translateY(-50px);
-        transition: all 1s ease-out; 
+  <style>
+    :root{
+      --brand:#4638ff; /* primary indigo */
+      --brand-2:#00c2a8; /* teal accent */
+      --ink:#0b1220;
+      --muted:#5880d2;
+      --bg:#0f1531;
+      --card:#11183a;
+      --glass: rgba(255,255,255,0.07);
     }
-    .service-card a{
+    a{text-decoration:none}
+    .btn-brand{ background: var(--brand); color:#fff; border: none; }
+    
+    .btn-ghost{ background: transparent; border:1px solid rgba(255,255,255,0.18); color:#fff; }
+    .btn-ghost:hover{ background: rgba(255,255,255,0.08); }
+    .hero{
+      position:relative; overflow:hidden;
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(70,56,255,.25), transparent 60%),
+        radial-gradient(900px 500px at 95% 30%, rgba(0,194,168,.18), transparent 60%);
+    }
+    .hero .glow{
+      position:absolute; inset:-30% -30% auto auto; width:55vmax; height:55vmax;
+      background: radial-gradient(circle at 50% 50%, rgba(0,194,168,.15), transparent 60%);
+      filter: blur(40px); opacity: .7; z-index:0;
+    }
+    .chip{
+      display:inline-flex; gap:.5rem; align-items:center; border-radius:999px;
+      padding:.35rem .75rem; background:rgba(70,56,255,.15); border:1px solid rgba(70,56,255,.35); color:#cfd6ff;
+      font-weight:600; font-size:.85rem;
+    }
+    .glass{
+      background: var(--glass); border: 1px solid rgba(255,255,255,0.14); border-radius: 18px; box-shadow: 0 8px 40px rgba(0,0,0,.25);
+    }
+    .card-x{
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.637), rgba(255, 255, 255, 0.938));
+      border:1px solid rgb(255, 255, 255); border-radius:18px; transition: .25s ease;
+    }
+    .card-x:hover{ transform:translateY(-4px); border-color: rgba(255,255,255,0.22);}
+    .pill{ border:1px solid rgba(255,255,255,.14); border-radius: 999px; padding: .4rem .8rem; color:#dfe7ff; }
+    .muted{ color:#b8c1ff; opacity:.8; }
+    .section-title{ font-weight:800; letter-spacing:.2px;}
+    .badge-soft{ background: rgba(3, 153, 133, 0.14); color:#91f4e5; border:1px solid rgba(0,194,168,.35); }
+
+    .op-card {
+      background-color: #e8f1ff;
+      border-radius: 12px;
+      text-align: center;
+      padding: 25px 15px;
+      transition: all 0.3s ease;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .op-card i{ font-size: 1.3rem; width: 36px; height:36px; display:inline-grid; place-items:center; border-radius:10px; background: rgba(255,255,255,0.08); }
+    .op-card a{
       text-decoration: none;
+      color: black;
     }
- 
+    
+    .plan{ border-radius:16px; border:1px dashed rgba(255,255,255,.2); padding:1rem; }
+    .feature i{ color: var(--brand-2); }
 
+    .divider-wave{
+      display:block; width:100%; height:70px; background: radial-gradient(800px 120px at 70% 0%, rgba(0,194,168,.18), transparent 60%);
+      mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 1200 120"><path d="M0,0V46.29c47.79,22,103.59,35.35,162,39,82.42,5.23,168.92-7,243-32C520.7,22.37,588.54,0,653,0c52.86,0,103.41,15.09,158,28,70.76,16.6,147.73,27.74,231,18V0Z"/></svg>') no-repeat center / 100% 100%;
+      -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 1200 120"><path d="M0,0V46.29c47.79,22,103.59,35.35,162,39,82.42,5.23,168.92-7,243-32C520.7,22.37,588.54,0,653,0c52.86,0,103.41,15.09,158,28,70.76,16.6,147.73,27.74,231,18V0Z"/></svg>') no-repeat center / 100% 100%;
+      background-color:#0c132c;
+    }
+    .footer{ background: #0b1022; border-top:1px solid rgba(255,255,255,.08); }
 
-    .service-card.show {
-    opacity: 1;
-    transform: translateY(0);
-    }
-    .service-card:hover {
-      box-shadow: 0 8px 18px rgba(0,0,0,0.12);
-    }
-    .service-icon {
-      background-color: #9b0056;
-      color: #fff;
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      margin: 0 auto 20px;
-    }
-    .service-icons {
+    /* small helpers */
+    .form-control, .form-select{ background: rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.18); color:#fff; }
+    .form-control::placeholder{ color:#cdd6ff; opacity:.7; }
+    .icon-list i{ color: var(--brand); }
+    .trusted img{ opacity:.9; filter: grayscale(0.2); }
+    .brand-gradient{ 
+      color: black;
+     }
 
-      color: #fff;
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      margin: 0 auto 20px;
-    }
-    .service-title {
-      font-weight: 600;
-      font-size: 1rem;
-      color: #343a40;
-    }
-    .service-desc {
-      color: #606161;
-      font-size: 0.90rem;
-      margin-top: 5px;
-    }
-    /* Icons */
-    .navbar-icons{
-        font-size: 0.85rem;
-    }
-    .icons{
-        font-size: 2.5rem;
+        .faq-accordion .accordion-item {
+          background: #fff;
+          border: 1px solid #e0e4f1;
+          border-radius: 8px;
+          box-shadow: 0 1px 5px rgba(20,48,110,0.04);
+          margin-bottom: 12px;
+        }
+        .faq-accordion .accordion-header {
+          border-radius: 8px 8px 0 0;
+        }
+        .faq-accordion .accordion-button {
+          background: #f8fbff;
+          color: #001863;
+          font-weight: 600;
+          border-radius: 8px 8px 0 0;
+          padding: 15px 20px;
+          font-size: 1.11rem;
+          transition: background .2s, box-shadow .2s;
+          box-shadow: none !important;
+        }
+        .faq-accordion .accordion-button:not(.collapsed) {
+          background: #e9f3fe;
+          color: #007cff;
+        }
+        .faq-accordion .accordion-button:focus {
+          outline: none;
+          box-shadow: 0 0 0 2px #daf0ff;
+        }
+        .faq-accordion .accordion-body {
+          background: #f6fbff;
+          border-radius: 0 0 8px 8px;
+          color: #333;
+          font-size: 0.98rem;
+          padding: 17px 22px 19px 22px;
+        }
+        @media (max-width: 576px) {
+          .faq-accordion .accordion-button, 
+          .faq-accordion .accordion-body {
+            font-size: 0.93rem;
+            padding-left: 13px;
+            padding-right: 13px;
+          }
+        }
    
-    }
-
-    .btn-orange {
-        background-color: orange;
-        color: white;
-        font-weight: 500;
-        padding: 8px 22px;
-        border-radius: 6px;
-        border: none;
-        transition: 0.2s;
-    }
-    .btn-orange:hover {
-        background-color: #e69500;
-    }
-    </style>
+  </style>
 </head>
+
 <body>
 
-   
+ 
 
-<!--  -->
-<div class="container py-5 mt-5 shadow-lg">
-    <div class="row gx-1 gy-4 justify-content-center">
-    
-        <!-- <div class="row gx-1 gy-1">      -->
-          <!-- Railway Tickets -->
-              <div class="col-12 col-sm-6 col-md-3 ">
-            <div class="service-card">
-              <div class="service-icon">
-                <i class="fa-solid fa-train icons" ></i>
-              </div>
-              <div class="service-title">Railway Tickets</div>
-              <div class="service-desc">Authorized IRCTC E-Ticket Booking</div>
-            </div>
+  <!-- SERVICES -->
+  <section id="services" class="py-5">
+    <div class="container">
+      <div class="text-center mb-4">
+        <span class="badge badge-soft px-3 py-2" style="background-color: #e6f0ff; color:#004085; font-weight:600; border-radius:16px; font-size:1rem; letter-spacing:0.02em;">One App. Every Payment.</span>
+        <h2 class="section-title mt-3">Everything you need to pay—<span class="brand-gradient">fast.</span></h2>
+        <p class="muted">Mobile, DTH, Electricity, Gas, Water, Broadband, FASTag, Insurance, Loan EMI & more.</p>
+      </div>
+
+      <div class="row g-3">
+        <!-- 8 service cards -->
+        <div class="col-6 col-md-4 col-lg-3">
+         
+          <div class="card-x p-3 h-100 op-card">
+            <a href="{% url 'mobile_prepaid' %}">
+              <i class="fa fa-mobile-screen"></i>
+              <h6 class="mt-3 mb-1">Prepaid Mobile</h6>
+              <p class="small muted mb-0">All operators • Instant</p>
+            </a>
           </div>
-    
-          <!-- Air Tickets -->
-              <div class="col-12 col-sm-6 col-md-3 ">
-            <div class="service-card">
-              <div class="service-icon">
-                <i class="fa-solid fa-plane icons" ></i>
-              </div>
-              <div class="service-title">Air Tickets</div>
-              <div class="service-desc">Domestic and International</div>
-            </div>
+        
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+         
+          <div class="card-x p-3 h-100 op-card">
+            <a href="{% url 'dth_recharge' %}">
+              <i class="fa fa-tower-broadcast"></i>
+              <h6 class="mt-3 mb-1">DTH</h6>
+              <p class="small muted mb-0">Tata Play, Airtel, Dish, D2H</p>
+            </a>
           </div>
-    
-          <!-- Hotel / Tour Packages -->
-              <div class="col-12 col-sm-6 col-md-3 ">
-            <div class="service-card">
-              <div class="service-icon">
-                <i class="fa-solid fa-hotel icons" ></i>
-              </div>
-              <div class="service-title">Hotel / Tour Packages</div>
-              <div class="service-desc">Inbound/Domestic and Outbound</div>
-            </div>
+         
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          
+          <div class="card-x p-3 h-100 op-card">
+            <a href="{% url 'electricity_bill' %}">
+              <i class="fa fa-plug"></i>
+              <h6 class="mt-3 mb-1">Electricity</h6>
+              <p class="small muted mb-0">State boards • Fetch bill</p>
+            </a>
           </div>
-    
-          <!-- Bus Booking -->
-              <div class="col-12 col-sm-6 col-md-3 ">
-            <div class="service-card">
-              <div class="service-icon">
-                <i class="fa-solid fa-bus-simple icons" ></i>
-              </div>
-              <div class="service-title">Bus Booking</div>
-              <div class="service-desc">Book Online Bus Ticket</div>
-            </div>
+          
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          
+          <div class="card-x p-3 h-100 op-card">
+            <a href="{% url 'lpg_book_gas' %}">
+              <i class="fa fa-gas-pump"></i>
+              <h6 class="mt-3 mb-1">Gas Cylinder</h6>
+              <p class="small muted mb-0">HP/Indane/Bharat</p>
+            </a>
+          </div>
+         
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          <div class="card-x p-3 h-100 op-card">
+            <a href="{% url 'water' %}">
+              <i class="fa fa-water"></i>
+              <h6 class="mt-3 mb-1">Water</h6>
+              <p class="small muted mb-0">Municipal payments</p>
+            </a>
+          </div>
+         
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+        
+          <div class="card-x p-3 h-100 op-card">
+            <a href="{% url 'not_found_page' %}">
+              <i class="fa fa-wifi"></i>
+              <h6 class="mt-3 mb-1">Broadband</h6>
+              <p class="small muted mb-0">Top ISPs supported</p>
+            </a>
+          </div>
+         
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          <div class="card-x p-3 h-100 op-card">
+            <a href="{% url 'fastag_recharge' %}">
+            <i class="fa fa-road"></i>
+            <h6 class="mt-3 mb-1">FASTag</h6>
+            <p class="small muted mb-0">Recharge instantly</p>
+            </a>
           </div>
         </div>
-        <div class="row gx-1 gy-1 mt-1">
-          <!-- Recharge -->
-              <div class="col-12 col-sm-6 col-md-3 ">
-            <div class="service-card">
-              <div class="service-icon">
-                <i class="fa-solid fa-mobile-screen-button icons" ></i>
-                
-              </div>
-              <div class="service-title">Recharge</div>
-              <div class="service-desc">All Mobile/DTH Recharge</div>
-            </div>
-          </div> 
-    
-          <!-- Pay Bills -->
-              <div class="col-12 col-sm-6 col-md-3 ">
-            <div class="service-card">
-              <a href="{% url 'recharge_view' %}">
-                <div class="service-icons">
-                  <img src="/media/Bbps.jpg" width="50px" height="60px" style="mix-blend-mode: multiply;" alt="Bbps">
-                  <!-- <i class="bi bi-currency-exchange icons"></i> -->
-                </div>
-              </a>
-                <div class="service-title">Pay Bills</div>
-                <div class="service-desc">All Type Of Bill Payment</div>
-
-             
-             
-            </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          <div class="card-x p-3 h-100 op-card">
+            <a href="{% url 'not_found_page' %}">
+            <i class="fa fa-shield-heart"></i>
+            <h6 class="mt-3 mb-1">Insurance & EMI</h6>
+            <p class="small muted mb-0">Loan EMI, Insurance</p>
+            </a>
           </div>
         </div>
+      </div>
     </div>
+  </section>
 
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-          // Select all elements with the class 'service-card'
-          const serviceCards = document.querySelectorAll(".service-card");
-        
-          const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("show"); // add animation class
-                observer.unobserve(entry.target); // optional: animate only once
+  <!-- OFFERS / PLANS -->
+  <section id="offers" class="py-5">
+    <div class="container">
+      <div class="row align-items-start g-4">
+        <div class="col-lg-5">
+          <h3 class="section-title">Smart offers that save you money</h3>
+          <p class="muted">Scratch cards, UPI cashback, bank offers & promo codes on your favourite recharges and bills.</p>
+          <ul class="list-unstyled icon-list">
+            <li class="mb-2"><i class="fa fa-circle-check me-2"></i> UPI & Card discounts</li>
+            <li class="mb-2"><i class="fa fa-circle-check me-2"></i> Partner coupons every week</li>
+            <li class="mb-2"><i class="fa fa-circle-check me-2"></i> Auto-pay with reminders</li>
+          </ul>
+          <div class="d-flex gap-2 mt-2">
+            <a class="btn btn-brand" href="#"><i class="fa fa-ticket me-1"></i> View Coupons</a>
+            <a class="btn btn-ghost" href="#"><i class="fa fa-bell me-1"></i> Set Bill Reminder</a>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="row g-3">
+            <style>
+              .plan {
+                background: #f7faff;
+                border-radius: 16px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+                padding: 1.5rem 1.1rem 1.3rem 1.1rem;
+                margin-bottom: 15px;
+                transition: box-shadow 0.2s, transform 0.2s;
+                border: 1px solid #edf3fc;
+                min-height: 190px;
               }
-            });
-          }, { threshold: 0.3 }); // trigger when 30% visible
-        
-          // Observe each card
-          serviceCards.forEach(card => {
-            observer.observe(card);
-          });
-        });
-    </script>
-      
+              .plan:hover {
+                box-shadow: 0 6px 24px rgba(70,56,255,0.07);
+                transform: translateY(-3px) scale(1.01);
+                border-color: #afd8fd;
+              }
+              .plan h5 {
+                font-weight: 700;
+                color: #383a50;
+              }
+              .plan h4 {
+                color: #332eb6;
+                font-weight: 800;
+                letter-spacing: 1px;
+              }
+              .plan .btn-brand {
+                font-size: 0.92rem;
+                padding: 6px 17px;
+                border-radius: 8px;
+                transition: background 0.2s;
+                font-weight: 600;
+                box-shadow: 0 1px 8px rgba(70,56,255,.07);
+                background-color: rgb(198, 228, 239);
+                color: #fff;
+              }
+              .plan .btn-brand:hover {
+                background: skyblue;
+                color:#fff;
+                box-shadow: 0 2px 16px rgba(70,56,255,.13);
+              }
+              .plan .muted {
+                color: #6e8bb6 !important;
+              }
+            </style>
+            <div class="col-md-6">
+              <div class="plan">
+                <div class="d-flex align-items-center justify-content-between">
+                  <span class="pill">Prepaid</span>
+                  <span class="small text-white-50"><i class="fa fa-clock me-1"></i> Instant</span>
+                </div>
+                <h5 class="mt-2">Unlimited + OTT</h5>
+                <p class="muted small mb-2">Truly unlimited, 1.5GB/day, Disney+ Hotstar</p>
+                <div class="d-flex align-items-center justify-content-between">
+                  <h4 class="m-0">₹ 299</h4>
+                  <a class="btn btn-sm btn-brand" href="">Recharge</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="plan">
+                <div class="d-flex align-items-center justify-content-between">
+                  <span class="pill">DTH</span>
+                  <span class="small text-white-50"><i class="fa fa-calendar me-1"></i> 30 days</span>
+                </div>
+                <h5 class="mt-2">Sports HD Pack</h5>
+                <p class="muted small mb-2">All major sports channels in HD</p>
+                <div class="d-flex align-items-center justify-content-between">
+                  <h4 class="m-0">₹ 249</h4>
+                  <a class="btn btn-sm btn-brand" href="">Recharge</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="plan">
+                <div class="d-flex align-items-center justify-content-between">
+                  <span class="pill">FASTag</span>
+                  <span class="small text-white-50"><i class="fa fa-shield-halved me-1"></i> Trusted</span>
+                </div>
+                <h5 class="mt-2">Top-up</h5>
+                <p class="muted small mb-2">Travel without stopping, recharge instantly</p>
+                <div class="d-flex align-items-center justify-content-between">
+                  <h4 class="m-0">₹ 500</h4>
+                  <a class="btn btn-sm btn-brand" href="">Recharge</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="plan">
+                <div class="d-flex align-items-center justify-content-between">
+                  <span class="pill">Electricity</span>
+                  <span class="small text-white-50"><i class="fa fa-plug me-1"></i> Fetch bill</span>
+                </div>
+                <h5 class="mt-2">Bill Payment</h5>
+                <p class="muted small mb-2">Pay before due date & avoid late fees</p>
+                <div class="d-flex align-items-center justify-content-between">
+                  <h4 class="m-0">₹ 1,280</h4>
+                  <a class="btn btn-sm btn-brand" href="">Pay Now</a>
+                </div>
+              </div>
+            </div>
+          </div><!-- row -->
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- FEATURES -->
+  <section id="features" class="py-5">
+    <div class="container">
+      <div class="text-center mb-4">
+        <h3 class="section-title">Why millions trust <span class="brand-gradient">Jinora</span></h3>
+        <p class="muted">Fast, secure & delightful payments experience.</p>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="card-x p-4 h-100 feature">
+            <i class="fa fa-shield fa-2x mb-3"></i>
+            <h5>Bank-grade Security</h5>
+            <p class="muted">PCI-DSS aligned encryption, tokenised payments & fraud monitoring.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-x p-4 h-100 feature">
+            <i class="fa fa-rocket fa-2x mb-3"></i>
+            <h5>Lightning Fast</h5>
+            <p class="muted">Instant confirmations, auto-fetch for supported billers, smart retries.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-x p-4 h-100 feature">
+            <i class="fa fa-headset fa-2x mb-3"></i>
+            <h5>24×7 Human Support</h5>
+            <p class="muted">Reach us via chat, email or call — we’re always around.</p>
+          </div>
+        </div>
+      </div>
+
+    
+    </div>
+  </section>
+   <!-- TESTIMONIALS -->
+
+<!-- 
+ 
+  <section class="py-5">
+    <div class="container">
+      <div class="row g-3">
+        <div class="col-lg-4">
+          <h3 class="section-title">People love the speed</h3>
+          <p class="muted">Bill due? Recharge pack? It’s done before you blink.</p>
+        </div>
+        <div class="col-lg-8">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card-x p-3 h-100">
+                <div class="d-flex align-items-center gap-3">
+                  <img class="rounded-circle" src="https://i.pravatar.cc/60?img=15" alt="">
+                  <div>
+                    <strong>Ritika S.</strong><br>
+                    <span class="small muted">Delhi</span>
+                  </div>
+                </div>
+                <p class="mt-3 mb-0">“Electricity bill fetch + UPI pay in 10 seconds. Too good!”</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card-x p-3 h-100">
+                <div class="d-flex align-items-center gap-3">
+                  <img class="rounded-circle" src="https://i.pravatar.cc/60?img=22" alt="">
+                  <div>
+                    <strong>Hamid R.</strong><br>
+                    <span class="small muted">Bhopal</span>
+                  </div>
+                </div>
+                <p class="mt-3 mb-0">“FASTag top-up on the go. Toll par line khatam.”</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card-x p-3 h-100">
+                <div class="d-flex align-items-center gap-3">
+                  <img class="rounded-circle" src="https://i.pravatar.cc/60?img=31" alt="">
+                  <div>
+                    <strong>Aarav K.</strong><br>
+                    <span class="small muted">Lucknow</span>
+                  </div>
+                </div>
+                <p class="mt-3 mb-0">“Best offers on prepaid. Har mahine savings milti hai.”</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card-x p-3 h-100">
+                <div class="d-flex align-items-center gap-3">
+                  <img class="rounded-circle" src="https://i.pravatar.cc/60?img=5" alt="">
+                  <div>
+                    <strong>Pooja T.</strong><br>
+                    <span class="small muted">Pune</span>
+                  </div>
+                </div>
+                <p class="mt-3 mb-0">“Layout clean & fast. Auto-reminders are super helpful.”</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>      
+    </div>
+  </section> -->
+
+  <!-- FAQ -->
+  <section id="faq" class="py-5">
+    <div class="container">
+      <div class="text-center mb-4">
+        <h3 class="section-title">Frequently Asked Questions</h3>
+        <p class="muted">Got a question? We’ve answered the popular ones below.</p>
+      </div>
+     
+      <div class="accordion faq-accordion" id="faqAcc">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q1">
+              Is my payment secure?
+            </button>
+          </h2>
+          <div id="q1" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+            <div class="accordion-body">
+              Yes. We follow industry best practices with encrypted payments, tokenisation and PCI-DSS aligned processes.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q2">
+              What happens on failed recharge?
+            </button>
+          </h2>
+          <div id="q2" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+            <div class="accordion-body">
+              We auto-refund within minutes if the operator declines. In rare cases, refund can take 2–3 business days as per payment method.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q3">
+              Do you support bill fetch for utilities?
+            </button>
+          </h2>
+          <div id="q3" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+            <div class="accordion-body">
+              Yes, for supported billers you can fetch bill instantly using account/CA number and pay in a single step.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q4">
+              Which payment methods are accepted?
+            </button>
+          </h2>
+          <div id="q4" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+            <div class="accordion-body">
+              UPI, Credit/Debit Cards, Netbanking, and Wallets. Save a method for faster future checkouts.
+            </div>
+          </div>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+</body>
+</html>
       {% endblock %}      

@@ -329,42 +329,40 @@ import requests
 
 
 def pay_bill_view(request):
+    if 'user_data' not in request.session: 
+        return redirect('login') 
     user_data = request.session.get('user_data', {})
 
     return render(request,'service/paybill.html',{'user_data':user_data})
 
-def payment_success_view(request):
-    user_data = request.session.get('user_data', {})
 
-    return render(request,'service/payment_success.html',{'user_data':user_data})
 
 
 def transaction_search_view(request):
+    if 'user_data' not in request.session: 
+        return redirect('login') 
     user_data = request.session.get('user_data', {})
 
     return render(request,'service/transaction_search.html',{'user_data':user_data})
 
 def receipt_view(request):
+    if 'user_data' not in request.session: 
+        return redirect('login') 
     user_data = request.session.get('user_data', {})
 
     return render(request,'service/receipt.html',{'user_data':user_data})
 
 def complaint_view(request):
+    if 'user_data' not in request.session: 
+        return redirect('login') 
     user_data = request.session.get('user_data', {})
 
     return render(request,'service/complaint_page.html',{'user_data':user_data})
 
-def recharge_view(request):
-    user_data = request.session.get('user_data', {})
-    return render(request,'service/recharge_page.html',{'user_data':user_data})
-
-
-
-
-
-
 
 def bills_form_view(request):
+    if 'user_data' not in request.session: 
+        return redirect('login') 
     user_data = request.session.get('user_data', {})
 
     return render(request,'service/bill_form.html',{'user_data':user_data})
@@ -372,6 +370,8 @@ def bills_form_view(request):
 
 
 def fetch_bill_view(request):
+    if 'user_data' not in request.session: 
+        return redirect('login') 
     user_data = request.session.get('user_data', {})
 
     return render(request,'service/fetch_bill.html',{'user_data':user_data})
@@ -381,7 +381,7 @@ def fetch_bill_view(request):
 def raise_complain_view(request):
     user_data = request.session.get('user_data', {})
 
-    return render(request,'service/add_complaint_page.html',{'user_data':user_data})
+    return render(request,'service/raise_complaint_page.html',{'user_data':user_data})
 
 def check_complaint_status(request):
     user_data = request.session.get('user_data', {})
@@ -432,6 +432,26 @@ def refund_policy_view(request):
 
 def term_condition_view(request):
     return render(request,'term_condition.html')
+
+def download_test_pdf(request):
+    return render(request,'service/download_test_pdf.html')
+
+
+# from django.http import FileResponse
+# import io
+# from reportlab.pdfgen import canvas
+
+# def download_test_pdf(request):
+#     buffer = io.BytesIO()
+#     p = canvas.Canvas(buffer)
+#     p.drawString(100, 750, "✅ PDF Download Successful!")
+#     p.showPage()
+#     p.save()
+#     buffer.seek(0)
+
+#     response = FileResponse(buffer, as_attachment=True, filename="test_report.pdf")
+#     response.set_cookie("fileDownload", "true", max_age=5)
+#     return response
 
 '''
 ===============================================================================================================

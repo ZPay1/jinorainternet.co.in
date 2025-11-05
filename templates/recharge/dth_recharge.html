@@ -1,0 +1,195 @@
+{% extends 'service/service_base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recharge Mobile Bill</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <style>
+    body {
+      background-color: #f5f8fc;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .recharge-card {
+      max-width: 400px;
+      margin: 50px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      padding: 25px 20px 15px;
+      
+
+    }
+    .recharge-card h5 {
+      font-weight: 700;
+      color: #000;
+    }
+    .form-label {
+      font-size: 0.85rem;
+      color: #555;
+      margin-bottom: 4px;
+    }
+    .input-group-text {
+      background: none;
+      border: none;
+      font-size: 0.9rem;
+    }
+    .form-control {
+      border-radius: 8px;
+      font-size: 0.95rem;
+      padding: 10px;
+    }
+    .change-link {
+      color: #007bff;
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-decoration: none;
+    }
+    .change-link:hover {
+      text-decoration: underline;
+    }
+    .btn-proceed {
+      width: 100%;
+      background: #e9e9e9;
+      color: #777;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 10px;
+      cursor: not-allowed;
+    }
+    .footer-logo {
+      text-align: center;
+      padding-top: 10px;
+    }
+    .footer-logo img {
+      height: 40px;
+    }
+
+    
+  /* Label-inside-box style */
+  .custom-input {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.60rem;
+    
+  }
+
+  .custom-input label {
+    position: absolute;
+    top: -0.6rem;
+    left: 12px;
+    background: #fff;
+    padding: 0 5px;
+    font-size: 0.85rem;
+    color: #555;
+    z-index: 2;
+  }
+
+  .custom-input input,
+  .custom-input select {
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease-in-out;
+    background-color: #fff;
+  }
+
+  .custom-input input:focus,
+  .custom-input select:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 0.15rem rgba(74,144,226,0.15);
+  }
+
+  .custom-input small {
+    margin-top: 4px;
+    font-size: 0.8rem;
+    color: #777;
+  }
+  </style>
+</head>
+<body>
+  <div class="container-fluid mt-3 mb-4 text-center" style="width:100%;">
+    <img src="/media/recharge/bbpsdesktop.png" alt="" class="img-fluid rounded shadow-sm" style="max-width:100%; width:100%;">
+  </div>
+  {% if success_data %}
+    {% include "recharge/recharge_success.html" %} 
+  {% else %}  
+
+  <div class="recharge-card">
+    <h3 class="fw-bold">DTH Recharge</h3>
+   
+    <form method="POST" >
+
+      {% csrf_token %}
+  
+      <div class="custom-input">
+        <label class="form-label">DTH Provider</label>
+        <select name="refrence" class="form-select" required>
+          <option value="">Select DTH Providers</option>
+          <option value="airtel_dth">Airtel DTH</option>
+          <option value="d2h">DTH</option>
+          <option value="dish_tv">DISH TV</option>
+          <option value="sun_direct_tv">Sun Direct TV</option>
+          <option value="sun_direct_tv_flexi_plans">Sun Direct TV (Flexi Plans)</option>
+          <option value="tata_play">TATA Play</option>
+        </select>
+      </div>
+
+      <div class="custom-input">
+        <label for="">Customer Id <span class="text-danger fw-bold">*</span></label>
+        <input type="text" name="rechargers_number" class="form-control" placeholder="Enter Customer ID" required>
+      </div>
+  
+  
+      <button type="submit" id="dynamicProceed" class="btn-proceed mt-3" disabled style="background: #e9e9e9; color: #777;">Proceed</button>
+      <script>
+        // Button enables with bg color after filling required fields
+        document.addEventListener("DOMContentLoaded", function() {
+          var form = document.querySelector("form");
+          var btn = document.getElementById("dynamicProceed");
+
+          function checkValidity() {
+            var requiredFields = form.querySelectorAll("[required]");
+            for (var i = 0; i < requiredFields.length; i++) {
+              if (!requiredFields[i].value || requiredFields[i].value.trim() === "") {
+                btn.disabled = true;
+                btn.style.background = "#e9e9e9";
+                btn.style.color = "#777";
+                btn.style.cursor = "not-allowed";
+                return;
+              }
+            }
+            btn.disabled = false;
+            btn.style.background = "#021331";
+            btn.style.color = "#fff";
+            btn.style.cursor = "pointer";
+          }
+
+          form.addEventListener('input', checkValidity);
+          checkValidity();
+        });
+      </script>
+      <!-- <button type="submit" class="btn btn-primary w-100 mt-3">Proceed</button> -->
+  
+    </form>
+
+    
+    <div class="footer-logo mt-3">
+      <img src="/media/bharat_connect_images.png" alt="Bharat Connect">
+    </div>
+  </div>
+
+  {% endif %}
+
+  {% endblock %}
+
+  

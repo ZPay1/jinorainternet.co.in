@@ -212,12 +212,24 @@
 
 <!-- ✅ Success Modal -->
 <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content text-center p-4">
-      <img src="/media/Bbps_assured_logo.png" alt="Success" style="height:150px; width:auto; margin:auto;">
-      <h4 class="mt-3 text-success fw-bold">Payment Successful!</h4>
-      <p class="text-muted">Your credit card bill has been paid successfully.</p>
-      <button type="button" class="btn btn-success " data-bs-dismiss="modal">OK</button>
+  <div class="modal-dialog modal-dialog-centered" style="max-width:350px;">
+    <div class="modal-content text-center p-4 position-relative">
+      <div style="width:100%; text-align:center; margin-bottom:2px; text-decoration: underline;">
+        <span style="color: black;font-size: 14px; text-align: center; display:inline-block; font-weight: 600;">
+          PAYMENT CONFIRMATIONS
+        </span> 
+          <button type="button" class="position-absolute top-0 end-0 m-2 p-2" aria-label="Close" data-bs-dismiss="modal" 
+          style="background: none; border: none; outline:none;">
+      
+        
+          <span aria-hidden="true" style="font-size:1.40rem; font-weight:400; color: #ff2323; position: absolute; top: -6px; right: 8px; cursor:pointer;"><b>X</b></span>
+        </button>
+         
+      </div>
+     
+      
+      <img src="/media/Bbps_assured_logo.png" alt="Success" style="height:120px; width:auto; margin:auto;">
+      <p class="mt-3 text-success text-md fw-bold">Payment Successful!</p>
     </div>
   </div>
 </div>

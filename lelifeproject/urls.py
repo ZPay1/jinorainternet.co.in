@@ -15,27 +15,31 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-
+from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
-
+    path('recharge/', include('recharge.urls')),  # recharge app ke URLs include kiye
 
     
     # Sigin url  =========================================
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register_view'),
     path('logout/',views.logout_view, name='logout'),
+    # path("download-test-pdf/", views.download_test_pdf, name="download_test_pdf"),
     # path("forgot-password/",views.forgot_password_view, name="forgot_password"),
 
     # Dashboard url  =========================================
     path('dashboard/', views.dashboard_view, name='dashboard_view'),
-    path('recharge/', views.recharge_view, name='recharge_view'),
+  
+
+
+
+    
     path('pay-bill/', views.pay_bill_view, name='pay_bill'),
-    path('payment-success/', views.payment_success_view, name='payment_success'),
+
     
     
     path('transaction-search/', views.transaction_search_view, name='transaction_search'),
@@ -50,10 +54,7 @@ urlpatterns = [
     path('check-complaint-status/', views.check_complaint_status, name='check_complaint_status'),
     path('query-transaction/', views.query_transaction, name='query_transaction'),
     
-    
-    
-    
-    
+
     # path('edit-profile/', views.edit_profile_view, name='edit_profile'),
     
     

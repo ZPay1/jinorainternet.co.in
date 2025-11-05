@@ -300,12 +300,9 @@
       </div>
     </div>
   </div>
-
     </div>
-    
-
-
-    <form id="complaintForm" method="post" autocomplete="off">
+    <form id="complaintForm" method="post">
+        <!-- autocomplete="off" -->
       {% csrf_token %}
       <!-- Section Title -->
       <p class="fw-semibold mb-3" style="font-size:1.1rem; color:#127;">Check Complaint Status</p>
@@ -314,20 +311,20 @@
       <div class="complaint-form-row">
           <div>
               <label for="mobile_number">
-                  Mobile Number <span class="text-danger" style="font-size:1.2rem;">*</span>
-              </label>
-              <input type="text" id="mobile_number" name="mobile_number"
-                     placeholder="Enter mobile number" required>
+                  Mobile Number <span class="text-danger" style="font-size:1.2rem;">*</span></label>
+              
+            <input type="text" id="mobile_number" name="mobile_number"placeholder="Enter mobile number" required maxlength="10">
+                     
           </div>
   
           <div>
               <label for="start_date">Start Date</label>
-              <input type="datetime-local" id="start_date" name="start_date" required>
+              <input type="date" id="start_date" name="start_date" required>
           </div>
   
           <div>
               <label for="end_date">End Date</label>
-              <input type="datetime-local" id="end_date" name="end_date" required>
+              <input type="date" id="end_date" name="end_date" required>
           </div>
       </div>
   
@@ -435,14 +432,12 @@
     
     </form>
 </div>
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-document.getElementById("searchTransactionBtn").addEventListener("click", function() {
-    var receiptModal = new bootstrap.Modal(document.getElementById('receiptModal'));
-    receiptModal.show();
-});
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -450,7 +445,9 @@ document.getElementById("addComplainBtn").addEventListener("click", function() {
     var modal = new bootstrap.Modal(document.getElementById("addComplainModal"));
     modal.show();
 });
-
+$('#addComplainModal').on('shown.bs.modal', function () {
+  if (window.JINORA_LOADER) window.JINORA_LOADER.hide();
+});
 // Optional: handle form submission
 document.getElementById("complainForm").addEventListener("submit", function(e) {
     e.preventDefault();

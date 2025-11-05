@@ -1,0 +1,193 @@
+{% extends 'service/service_base.html' %}
+{% block title %}Transaction History{% endblock %}
+{% block content %}
+
+<style>
+body {
+    background-color: #f4f7fc;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container-box {
+    background-color: #f1f6ff;
+    border: 1px solid #d5dce7;
+    border-radius: 10px;
+    padding: 20px 30px;
+    margin-top: 30px;
+    /* height: 100vh; */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.header-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #000;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-select, .filter-input {
+    background: #fff;
+    border: 1px solid #d5dce7;
+    border-radius: 25px;
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    outline: none;
+    min-width: 130px;
+}
+
+.filter-select:hover, .filter-input:focus {
+    border-color: #007bff;
+}
+
+.filter-search {
+    display: flex;
+    align-items: center;
+    border: 1px solid #00a3ff;
+    border-radius: 25px;
+    overflow: hidden;
+    background: #fff;
+    padding-right: 10px;
+}
+
+.filter-search input {
+    border: none;
+    outline: none;
+    padding: 8px 14px;
+    width: 220px;
+    font-size: 0.9rem;
+}
+
+.filter-search i {
+    color: #00a3ff;
+    cursor: pointer;
+}
+
+.logo-img {
+    width: 90px;
+    height: auto;
+}
+
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #f4f7fc;
+}
+
+.custom-table th {
+    background-color: #e6eaf3;
+    color: #000;
+    padding: 14px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 1px solid #d5dce7;
+}
+
+.custom-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e2e6ed;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.custom-table tr:hover {
+    background-color: #eef3fb;
+}
+</style>
+
+{% include "recharge/navbar.html" %}
+
+<div class="container container-box">
+  <div class="header-row mb-3">
+    <div class="header-title">Transaction History</div>
+    
+    <div class="filter-group">
+      <select class="filter-select">
+        <option>Month</option>
+        <option>January</option>
+        <option>February</option>
+        <option>March</option>
+      </select>
+
+      <select class="filter-select">
+        <option>Category</option>
+        <option>Electricity</option>
+        <option>Gas</option>
+        <option>Water</option>
+      </select>
+
+      <select class="filter-select">
+        <option>Status</option>
+        <option>Pending</option>
+        <option>Success</option>
+        <option>Failed</option>
+      </select>
+
+      <div class="filter-search">
+        <input type="text" placeholder="Mobile Number or Reference ID">
+        <i class="fas fa-search"></i>
+      </div>
+
+      <img src="/media/recharge/BBPSLogo.png" class="logo-img" alt="Bharat BillPay">
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Product Detail</th>
+          <th>Order No.</th>
+          <th>Price</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if services %}
+          {% for s in services %}
+            <tr>
+              <td>{{ s.get_service_type_display }}</td>
+              <td>{{ s.orderid }}</td>
+              <td>₹{{ s.amount|default:"0.00" }}</td>
+              <td>
+                {% if s.status == 'success' %}
+                  <span style="color:green;font-weight:600;">Success</span>
+                {% elif s.status == 'pending' %}
+                  <span style="color:orange;font-weight:600;">Pending</span>
+                {% else %}
+                  <span style="color:red;font-weight:600;">Failed</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+            <tr>
+              <td colspan="4" style="text-align:center; color:#777; padding:40px;">
+                No transactions found
+              </td>
+            </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

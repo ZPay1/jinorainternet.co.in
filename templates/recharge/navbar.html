@@ -1,0 +1,85 @@
+<style>
+    .quick-nav {
+      background-color: #272729;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  
+    .quick-nav .navbar-nav {
+      flex-wrap: nowrap !important;
+      justify-content: center; /* ✅ Important: don't center, start from left */
+      overflow-x: auto;
+      padding: 0 10px; /* little breathing space */
+      margin: 0;
+      -webkit-overflow-scrolling: touch;
+    }
+  
+    .quick-nav .navbar-nav::-webkit-scrollbar {
+      display: none;
+    }
+  
+    .quick-nav .navbar-nav {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  
+    .quick-nav .nav-item {
+      flex: 0 0 auto;
+    }
+  
+    .quick-nav .nav-links {
+      color: #fff !important;
+      font-weight: bold;
+      transition: background 0.2s, color 0.2s;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      padding: 6px 10px;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-block;
+    }
+  
+    .quick-nav .nav-links:hover,
+    .quick-nav .nav-links:focus {
+      background: #eaeaea;
+      color: black !important;
+      text-decoration: none;
+    }
+  
+    .quick-nav-link-text {
+      font-size: 0.95rem;
+    }
+  
+    @media (max-width: 991.98px) {
+      .quick-nav-link-text {
+        font-size: 0.85rem;
+        padding: 5px 8px;
+      }
+    }
+  
+    @media (max-width: 575.98px) {
+      .quick-nav-link-text {
+        font-size: 0.75rem;
+        padding: 4px 7px;
+      }
+    }
+  </style>
+  
+  <!-- ===== Responsive Horizontal Scroll Navbar ===== -->
+  <nav class="navbar shadow quick-nav">
+    <div class="container-fluid p-1">
+      <ul class="navbar-nav flex-row flex-nowrap w-100">
+        <li class="nav-item">
+          <a href="{% url 'transaction_hisotry' %}" class="nav-links quick-nav-link-text">Transaction History</a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'complain_history' %}" class="nav-links quick-nav-link-text">Complaint History</a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'fetch_bill' %}" class="nav-links quick-nav-link-text">Bill Fetch</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  

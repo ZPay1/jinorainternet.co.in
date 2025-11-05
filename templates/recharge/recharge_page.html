@@ -1,0 +1,373 @@
+{% extends 'service/service_base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background: #f4f7fc;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* Section Title */
+  .section-title {
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem;
+    color: black;
+    border-left: 4px solid #003366;
+    padding-left: 10px;
+  }
+
+  /* Service Card */
+  .service-card {
+    background-color: #e8f1ff;
+    border-radius: 12px;
+    text-align: center;
+    padding: 25px 15px;
+    transition: all 0.3s ease;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .service-card a {
+    text-decoration: none;
+  }
+
+  .service-icon {
+    background: #fff;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+  .service-icon img{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+  }
+
+  .service-icon i {
+    font-size: 1.8rem;
+    color: #0052cc;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+
+  .service-card div {
+    font-weight: bold;
+    color: #000;
+    font-size: 1.2rem;
+    line-height: 1.3;
+  }
+
+  .service-card:hover .service-icon i {
+    color: #003366;
+    transform: scale(1.1);
+  }
+
+  a {
+    text-decoration: none;
+  }
+</style>
+
+<body>
+  {% include "recharge/navbar.html" %}
+  <div class="container-fluid mt-3 mb-4 text-center" style="width:100%;">
+    <img src="/media/recharge/bbpsdesktop.png" alt="" class="img-fluid rounded shadow-sm" style="max-width:100%; width:100%;">
+  </div>
+
+
+  <div class="container d-flex align-items-center justify-content-around">
+    <div class="logo ms-auto">
+      <img src="/media/bharat_connect_images.png" alt="Logo" style="height:40px; width:auto; mix-blend-mode:multiply;">
+    </div>
+  </div>
+
+  <div class="container  rounded p-4">
+
+    <!-- Recharge Section -->
+    <div class="section-title">Recharge</div>
+    <div class="row g-3 justify-content-start">
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'mobile_prepaid' %}">
+            <div class="service-icon">
+              <img src="/media/recharge/m_prepaid.svg" alt="Mobile Prepaid" >
+            </div>
+            <div>Mobile<br>Prepaid</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'mobile_postpaid' %}">
+            <div class="service-icon">
+              <img src="/media/recharge/m_postpaid.svg" alt="Mobile Postpaid" >
+            </div>
+            <div>Mobile<br>Postpaid</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'dth_recharge' %}">
+            <div class="service-icon">
+              <img src="/media/recharge/dth.svg" alt="DTH Recharge" >
+            </div>
+            <div>DTH<br>Recharge</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'fastag_recharge' %}">
+            <div class="service-icon">
+              <img src="/media/recharge/fastag.svg" alt="FASTag Recharge" >
+            </div>
+            <div>Recharge<br>FASTag</div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pay Your Home Bills -->
+    <div class="section-title">Pay Your Home Bills</div>
+    <div class="row g-3 justify-content-start">
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'electricity_bill' %}">
+            <div class="service-icon">
+              <img src="/media/recharge/electricity_bill.svg" alt="Electricity Bill" >
+            </div>
+            <div>Electricity<br>Bill</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'education' %}">
+          <div class="service-icon">
+            <img src="/media/recharge/education_fees.svg" alt="Education Fees" >
+          </div>
+          <div>Education<br>Fees</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'water' %}">
+          <div class="service-icon">
+            <img src="/media/recharge/water_bill.svg" alt="Water Bill" >
+          </div>
+          <div>Water<br>Bill</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'lpg_book_gas' %}">
+          <div class="service-icon">
+            <img src="/media/recharge/book_gas_cylinder.svg" alt="Book Gas Cylinder" >
+          </div>
+          <div>Book Gas<br>Cylinder</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'not_found_page' %}">
+          <div class="service-icon">
+            <img src="/media/recharge/pay_rent.svg" alt="Pay Rent" >
+          </div>
+          <div>Pay<br>Rent</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'not_found_page' %}">
+          <div class="service-icon">
+            <img src="/media/recharge/landline_postpaid.svg" alt="Landline Postpaid" >
+          </div>
+          <div>Landline<br>Postpaid</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'not_found_page' %}">
+          <div class="service-icon">
+            <img src="/media/recharge/cable_tv.svg" alt="Cable TV" >
+          </div>
+          <div>Cable<br>TV</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'not_found_page' %}">
+          <div class="service-icon">
+            <img src="/media/recharge/piped_gas_bill.svg" alt="Piped Gas Bill" >
+          </div>
+          <div>Piped<br>Gas Bill</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'not_found_page' %}">
+          <div class="service-icon">
+            <img src="/media/recharge/broad_band_postpaid.svg" alt="Broadband Postpaid" >
+          </div>
+          <div>Broadband<br>Postpaid</div>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    
+
+    <!-- Recharge Section -->
+    <div class="section-title">Financial Services</div>
+    <div class="row g-3 justify-content-start">
+   
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'not_found_page' %}">
+            <div class="service-icon">
+              <img src="/media/recharge/lic_insurance.svg" alt="LIC Insurance" >
+            </div>
+            <div>LIC / <br>Insurance</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'not_found_page' %}">
+            <div class="service-icon">
+              <img src="/media/recharge/manicipal_taxes.svg" alt="Municipal Taxes" >
+            </div>
+            <div>Municipal<br>Taxes</div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+
+    
+
+    <!-- Other Services -->
+    <div class="section-title">Other Services</div>
+    <div class="row g-3 justify-content-start">
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'not_found_page' %}">
+          <div class="service-icon">
+            <img src="/media/recharge/subcription.svg" alt="Subscription" >
+          </div>
+          <div>Subscription</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'not_found_page' %}">
+          <div class="service-icon">
+            <img src="/media/recharge/club_associations.svg" alt="Clubs" >
+          </div>
+          <div>Clubs<br>Association</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'not_found_page' %}">
+          <div class="service-icon">
+            <img src="/media/recharge/donation.jpg" alt="Donation" >
+          </div>
+          <div>Donation</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'not_found_page' %}">
+          <div class="service-icon">
+            <img src="/media/recharge/ev_recharge.jpg" alt="EV Recharge" >
+          </div>
+          <div>EV<br>Recharge</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'not_found_page' %}">
+          <div class="service-icon">
+            <img src="/media/recharge/hospitals.svg" alt="Hospitals" >
+          </div>
+          <div>Hospitals</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'not_found_page' %}">
+          <div class="service-icon">
+            <img src="/media/recharge/housing_society.svg" alt="Housing Society" >
+          </div>
+          <div>Housing<br> Society</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'not_found_page' %}">
+          <div class="service-icon">
+            <img src="/media/recharge/municipal_services.svg" alt="Municipal Services" >
+          </div>
+          <div>Municipal<br> Services</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <div class="service-card">
+          <a href="{% url 'not_found_page' %}">
+          <div class="service-icon">
+            <img src="/media/recharge/recurring_deposit.svg" alt="Recurring Deposit" >
+          </div>
+          <div>Recurring<br>Deposit</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}

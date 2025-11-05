@@ -340,7 +340,7 @@
         <div class="complaint-form-row">
             <p style="font-size: 1.18rem; font-weight: 500; color: #127;">Check Complain Status</p>
             <div style="width: 100%; min-width: 300px; max-width: 400px;">
-                <label for="mobile_number">Complain ID:</label>
+                <label for="mobile_number">Complain ID <span class="text-danger" style="font-size:1.2rem;">*</span></label>
                 <input type="text" id="mobile_number" name="mobile_number" placeholder="Enter Complain ID" required>
             </div>
             <button type="submit" class="btn-blue">Search</button>
@@ -372,5 +372,11 @@
 
 
 </div>
-
+<script>
+    document.getElementById("addComplainBtn").addEventListener("click", function() {
+        var modal = new bootstrap.Modal(document.getElementById("addComplainModal"));
+        modal.show();
+    });
+    </script>
+    
 {% endblock %}

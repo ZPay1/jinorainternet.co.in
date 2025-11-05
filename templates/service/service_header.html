@@ -1,309 +1,374 @@
-
+<!-- ======================== HEADER & SIDEBAR ======================== -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-<!-- Bootstrap 5 CSS & JS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-</head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
 <style>
-   /* ===== HEADER BAR ===== */
-    .top-bar {
-      background: #e1e4e7;
-      color: white;
-      padding: 8px 25px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-  
-    .top-bar .logo img {
-      height: 50px;
-    }
-  
-    .wallet-info {
-      text-align: right;
-      margin-right: 15px;
-    }
-  
-    .wallet-info .amount {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #333;
-    }
-  
-    .wallet-info .lock {
-      font-size: 0.8rem;
-      color: red;
-    }
-  
-    .user-section {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-  
-    .username {
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-align: right;
-      color: #fff;
-      line-height: 1.1;
-    }
-  
-    /* ===== PROFILE IMAGE FIX ===== */
-    .profile-img {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 2px solid #fff;
-      cursor: pointer;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  
-    .profile-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  
-  /* ===== NAVBAR ===== */
-  .navbar {
-    background-color: #0A2535;
-    border-bottom: 1px solid #e0e0e0;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.05);
-  }
+/* ================== GLOBAL HEADER STYLES ================== */
+.top-bar {
+  background: #e1e4e7;
+  padding: 8px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 1031;
+}
 
-  .navbar-nav .nav-link {
-    color: #333 !important;
-    font-weight: 600;
-    padding: 10px 18px;
-    transition: all 0.3s;
-  }
+.logo img {
+  height: 50px;
+  border-radius: 10px;
+}
 
-  .navbar-nav .nav-link:hover {
-    color: #dcd9d9!important;
-    background: #fff;
-    border-radius: 6px;
-  }
+/* Wallet Info */
+.wallet-info {
+  text-align: right;
+  margin-right: 15px;
+}
+.wallet-info .amount {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+.wallet-info .lock {
+  font-size: 0.8rem;
+  color: red;
+}
 
-  .dropdown-menu {
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  }
+/* Username & Profile */
+.username {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.1;
+}
 
-  /* Responsive */
-  @media (max-width: 992px) {
-   .wallet-info { display: none; }
-     /* .username { display: none; } */
-  }
+.profile-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #fff;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profile-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Header Line Navbar */
+.header-line {
+  color: #234;
+  font-size: 1.2rem;
+  font-weight: 600;
+  flex: 1;
+  text-align: center;
+  margin: 0 12px;
+}
+.navbar-nav .nav-link {
+  color: #333 !important;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 10px 18px;
+  transition: all 0.3s;
+}
+.navbar-nav .nav-link:hover {
+  color: #000 !important;
+  background: #e8f4f8;
+  border-radius: 6px;
+}
+
+/* ================== OFFCANVAS SIDEBAR ================== */
+.offcanvas-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 270px;
+  height: 100vh;
+  background: #f9fafb;
+  z-index: 1042;
+  border-radius: 0 .7rem .7rem 0;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.13);
+  transform: translateX(-100%);
+  transition: transform .35s cubic-bezier(0.4,0,0.2,1);
+  padding: 0;
+  overflow-y: auto;
+  display: block;
+}
+.offcanvas-menu.open {
+  transform: translateX(0);
+}
+
+.offcanvas-backdrop-custom {
+  position: fixed;
+  inset: 0;
+  z-index: 1040;
+  background: rgba(0,0,0,0.32);
+}
+
+.offcanvas-nav-hover .nav-link {
+  transition: background 0.2s, color 0.2s;
+  border-radius: 5px;
+}
+.offcanvas-nav-hover .nav-link:hover,
+.offcanvas-nav-hover .nav-link:focus {
+  background: #d1e0f3;
+  color: #222 !important;
+  text-decoration: none;
+}
+
+/* Icon Float Animation */
+@keyframes floatY {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .wallet-info { display: none; }
+  .header-line { font-size: 1rem; }
+}
+@media (max-width: 576px) {
+  .top-bar { flex-wrap: wrap; }
+  .header-line { font-size: .95rem; margin: 8px 0; }
+}
 </style>
- <style>
-  
-  .navbar-nav .nav-link {
-    color: #fff !important;
-    font-weight: 400;
-    margin-right: 10px;
-  }
-  .navbar-nav .nav-link:hover {
-    color: black !important;
-  } 
-  /* .nav-link i {
-    margin-right: 6px;
-  } */
-
-  /* Services Section */
-  .service-box {
-    background: #fff;
-    border-radius: 8px;
-    text-align: center;
-    padding: 30px 20px;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    height: 100%;
-  }
-  .service-box:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-  }
-  .service-icon {
-    font-size: 40px;
-    /* background-color: #b50e5a; */
-    background-color: #0A2535;
-    color: #fff;
-    width: 80px;
-    height: 80px;
-    line-height: 80px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-bottom: 15px;
-  }
-  .service-title {
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 8px;
-  }
-  .service-text {
-    color: #666;
-    font-size: 0.95rem;
-  }
-  body {
-    background-color: #f8f9fa;
-  }
-</style>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <header>
-
-<!-- ===== HEADER ===== -->
-<div class="top-bar d-flex align-items-center justify-content-between px-3 py-2 bg-light shadow-sm">
-
-  <!-- Logo -->
-   <a href="{% url 'dashboard_view' %}">
+  <nav class="navbar navbar-light bg-light shadow-sm">
+    <div class="container-fluid">
+      <!-- Hamburger Button -->
+     
+      <button id="sidebarToggleBtn" class="btn btn-outline-secondary d-lg-none me-3" type="button" aria-label="Open menu">
+        <i class="fa fa-bars"></i>
+      </button>
+    <!-- Mobile Sidebar Toggle -->
+    <!-- <button id="sidebarToggleBtn"
+            class="btn btn-link d-lg-none p-0 me-2"
+            type="button"
+            aria-label="Open menu"
+            style="font-size: 2rem; color: #102b3c;">
+      <i class="fa fa-bars"></i>
+    </button> -->
+  <!-- Hamburger Button -->
+     
+    <!-- Logo -->
+    <a href="{% url 'dashboard_view' %}" class="d-flex align-items-center ">
       <div class="logo">
-        <img src="/media/JINORA_logo.png" alt="Logo" height="40">
+        <img src="/media/JINORA_logo.png" alt="Logo">
       </div>
     </a>
 
-  <div class="user-section d-flex align-items-center gap-3">
+    <!-- Center Navbar (Desktop Only) -->
+    <span class="header-line d-none d-lg-block">
+      <nav class="navbar navbar-expand-lg navbar-main p-0">
+        <ul class="navbar-nav flex-row mx-auto" style="gap:1rem;">
+          <li class="nav-item"><a href="{% url 'dashboard_view' %}" class="nav-link px-2"><i class="bi bi-house-door me-2"></i>Home</a></li>
+          <li class="nav-item"><a href="{% url 'not_found_page' %}" class="nav-link px-2"><i class="bi bi-bar-chart-line me-2"></i>Polls</a></li>
+          <li class="nav-item"><a href="{% url 'not_found_page' %}" class="nav-link px-2"><i class="bi bi-gift me-2"></i>Vouchers</a></li>
+          <li class="nav-item">
+            <a href="{% url 'recharge_view' %}" class="nav-link px-2 d-flex align-items-center">
+              <span class="me-1" style="display:inline-block;">
+                <img src="/media/Bbps.png" alt="Pay bills" style="width:30px;height:27px;animation:floatY 2s ease-in-out infinite;">
+              </span>
+              Pay Bills
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </span>
 
-    <!-- Wallet Info -->
-    <div class="wallet-info text-end">
-      <div class="amount fw-bold text-dark">₹ 10,233.55 (Main)</div>
-      <div class="lock small text-muted">Lock Amount: 500</div>
-    </div>
-  <li class="nav-item dropdown pe-3">
-    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-      {% if user_data %}
-        <div class="username text-dark text-end fw-bold" style="font-weight: bold; margin-right: 15px;">
-          <div>{{ user_data.username }}</div>
-          <small class="text-muted">{{ user_data.userid }}</small>
-        </div>
-        <span id="profile-container" class="d-flex align-items-center">
-          <!-- Bootstrap Icons CDN -->
-          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-          {% if user_data.profile %}
-            <img src="https://api.jinora.co.in{{ user_data.profile }}"
-              alt="Profile"
-              class="rounded-circle"
-              style="width: 35px; height: 35px;"
-              onerror="this.style.display='none'; document.getElementById('fallback-icon').style.display='inline-block';">
-            <i id="fallback-icon" class="bi bi-person-circle" style="display: none; font-size: 1.9rem; color: #6c757d; vertical-align: middle;"></i>
+    <!-- User Profile Section -->
+    <div class="user-section d-flex align-items-center gap-3 ms-auto">
+      <div class="wallet-info text-end"></div>
+      <li class="nav-item dropdown list-unstyled pe-3">
+        <a class="nav-link d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+          {% if user_data %}
+            <div class="username text-dark text-end fw-bold me-2">
+              <div>Hi, {{ user_data.username }}</div>
+              <small class="text-muted">{{ user_data.userid }}</small>
+            </div>
+            <span class="d-flex align-items-center">
+              {% if user_data.profile %}
+                <img src="https://api.jinora.co.in{{ user_data.profile }}" alt="Profile" class="rounded-circle" style="width:35px;height:35px;"
+                     onerror="this.style.display='none';document.getElementById('fallback-icon').style.display='inline-block';">
+                <i id="fallback-icon" class="bi bi-person-circle" style="display:none;font-size:1.9rem;color:#6c757d;"></i>
+              {% else %}
+                <i class="bi bi-person-circle" style="font-size:1.9rem;color:#6c757d;"></i>
+              {% endif %}
+              <i class="bi bi-caret-down-fill ms-2" style="font-size:1rem;color:#040433;"></i>
+            </span>
           {% else %}
-            <i class="bi bi-person-circle" style="font-size: 1.9rem; color: #6c757d; vertical-align: middle;"></i>
+            <span class="fw-semibold text-dark me-2">Guest</span>
+            <span class="d-flex align-items-center">
+              <i class="bi bi-person-circle" style="font-size:1.9rem;color:#6c757d;"></i>
+              <i class="bi bi-caret-down-fill ms-2" style="font-size:1rem;color:#040433;"></i>
+            </span>
           {% endif %}
-          <i class="bi bi-caret-down-fill ms-2" style="font-size:1.0rem; color: rgb(4, 4, 51);"></i>
-        </span>
-      {% else %}
-        <span class="fw-semibold text-dark me-2" style="margin-right:15px;">Guest</span>
-        <span id="profile-container" class="d-flex align-items-center">
-          <!-- Bootstrap Icons CDN -->
-          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-          <i class="bi bi-person-circle" style="font-size: 1.9rem; color: #6c757d; vertical-align: middle;"></i>
-          <i class="bi bi-caret-down-fill ms-2" style="font-size:1.0rem; color: rgb(4, 4, 51);"></i>
-        </span>
-      {% endif %}
-    </a>
-    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-    
-  
-      <li>
-        <a class="dropdown-item d-flex align-items-center" href="{% url 'profile_view' %}">
-          <i class="bi bi-person"></i>
-          <span style="margin-left: 8px;">My Profile</span>
+        </a>
+
+        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+          <li><a class="dropdown-item d-flex align-items-center" href="{% url 'profile_view' %}">
+            <i class="bi bi-person me-2"></i> My Profile
+          </a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item d-flex align-items-center" href="#">
+            <i class="bi bi-gear me-2"></i> Account Settings
+          </a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item d-flex align-items-center" href="#">
+            <i class="bi bi-question-circle me-2"></i> Need Help?
+          </a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
+            <i class="bi bi-box-arrow-right me-2"></i> Sign Out
+          </a></li>
+        </ul>
+      </li>
+    </div>
+  </div>
+</header>
+<!-- ================== SIDEBAR (MOBILE) ================== -->
+<div id="offcanvasSidebarBackdrop" class="offcanvas-backdrop-custom d-none"></div>
+
+<div class="offcanvas-menu" id="mainOffcanvasMenu" tabindex="-1" aria-labelledby="mainOffcanvasMenuLabel">
+  <div class="offcanvas-header d-flex d-lg-none align-items-center justify-content-between border-bottom">
+    <h5 class="mb-0 fw-semibold text-primary"></h5>
+    <button type="button" class="btn-close text-reset" id="offcanvasCloseBtn" aria-label="Close"></button>
+  </div>
+
+  <div class="offcanvas-body px-3 pt-3 d-lg-none">
+    <ul class="navbar-nav flex-column offcanvas-nav-hover">
+
+      <!-- HOME -->
+      <li class="nav-item mb-2">
+        <a href="{% url 'dashboard_view' %}" class="nav-link sidebar-link active">
+          <i class="bi bi-house-door me-2"></i> Home
         </a>
       </li>
-      <li>
-        <hr class="dropdown-divider">
-      </li>
-      <li>
-        <a class="dropdown-item d-flex align-items-center" href="#">
-          <i class="bi bi-gear"></i>
-          <span style="margin-left: 8px;">Account Settings</span>
+
+      <!-- POLLS -->
+      <li class="nav-item mb-2">
+        <a href="{% url 'not_found_page' %}" class="nav-link sidebar-link">
+          <i class="bi bi-bar-chart-line me-2"></i> Polls
         </a>
       </li>
-      <li>
-        <hr class="dropdown-divider">
-      </li>
-      <li>
-        <a class="dropdown-item d-flex align-items-center" href="#">
-          <i class="bi bi-question-circle"></i>
-          <span style="margin-left: 8px;">Need Help?</span>
+
+      <!-- VOUCHERS -->
+      <li class="nav-item mb-2">
+        <a href="{% url 'not_found_page' %}" class="nav-link sidebar-link">
+          <i class="bi bi-gift me-2"></i> Vouchers
         </a>
       </li>
-      <li>
-        <hr class="dropdown-divider">
-      </li>
-      <li>
-        <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
-          <i class="bi bi-box-arrow-right"></i>
-          <span style="margin-left: 8px;">Sign Out</span>
+
+      <!-- PAY BILLS -->
+      <li class="nav-item mb-2">
+        <a href="{% url 'recharge_view' %}" class="nav-link sidebar-link d-flex align-items-center">
+          <img src="/media/Bbps.png" alt="logo" class="me-2 floaty-icon" style="width:27px;height:25px;">
+          Pay Bills
         </a>
       </li>
-    </ul><!-- End Profile Dropdown Items -->
-  </li><!-- End Profile Nav -->
+
+    </ul>
   </div>
 </div>
 
-</header>
-    <!-- ===== NAVBAR ===== -->
-    <nav class="navbar navbar-expand-lg ">
-      <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: #fff;">
-          <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-          <ul class="navbar-nav">
-            <!-- <li class="nav-item"><a href="#" class="nav-link"><i class="bi bi-house-door home-icons"></i> </a></li> -->
-            <li class="nav-item"><a href="#" class="nav-link">Flight</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">IRCTC</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Hotel</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Bus</a></li>
+<!-- ============ CUSTOM STYLES ============ -->
+<style>
+/* Sidebar link style */
+.sidebar-link {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: #333;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  background-color: #fff;
+}
 
-            <li class="nav-item dropdown">
-              <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Tour Packages</a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Change Password</a></li>
-                <li><a class="dropdown-item" href="#">Security</a></li>
-              </ul>
-            </li>
-            <li class="nav-item"><a href="#" class="nav-link">Money Transfer</a></li>
-            <!-- <li class="nav-item"><a href="#" class="nav-link"> 
-              <img src="/media/Bbps.jpg" alt="logo" style="width: 20px; height: 25px; mix-blend-mode:multiply;">
-            Pay Bills</a>
-            </li> -->
-  
-            <li class="nav-item dropdown">
-              <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Report</a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Transaction Report</a></li>
-                <li><a class="dropdown-item" href="#">Recharge Report</a></li>
-              </ul>
-            </li>
-  
-            <li class="nav-item dropdown">
-              <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Accounts</a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{% url 'profile_view' %}">Profile</a></li>
-                <li><a class="dropdown-item" href="#">Logout</a></li>
-              </ul>
-            </li>
-  
-            <li class="nav-item dropdown">
-              <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Setting</a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Change Password</a></li>
-                <li><a class="dropdown-item" href="#">Security</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>  
+/* Hover effect */
+.sidebar-link:hover {
+  background-color: #e9f3ff;
+  color: #007bff;
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.15);
+}
+
+/* Active link */
+.sidebar-link.active {
+  background-color: #007bff;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.25);
+}
+
+/* Floating image animation */
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.floaty-icon {
+  animation: floatY 2s ease-in-out infinite;
+}
+
+/* Offcanvas styling */
+.offcanvas-menu {
+  background: linear-gradient(to bottom right, #ffffff, #f8fbff);
+  /* border-top-left-radius: 20px;
+  border-top-right-radius: 20px; */
+  box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
+}
+</style>
 
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* ================== SIDEBAR TOGGLE LOGIC ================== */
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebarToggle = document.getElementById('sidebarToggleBtn');
+  const offcanvasMenu = document.getElementById('mainOffcanvasMenu');
+  const backdrop = document.getElementById('offcanvasSidebarBackdrop');
+  const closeBtn = document.getElementById('offcanvasCloseBtn');
+
+  function openSidebar() {
+    offcanvasMenu.classList.add('open');
+    backdrop.classList.remove('d-none');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSidebar() {
+    offcanvasMenu.classList.remove('open');
+    backdrop.classList.add('d-none');
+    document.body.style.overflow = '';
+  }
+
+  sidebarToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (window.innerWidth < 992) openSidebar();
+  });
+
+  if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+  backdrop.addEventListener('click', closeSidebar);
+
+  window.addEventListener('resize', function() {
+    if (window.innerWidth >= 992) closeSidebar();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && offcanvasMenu.classList.contains('open')) closeSidebar();
+  });
+
+  offcanvasMenu.addEventListener('click', function(e) {
+    if (e.target.classList.contains('nav-link') && window.innerWidth < 992) closeSidebar();
+  });
+});
+</script>
