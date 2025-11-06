@@ -37,7 +37,7 @@ def login_view(request):
     if request.method == 'POST':
         identifier = request.POST.get('identifier', '').strip()
         password = request.POST.get('password', '').strip()
-        tpin = request.POST.get('tpin', '').strip()
+        # tpin = request.POST.get('tpin', '').strip()
         remember_me = request.POST.get('remember_me')
 
         # Create a session to maintain cookies
@@ -91,9 +91,7 @@ def login_view(request):
                             refresh token Method
 ===============================================================================================================
 '''
-
-
-    
+   
 def refresh_tokents(request):
     import json
 

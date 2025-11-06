@@ -138,28 +138,65 @@
   .top-bar { flex-wrap: wrap; }
   .header-line { font-size: .95rem; margin: 8px 0; }
 }
+
+
+
+/* Sidebar link style */
+.sidebar-link {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: #333;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  background-color: #fff;
+}
+
+/* Hover effect */
+.sidebar-link:hover {
+  background-color: #e9f3ff;
+  color: #007bff;
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.15);
+}
+
+/* Active link */
+.sidebar-link.active {
+  background-color: #007bff;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.25);
+}
+
+/* Floating image animation */
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.floaty-icon {
+  animation: floatY 2s ease-in-out infinite;
+}
+
+/* Offcanvas styling */
+.offcanvas-menu {
+  background: linear-gradient(to bottom right, #ffffff, #f8fbff);
+  /* border-top-left-radius: 20px;
+  border-top-right-radius: 20px; */
+  box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
+}
 </style>
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
 
 <header>
-  <nav class="navbar navbar-light bg-light shadow-sm">
+  <nav class="navbar navbar-light bg-light w-100 shadow-sm">
     <div class="container-fluid">
       <!-- Hamburger Button -->
      
       <button id="sidebarToggleBtn" class="btn btn-outline-secondary d-lg-none me-3" type="button" aria-label="Open menu">
         <i class="fa fa-bars"></i>
       </button>
-    <!-- Mobile Sidebar Toggle -->
-    <!-- <button id="sidebarToggleBtn"
-            class="btn btn-link d-lg-none p-0 me-2"
-            type="button"
-            aria-label="Open menu"
-            style="font-size: 2rem; color: #102b3c;">
-      <i class="fa fa-bars"></i>
-    </button> -->
-  <!-- Hamburger Button -->
-     
+
     <!-- Logo -->
     <a href="{% url 'dashboard_view' %}" class="d-flex align-items-center ">
       <div class="logo">
@@ -236,102 +273,45 @@
     </div>
   </div>
 </header>
+
 <!-- ================== SIDEBAR (MOBILE) ================== -->
 <div id="offcanvasSidebarBackdrop" class="offcanvas-backdrop-custom d-none"></div>
 
-<div class="offcanvas-menu" id="mainOffcanvasMenu" tabindex="-1" aria-labelledby="mainOffcanvasMenuLabel">
-  <div class="offcanvas-header d-flex d-lg-none align-items-center justify-content-between border-bottom">
+<div class="offcanvas-menu" id="mainOffcanvasMenu">
+  <div class="offcanvas-header d-flex d-lg-none align-items-center justify-content-between border-bottom p-3">
     <h5 class="mb-0 fw-semibold text-primary"></h5>
     <button type="button" class="btn-close text-reset" id="offcanvasCloseBtn" aria-label="Close"></button>
   </div>
 
   <div class="offcanvas-body px-3 pt-3 d-lg-none">
     <ul class="navbar-nav flex-column offcanvas-nav-hover">
-
-      <!-- HOME -->
       <li class="nav-item mb-2">
         <a href="{% url 'dashboard_view' %}" class="nav-link sidebar-link active">
           <i class="bi bi-house-door me-2"></i> Home
         </a>
       </li>
-
-      <!-- POLLS -->
       <li class="nav-item mb-2">
         <a href="{% url 'not_found_page' %}" class="nav-link sidebar-link">
           <i class="bi bi-bar-chart-line me-2"></i> Polls
         </a>
       </li>
-
-      <!-- VOUCHERS -->
       <li class="nav-item mb-2">
         <a href="{% url 'not_found_page' %}" class="nav-link sidebar-link">
           <i class="bi bi-gift me-2"></i> Vouchers
         </a>
       </li>
-
-      <!-- PAY BILLS -->
       <li class="nav-item mb-2">
         <a href="{% url 'recharge_view' %}" class="nav-link sidebar-link d-flex align-items-center">
           <img src="/media/Bbps.png" alt="logo" class="me-2 floaty-icon" style="width:27px;height:25px;">
           Pay Bills
         </a>
       </li>
-
     </ul>
   </div>
 </div>
-
-
-<!-- ============ CUSTOM STYLES ============ -->
-<style>
-/* Sidebar link style */
-.sidebar-link {
-  display: block;
-  padding: 10px 14px;
-  border-radius: 10px;
-  color: #333;
-  font-weight: 500;
-  transition: all 0.25s ease;
-  background-color: #fff;
-}
-
-/* Hover effect */
-.sidebar-link:hover {
-  background-color: #e9f3ff;
-  color: #007bff;
-  transform: translateX(4px);
-  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.15);
-}
-
-/* Active link */
-.sidebar-link.active {
-  background-color: #007bff;
-  color: #fff !important;
-  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.25);
-}
-
-/* Floating image animation */
-@keyframes floatY {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-.floaty-icon {
-  animation: floatY 2s ease-in-out infinite;
-}
-
-/* Offcanvas styling */
-.offcanvas-menu {
-  background: linear-gradient(to bottom right, #ffffff, #f8fbff);
-  /* border-top-left-radius: 20px;
-  border-top-right-radius: 20px; */
-  box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
-}
-</style>
-
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <script>
 /* ================== SIDEBAR TOGGLE LOGIC ================== */
 document.addEventListener('DOMContentLoaded', function() {

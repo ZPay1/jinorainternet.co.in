@@ -315,8 +315,64 @@ def complain_history_view(request):
 
 
 
+'''
+===============================================================================================================
+                         Privacy policy method
+===============================================================================================================
+'''
+def privacy_policy_view(request):
+    if 'user_data' not in request.session: 
+        return redirect('login') 
+    user_data = request.session.get('user_data', {})
+    return render(request,'recharge/privacy_policy.html',{'user_data':user_data})
 
 
 
+def term_of_us_view(request):
+    if 'user_data' not in request.session: 
+        return redirect('login') 
+    user_data = request.session.get('user_data', {})
+    return render(request,'recharge/term_of_us.html',{'user_data':user_data})
 
+
+def refund_policy_view(request):
+    if 'user_data' not in request.session: 
+        return redirect('login') 
+    user_data = request.session.get('user_data', {})
+    return render(request,'recharge/refund_policy.html',{'user_data':user_data})
+
+
+def about_us_view(request):
+    if 'user_data' not in request.session: 
+        return redirect('login') 
+    user_data = request.session.get('user_data', {})
+    return render(request,'recharge/about_us.html',{'user_data':user_data})
+
+
+def cookie_policy_view(request):
+    if 'user_data' not in request.session: 
+        return redirect('login') 
+    user_data = request.session.get('user_data', {})
+    return render(request,'recharge/cookie_policy.html',{'user_data':user_data})
+
+
+def team_view(request):
+    if 'user_data' not in request.session: 
+        return redirect('login') 
+    user_data = request.session.get('user_data', {})
+    return render(request,'recharge/team.html',{'user_data':user_data})
+
+
+def career_page_view(request):
+    if 'user_data' not in request.session: 
+        return redirect('login') 
+    user_data = request.session.get('user_data', {})
+    return render(request,'recharge/career.html',{'user_data':user_data})
+
+
+def bbps_tsp_view(request):
+    if 'user_data' not in request.session: 
+        return redirect('login') 
+    user_data = request.session.get('user_data', {})
+    return render(request,'recharge/bbps_tsp.html',{'user_data':user_data})
 

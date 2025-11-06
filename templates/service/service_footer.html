@@ -14,9 +14,9 @@
 
     <style>
         .footer {
-            background: #0c0a2b;
+            background: #0c0b1f;
             color: #dedede;
-            padding: 40px 0 10px 0;
+            /* padding: 20px 0 10px 0; */
             font-size: 15px;
             margin-top: 40px;
         }
@@ -167,22 +167,22 @@
                     <!-- Quick Links 1 -->
                     <div class="col-md-2 col-6 mb-4">
                         <div class="footer-title">Quick Links</div>
-                        <a href="#">Refund Policy</a>
-                        <a href="#">About Us</a>
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms Of Use</a>
-                        <a href="#">Cookies Policy</a>
+                        <a href="{% url 'privacy_policy_view' %}">Privacy Policy</a>
+                        <a href="{% url 'term_of_us_view' %}">Term of Us</a>
+                        <a href="{% url 'refund_policy_view' %}">Refund Policy</a>
+                        <a href="{% url 'about_us_view' %}">About Us</a>
+                        <a href="{% url 'cookie_policy_view' %}">Cookies Policy</a>
                       
-
+                        
 
                     </div>
                     <!-- Quick Links 2 -->
                     <div class="col-md-2 col-6 mb-4">
                         <div class="footer-title">Policies</div>
                        
-                        <a href="#">Team</a>
-                        <a href="#">Bharat Connect TSP</a>
-                        <a href="#">Careers</a>
+                        <a href="{% url 'team_view' %}">Team</a>
+                        <a href="{% url 'bbps_tsp_view' %}">Bharat Connect TSP</a>
+                        <a href="{% url 'career_page_view' %}">Careers</a>
                     </div>
                     <div class="col-md-2 col-6 mb-4">
                         <div class="footer-title">Contact Us</div>

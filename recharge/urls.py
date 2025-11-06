@@ -24,6 +24,24 @@ urlpatterns = [
     path('water/', views.water_view, name='water'),
     path('lpg-book-gas/', views.lpg_book_gas_view, name='lpg_book_gas'),
     path('', views.recharge_view, name='recharge_view'),
+
+    # Footer url  =========================================
+    path('privacy-policy/', views.privacy_policy_view, name='privacy_policy_view'),
+    path('term-of-us/', views.term_of_us_view, name='term_of_us_view'),
+    path('refund-policy/', views.refund_policy_view, name='refund_policy_view'),
+    path('about-us/', views.about_us_view, name='about_us_view'),
+    path('cookie-policy/', views.cookie_policy_view, name='cookie_policy_view'),
+    path('team/', views.team_view, name='team_view'),
+    path('career-page/', views.career_page_view, name='career_page_view'),
+    path('bbps-tsp/', views.bbps_tsp_view, name='bbps_tsp_view'),
+    
+    
+    
+    
+    
+    
+    # path('term-condition/', views.term_condition_view, name='term_condition'),
+    
     
     
     

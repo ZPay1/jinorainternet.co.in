@@ -33,11 +33,6 @@ urlpatterns = [
 
     # Dashboard url  =========================================
     path('dashboard/', views.dashboard_view, name='dashboard_view'),
-  
-
-
-
-    
     path('pay-bill/', views.pay_bill_view, name='pay_bill'),
 
     
@@ -58,11 +53,6 @@ urlpatterns = [
     # path('edit-profile/', views.edit_profile_view, name='edit_profile'),
     
     
-    
-    
-    
-
-
 
     # Homeppage url  =========================================
     path('', views.homepage_view, name='homepage_view'),

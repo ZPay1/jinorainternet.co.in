@@ -1,0 +1,181 @@
+{% extends 'service/service_base.html' %}
+{% block title %}Privacy Policy{% endblock %}
+
+{% block content %}
+
+
+
+    <style>
+      .privacy-hero { 
+        background: linear-gradient(135deg, #0d3b66 0%, #1d4f6f 100%);
+        color: #ffffff;
+        border-radius: 14px;
+        padding: 20px 18px;
+      }
+      .privacy-policy-content { 
+        max-width: 980px; 
+        margin: 0 auto; 
+        text-align: left;
+      }
+      .privacy-heading { 
+        color: #ffffff; 
+        font-weight: 700; 
+        letter-spacing: 0.3px; 
+        margin: 0;
+      }
+      .section-heading {
+        color: #113046; 
+        font-size: 2rem; 
+        font-weight: 700; 
+        margin-top: 10px;
+        text-align: center;
+      }
+      .policy-section { 
+        background: #ffffff; 
+        border: 1px solid #e5e7eb; 
+        border-radius: 14px; 
+        padding: 22px; 
+      }
+      .privacy-policy-content p { 
+        font-size: 1rem; 
+        line-height: 1.8; 
+        color: #344054; 
+        margin-bottom: 0.9rem;
+      }
+      .definitions-list { 
+        list-style: none; 
+        padding-left: 0; 
+        margin: 0.5rem 0 0; 
+      }
+      .definitions-list li { 
+        background: #f8fafc; 
+        border: 1px solid #e5e7eb; 
+        border-radius: 10px; 
+        padding: 12px 14px; 
+        margin-bottom: 10px; 
+      }
+     
+      .divider-soft { 
+        height: 1px; 
+        background: #eef2f7; 
+        margin: 14px 0; 
+        border-radius: 1px; 
+      }
+      @media (min-width: 992px) {
+        .policy-section { padding: 28px; }
+      }
+
+
+              .tou-section-title {
+                color: #123256;
+                font-weight: 600;
+                font-size: 1.28rem;
+                margin-top: 1.8rem;
+                margin-bottom: 0.4rem;
+              }
+              .tou-list {
+                margin-bottom: 1.1rem;
+                padding-left: 1.6rem;
+              }
+              .tou-list li {
+                margin-bottom: 0.5rem;
+                font-size: 1rem;
+                color: #212529;
+              }
+              .tou-highlight {
+                background: #edf3fc;
+                border-left: 4px solid #3762c2;
+                padding: 10px 16px;
+                margin-bottom: 1rem;
+              }
+              .tou-disclaimer {
+                background: #fff8e1;
+                padding: 12px 15px;
+                margin-top: 1.2rem;
+                color: #4b4422;
+                font-size: 1rem;
+                font-style: italic;
+              }
+              .tou-inline-title {
+                font-weight: 600;
+                color: #205091;
+                font-size: 1.02rem;
+              }
+           
+    </style>
+<div class="container-fluid my-4">
+    <div class="col-12 text-center">
+      
+      <img src="/media/recharge/cookie_policy.png" alt="cookie Policy" class="img-fluid mb-4" style=" max-width: 100%; height: auto;">
+      </div>
+      <!-- Yahaan pe policy ka text ya content add kar sakte hain -->
+      <div class="card shadow-sm mb-5 bg-white rounded policy-section">
+        <h3 class="section-heading">Cookies Policy</h3>
+       
+        <div class="privacy-policy-content">
+          <div class="tou-policy-content">
+            <div class="tou-section">
+
+              <p>
+                This Cookies Policy explains how Jinorainternet Private Limited ("we", "our", or "us") uses cookies and similar technologies when you use our services and visit our platform.
+              </p>
+
+              <span class="tou-section-title">What Are Cookies?</span>
+              <p>
+                Cookies are small text files stored on your browser or device by websites, applications, or advertisements. These files help remember your preferences and improve your overall experience.
+              </p>
+
+              <span class="tou-section-title">Why We Use Cookies</span>
+              <ul class="tou-list">
+                <li>Authenticate and secure user sessions</li>
+                <li>Store user preferences and settings</li>
+                <li>Analyze website traffic and usage trends</li>
+                <li>Deliver and measure the effectiveness of advertising</li>
+                <li>Understand user behavior and improve user experience</li>
+              </ul>
+
+              <span class="tou-section-title">Other Tracking Technologies</span>
+              <p>
+                We may also use web beacons (pixel tags or clear GIFs), mobile device identifiers, flash cookies, and similar technologies. These help us measure interactions, email open rates, or ad engagement.
+              </p>
+
+              <span class="tou-section-title">Types of Cookies We Use</span>
+              <p>
+                Some cookies are essential for website functionality, while others are optional and used for analytics or marketing purposes.
+              </p>
+              <ul class="tou-list">
+                <li>
+                  <span class="tou-inline-title">Essential Cookies:</span>
+                  Necessary for basic site functions (e.g., login sessions)
+                </li>
+                <li>
+                  <span class="tou-inline-title">Performance Cookies:</span>
+                  Help us understand site usage to improve user experience
+                </li>
+                <li>
+                  <span class="tou-inline-title">Marketing Cookies:</span>
+                  Used by third-party services to deliver targeted advertising
+                </li>
+              </ul>
+
+              <span class="tou-section-title">Third-Party Cookies</span>
+              <p>
+                We may allow trusted partners to use cookies or similar technologies for analytics, advertising, or other purposes. These partners may collect data about your online activities across different websites.
+              </p>
+
+              <span class="tou-section-title">Consent</span>
+              <p>
+                By continuing to use our platform with cookies enabled in your browser, you consent to our use of cookies as described in this policy.
+              </p>
+              
+              <div class="tou-disclaimer">
+                For more details on how we handle your personal data, please read our Privacy Policy. aye
+              </div>
+            </div>
+          </div>
+        </div>
+
+</div>
+</div>
+
+{% endblock %}
