@@ -25,8 +25,12 @@ urlpatterns = [
 
     
     # Sigin url  =========================================
-    path('login/', views.login_view, name='login'),
+    # path('login/', views.login_view, name='login'),
+    path('signin/', views.sign_in_view, name='sign_in'),
+    path('google/login/', views.google_login, name='google_login'),
+    path('google/callback/login/', views.google_callback, name='google_callback_login'),
     path('register/', views.register_view, name='register_view'),
+    path('register-account/', views.register_account, name='register_account'),
     path('logout/',views.logout_view, name='logout'),
     # path("download-test-pdf/", views.download_test_pdf, name="download_test_pdf"),
     # path("forgot-password/",views.forgot_password_view, name="forgot_password"),
@@ -38,16 +42,17 @@ urlpatterns = [
     
     
     path('transaction-search/', views.transaction_search_view, name='transaction_search'),
-    path('receipt/', views.receipt_view, name='receipt'),
+    
     path('complaint/', views.complaint_view, name='complaint_view'),
 
    # Profile url  =========================================
     path('profile/', views.profile_view, name='profile_view'),
     path('bills/', views.bills_form_view, name='bills_form'),
     path('fetch-bills/', views.fetch_bill_view, name='fetch_bill'),
-    path('raise-complain/', views.raise_complain_view, name='raise_complain'),
-    path('check-complaint-status/', views.check_complaint_status, name='check_complaint_status'),
-    path('query-transaction/', views.query_transaction, name='query_transaction'),
+   
+ 
+ 
+  
     
 
     # path('edit-profile/', views.edit_profile_view, name='edit_profile'),

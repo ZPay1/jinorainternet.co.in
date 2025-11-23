@@ -34,11 +34,11 @@ urlpatterns = [
     path('team/', views.team_view, name='team_view'),
     path('career-page/', views.career_page_view, name='career_page_view'),
     path('bbps-tsp/', views.bbps_tsp_view, name='bbps_tsp_view'),
+    path('receipt/', views.receipt_view, name='receipt'),
     
-    
-    
-    
-    
+    path('query-transaction/', views.query_transaction, name='query_transaction'),
+    path('raise-complain/', views.raise_complain_view, name='raise_complain'),
+    path('check-complaint-status/', views.check_complaint_status, name='check_complaint_status'),
     
     # path('term-condition/', views.term_condition_view, name='term_condition'),
     

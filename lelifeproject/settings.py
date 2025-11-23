@@ -145,3 +145,26 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'srsinfoconnect@gmail.com'  # Your email address
 EMAIL_HOST_PASSWORD = 'xyti xxle bvfg sejq'      # Your email password or app-specific passwor
+
+
+
+
+GOOGLE_CLIENT_ID = '178144579800-pei5qcqnihn47vd77995ams05hojj44v.apps.googleusercontent.com'
+GOOGLE_CLIENT_SECRET = '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'
+GOOGLE_REDIRECT_URI_LOGIN = 'http://127.0.0.1:8000/google/callback/login/'
+# GOOGLE_REDIRECT_URI_LOGIN = 'https://jinorainternet.co.in/google/callback/login/'
+
+
+
+
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',  # Default backend
+)
+
+LOGIN_REDIRECT_URL = '/'  # Redirect after login
+LOGOUT_REDIRECT_URL = '/'  # Redirect after logout
+
+import base64, os
+# 🔐 Create a secure 32-byte Fernet key (one-time setup)
+SECRET_KEY_FOR_ENCRYPTION = base64.urlsafe_b64encode(os.urandom(32)).decode()

@@ -68,7 +68,8 @@
       <div class="alert alert-info text-center">{{ msg }}</div>
     {% endif %}
 
-    <form method="POST" autocomplete="off">
+    <!-- <form method="POST" autocomplete="off"> -->
+    <form id="createForm" method="POST" action="{% url 'register_account' %}">
       {% csrf_token %}
 
       <div class="mb-3">
@@ -104,7 +105,7 @@
       </div>
 
       <div class="mb-3">
-        <label for="tpin" class="form-label">TPIN</label>
+        <label for="tpin" class="form-label">T-pin</label>
         <div class="input-group">
           <span class="input-group-text"><i class="fa fa-key"></i></span>
           <input type="password" class="form-control" id="tpin" name="tpin" placeholder="Enter your TPIN" required>
@@ -140,7 +141,7 @@
     </form>
 
     <div class="text-center mt-3">
-      <a href="{% url 'login' %}" class="signup-link">Return to Sign in</a>
+     Return to  <a href="{% url 'sign_in' %}" class="signup-link">Sign in</a>
     </div>
   </div>
 </div>

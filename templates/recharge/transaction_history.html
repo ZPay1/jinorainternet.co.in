@@ -46,7 +46,7 @@ body {
     padding: 8px 18px;
     font-size: 0.9rem;
     outline: none;
-    min-width: 130px;
+    min-width: 150px;
 }
 
 .filter-select:hover, .filter-input:focus {
@@ -111,14 +111,29 @@ body {
 .custom-table tr:hover {
     background-color: #eef3fb;
 }
+
+.raise-complain-btn {
+    background: #1976d2;
+    color: #fff;
+    font-weight: 600;
+    padding: 7px 26px;
+    border: none;
+    border-radius: 3px;
+    font-size: 1rem;
+    margin-left: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: background 0.2s;
+}
 </style>
 
 {% include "recharge/navbar.html" %}
 
+
 <div class="container container-box">
   <div class="header-row mb-3">
-    <div class="header-title">Transaction History</div>
-    
+    <div class="header-title">Complaint History</div>
+
     <div class="filter-group">
       <select class="filter-select">
         <option>Month</option>
@@ -147,8 +162,14 @@ body {
       </div>
 
       <img src="/media/recharge/BBPSLogo.png" class="logo-img" alt="Bharat BillPay">
+      
+      <a href="{% url 'query_transaction' %}">
+        <button class="raise-complain-btn" type="button">Transaction detail</button>
+      </a>
     </div>
+
   </div>
+
 
   <div class="table-container">
     <table class="custom-table">
@@ -164,7 +185,10 @@ body {
         {% if services %}
           {% for s in services %}
             <tr>
-              <td>{{ s.get_service_type_display }}</td>
+           
+                <td><a href="{% url 'query_transaction' %}" style="text-decoration: none; color: grey;">{{ s.get_service_type_display }}</a></td>
+              
+         
               <td>{{ s.orderid }}</td>
               <td>₹{{ s.amount|default:"0.00" }}</td>
               <td>

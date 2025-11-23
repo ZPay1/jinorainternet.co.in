@@ -208,6 +208,8 @@
     
 
 </div>
+</div>
+</div>
 <script>
   document.getElementById("paymentForm").addEventListener("submit", function(event) {
       event.preventDefault(); // Prevent default submission (so we can validate first)
@@ -219,7 +221,7 @@
       }
   
       // ✅ Agar sab valid hai to redirect kare dusre page pe
-      window.location.href = "{% url 'payment_success' %}";
+      window.location.href = "";
   });
   </script>
   

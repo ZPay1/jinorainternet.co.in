@@ -376,3 +376,25 @@ def bbps_tsp_view(request):
     user_data = request.session.get('user_data', {})
     return render(request,'recharge/bbps_tsp.html',{'user_data':user_data})
 
+def receipt_view(request):
+    if 'user_data' not in request.session: 
+        return redirect('login') 
+    user_data = request.session.get('user_data', {})
+
+    return render(request,'recharge/receipt.html',{'user_data':user_data})
+
+def query_transaction(request):
+    user_data = request.session.get('user_data', {})
+
+    return render(request,'recharge/query_transaction.html',{'user_data':user_data})
+def raise_complain_view(request):
+    user_data = request.session.get('user_data', {})
+
+    return render(request,'recharge/raise_complaint_page.html',{'user_data':user_data})
+
+
+
+def check_complaint_status(request):
+    user_data = request.session.get('user_data', {})
+
+    return render(request,'recharge/check_complain_status.html',{'user_data':user_data})

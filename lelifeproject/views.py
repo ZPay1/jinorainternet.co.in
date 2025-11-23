@@ -7,18 +7,286 @@ Baseurl = "https://api.jinora.co.in/api"
 from django.views.decorators.csrf import csrf_exempt
 import requests
 
+
+
+'''===================== user login with email ===================================================='''
+
+
+
+# Generate key only once and keep in Django settings
+# settings.SECRET_KEY_FOR_ENCRYPTION = base64.urlsafe_b64encode(os.urandom(32)).decode()
+
+def encrypt_data(data):
+    f = Fernet(settings.SECRET_KEY_FOR_ENCRYPTION.encode())
+    return f.encrypt(data.encode()).decode()
+
+def decrypt_data(data):
+    f = Fernet(settings.SECRET_KEY_FOR_ENCRYPTION.encode())
+    return f.decrypt(data.encode()).decode()
+
 '''
 ===============================================================================================================
-                            Login Method
+                          Google login Method
+===============================================================================================================
+'''
+
+def google_login(request):
+    print('google_login method calledd............')
+    # Check if 'state' parameter is passed, otherwise default to 'login'
+    state = request.GET.get('state', 'login')  # 'login' default state
+    print(f'{state=}')
+    if request.method == 'POST':
+        identifier = request.POST.get('identifier', '').strip()
+        print(f'{identifier=}')
+        password = request.POST.get('password', '').strip()
+        print(f'{password=}')
+        remember_me = request.POST.get('remember_me')
+        print(f'{remember_me=}')
+
+        # ✅ Encrypt & save in session instead of URL
+        encrypted_identifier = encrypt_data(identifier)
+        print(f'{encrypted_identifier}')
+        encrypted_password = encrypt_data(password)
+        print(f'{encrypted_password}')
+
+
+        request.session['google_login_temp'] = {
+            'identifier': encrypted_identifier,
+            'password': encrypted_password,
+            'remember_me': remember_me,
+        }
+
+        google_auth_url = (
+            'https://accounts.google.com/o/oauth2/v2/auth'
+            f'?response_type=code'
+            f'&client_id={settings.GOOGLE_CLIENT_ID}'
+            f'&redirect_uri={settings.GOOGLE_REDIRECT_URI_LOGIN}'
+            f'&scope=profile email'
+            f'&access_type=offline'
+            f'&state={state}'  # Pass state parameter here
+        )
+        return redirect(google_auth_url)
+    return redirect('sign_in')    
+
+
+'''
+===============================================================================================================
+                          Google callback Method
+===============================================================================================================
+'''
+
+def google_callback(request):
+    print('google_callback method calledd')
+    code = request.GET.get('code')
+    print(f'=================={code=}')
+    state = request.GET.get('state', 'login')  # Default to 'login' if state is not provided
+    print(f'{state=}')
+    
+    # 👇 Ye line poora current URL (including domain + query params) print karegi
+    full_url = request.build_absolute_uri()
+    print(f"Current full callback URL: {full_url}")
+
+    # Agar sirf base path (domain + path, without query params) chahiye:
+    base_path = request.build_absolute_uri(request.path)
+    print(f"Base path only: {base_path}")
+    
+    if not code:
+        messages.error(request, 'Authorization code not received')
+        return redirect('sign_in')
+
+    # Authorization code ko tokens mein convert karna
+    token_url = 'https://oauth2.googleapis.com/token'
+    token_data = {
+        'code': code,
+        'client_id': settings.GOOGLE_CLIENT_ID,
+        'client_secret': settings.GOOGLE_CLIENT_SECRET,
+        'redirect_uri': settings.GOOGLE_REDIRECT_URI_LOGIN,
+        'grant_type': 'authorization_code',
+    }
+    token_r = requests.post(token_url, data=token_data)
+    token_info = token_r.json()
+    access_token = token_info.get('access_token')
+
+    if not access_token:
+        messages.error(request, 'Failed to get access token')
+        return redirect('sign_in')
+
+    # User information fetch karna
+    user_info_url = 'https://www.googleapis.com/oauth2/v2/userinfo'
+    user_info_params = {'access_token': access_token}
+    user_info_r = requests.get(user_info_url, params=user_info_params)
+    user_info = user_info_r.json()
+
+    email = user_info.get('email')
+    name = user_info.get('name')
+    print(f'{email}')
+    print(f'{name=}')
+    if not email:
+        messages.error(request, 'Failed to get user info')
+        return redirect('sign_in')
+
+    if state == 'login':   
+        # Retrieve encrypted data from session
+        temp_data = request.session.get('google_login_temp')
+        # print(f'{temp_data=}') 
+        if not temp_data:
+            messages.error(request, "Session expired or invalid.")
+            return redirect('sign_in')
+
+        identifier = decrypt_data(temp_data['identifier'])
+        password = decrypt_data(temp_data['password'])
+        remember_me = temp_data.get('remember_me')
+
+         # Create a session to maintain cookies
+        session = requests.Session()
+        # Step 2: Prepare headers and payload for login
+        headers = {
+            "Content-Type": "application/json",
+            # "X-CSRFToken": csrf_token,
+            "Referer": "https://api.jinora.co.in/api"
+        }
+
+        payload = {
+            'identifier': identifier,
+            'password': password,
+            'email':email
+         
+        }
+        print(f'{payload=}')
+
+        try:
+            # Step 3: POST login request
+            response = session.post(f"{Baseurl}/user/login/", json=payload, headers=headers, verify=False)
+            print(f'{response=}')
+            data = response.json()
+            print(f'{data=}')
+
+            if data.get('status') == 'success':
+                # Save user info and access token in session
+                request.session['access_token'] = data.get('access')
+      
+                request.session['user_data'] = data
+
+                if remember_me:
+                    request.session.set_expiry(7 * 24 * 60 * 60)  # 7 days
+                    request.session['refresh_token'] = data.get('refresh')
+                else:
+                    request.session.set_expiry(0)  # expires on browser close
+
+                if 'google_login_temp' in request.session:
+                    del request.session['google_login_temp']    
+
+                return redirect('dashboard_view')
+            else:
+                messages.error(request, data.get('message', 'Login failed'))
+                return redirect('sign_in')
+
+        except requests.exceptions.RequestException as e:
+            messages.error(request, f"API request failed: {str(e)}")
+            return redirect('sign_in')
+        except ValueError:
+            messages.error(request, "Invalid response from login API.")
+            return redirect('sign_in')
+
+    elif state == 'register':   
+        register_data = request.session.get('register_data')
+   
+        if register_data["email"] != email:
+            messages.error(request, "Email verification failed: The email you entered does not match the registered email.")
+
+            return redirect('sign_in')
+     
+        sponsor = register_data['sponsor']
+
+        # ✅ Common data fields
+        data = register_data
+        # print(f'{data=}')
+
+        try:
+            # ✅ Sponsor check & API selection
+            if sponsor:
+                data['sponsor'] = sponsor
+                url = f"{Baseurl}/register-user/"
+            else:
+                url = f"{Baseurl}/user/register/"
+
+            response = requests.post(url, json=data)
+         
+            # # #print(f'{response.text}')
+
+            api_response = response.json()
+            
+            
+            if api_response.get('status') is True:
+                # message = api_response.get('message', 'Account created successfully.')
+                if 'register_data' in request.session:
+                    del request.session['register_data']
+                  
+                messages.success(request, data.get('message', 'Account created successfully'))
+                return redirect('sign_in')
+
+
+            else:
+                message = api_response.get('message', 'Failed to register.')
+                messages.error(request, data.get('message', f'{message}'))
+                return redirect('sign_in')
+
+        except ValueError:
+            # message = 'Invalid response from API.'
+            messages.error(request, data.get('message', 'Invalid response from API.'))
+            return redirect('sign_in')
+        except requests.exceptions.RequestException as e:
+            # message = f'API request failed: {str(e)}'
+            messages.error(request, data.get('message', f'API request failed: {str(e)}'))
+            return redirect('sign_in')
+
+
+
+    else:
+        messages.error(request, 'Invalid state parameter')
+        return redirect('sign_in')
+
+
+
+def register_account(request):
+    state = "register" #request.GET.get('state', 'login')  # 'login' default state
+
+    if request.method == 'POST':
+
+        # ✅ Common data fields
+        data = {
+            'username': request.POST.get('username', '').strip(),
+            'email': request.POST.get('email', '').strip(),
+            'mobile': request.POST.get('mobile', '').strip(),
+            'tpin': request.POST.get('tpin', '').strip(),
+            'pincode': request.POST.get('pincode', '').strip(),
+            'password': request.POST.get('password', '').strip(),
+            'confirm_password': request.POST.get('confirm_password', '').strip(),
+        
+        }
+
+        request.session['register_data'] = data
+
+        google_auth_url = (
+            'https://accounts.google.com/o/oauth2/v2/auth'
+            f'?response_type=code'
+            f'&client_id={settings.GOOGLE_CLIENT_ID}'
+            f'&redirect_uri={settings.GOOGLE_REDIRECT_URI_LOGIN}'
+            f'&scope=profile email'
+            f'&access_type=offline'
+            f'&state={state}'  # Pass state parameter here
+        )
+        return redirect(google_auth_url)
+    return redirect('sign_in')            
+'''
+===============================================================================================================
+                            login Method
 ===============================================================================================================
 '''
 
 
 
 def get_csrf_token(session):
-    """
-    Fetch CSRF token using the same session to maintain cookies.
-    """
     try:
         response = session.get(f"{Baseurl}/get-csrf-token/", verify=True)  
         response.raise_for_status()
@@ -31,18 +299,26 @@ def get_csrf_token(session):
         # # #print("Invalid JSON response when fetching CSRF token")
         return None
 
-@csrf_exempt
-def login_view(request):
 
+
+from django.shortcuts import redirect
+from django.conf import settings
+from cryptography.fernet import Fernet
+import base64
+
+
+@csrf_exempt
+def sign_in_view(request):
+    print('sign_in_view method calledddd')
     if request.method == 'POST':
         identifier = request.POST.get('identifier', '').strip()
         password = request.POST.get('password', '').strip()
-        # tpin = request.POST.get('tpin', '').strip()
         remember_me = request.POST.get('remember_me')
+        remember_me = request.POST.get('remember_me')
+        email = request.POST.get('email')
 
         # Create a session to maintain cookies
         session = requests.Session()
-
         # Step 2: Prepare headers and payload for login
         headers = {
             "Content-Type": "application/json",
@@ -52,16 +328,20 @@ def login_view(request):
 
         payload = {
             'identifier': identifier,
-            'password': password,      
+            'password': password,
+            'email':email
+         
         }
-
+        print(f'==============={payload=}')
         try:
             # Step 3: POST login request
             response = session.post(f"{Baseurl}/user/login/", json=payload, headers=headers, verify=False)
+            print(f'{response=}')
             data = response.json()
-            # print(f'==========================={data=}')
+            print(f'{data=}')
 
             if data.get('status') == 'success':
+                print(f'{data=}')
                 # Save user info and access token in session
                 request.session['access_token'] = data.get('access')
       
@@ -82,8 +362,7 @@ def login_view(request):
         except ValueError:
             messages.error(request, "Invalid response from login API.")
 
-    return render(request, 'service/login.html')
-
+    return render(request, 'service/login.html', {'form_type': 'signin'})
 
 
 '''
@@ -115,6 +394,9 @@ def refresh_tokents(request):
     except Exception:
         return False
 
+
+
+
 '''
 ===============================================================================================================
                             Register Method
@@ -122,43 +404,37 @@ def refresh_tokents(request):
 '''
 
 def register_view(request):
-   
     message = None  
     if request.method == 'POST':
-    
-        # ✅ Common data fields
         data = {
-                'username': request.POST.get('username', '').strip(),
-                'email': request.POST.get('email', '').strip(),
-                'mobile': request.POST.get('mobile', '').strip(),
-                'tpin': request.POST.get('tpin', '').strip(),
-                'pincode': request.POST.get('pincode', '').strip(),
-                'password': request.POST.get('password', '').strip(),
-                'confirm_password': request.POST.get('confirm_password', '').strip(),
+            'username': request.POST.get('username', '').strip(),
+            'email': request.POST.get('email', '').strip(),
+            'mobile': request.POST.get('mobile', '').strip(),
+            'tpin': request.POST.get('tpin', '').strip(),
+            'pincode': request.POST.get('pincode', '').strip(),
+            'password': request.POST.get('password', '').strip(),
+            'confirm_password': request.POST.get('confirm_password', '').strip(),
+
         }
+
         try:
-
             response = requests.post(f"{Baseurl}/user/register/", json=data)
-            # print(f'{response=}')
-            # print(f'{response.text}')
-
             api_response = response.json()
             # print(f'{api_response=}')
-            
             if api_response.get('status') is True:
+              
                 message = api_response.get('message', 'Account created successfully.')
+                
             else:
                 message = api_response.get('message', 'Failed to register.')
-
+                # print(f'{message=}')
         except ValueError:
-                message = 'Invalid response from API.'
+            message = 'Invalid response from API.'
         except requests.exceptions.RequestException as e:
             message = f'API request failed: {str(e)}'
-    # print(f'{message=}=')
-    return render(request, 'service/register.html', { 'msg': message})
 
 
-
+    return render(request, 'service/register.html',{ 'msg': message})
 
 
 '''
@@ -210,7 +486,7 @@ def logout_view(request):
 
 def dashboard_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
       
     # admin_id = request.session['admin_id']
     user_data = request.session.get('user_data', {})
@@ -229,14 +505,14 @@ from django.shortcuts import render
 def profile_view(request):
     print('profile method called')
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
 
     access_token = request.session.get('access_token')
     user_data = request.session.get("user_data") 
     # cart_count = request.session.get("cart_count")
 
     if not access_token:
-        return redirect('login')
+        return redirect('sign_in')
 
     def get_profile(token):
         headers = {
@@ -253,7 +529,7 @@ def profile_view(request):
             new_token = request.session.get('access_token')
             response = get_profile(new_token)
         else:
-            return redirect('login')
+            return redirect('sign_in')
 
     try:
         if response.status_code == 200:
@@ -269,7 +545,7 @@ def profile_view(request):
                 # 'cart_count': cart_count,
             })
         else:
-            return redirect('login')
+            return redirect('sign_in')
 
     except requests.exceptions.RequestException:
         return render(request, 'service/profile.html', {
@@ -277,43 +553,6 @@ def profile_view(request):
             'error': 'Failed to load user details'
         })
 
-
-
-
-
-
-
-'''
-===============================================================================================================
-                    Forgot Password Method
-===============================================================================================================
-'''
-
-from django.shortcuts import render
-from django.contrib import messages
-import requests
-
-
-'''def forgot_password_view(request):
-    if request.method == "POST":
-        userid_or_mobile = request.POST.get("userid_or_mobile", "").strip()
-        if not userid_or_mobile:
-            messages.error(request, "User ID or Mobile is required.")
-        else:
-            # Call the API
-            url = "https://api.jinora.co.in/forgot-password/"
-            headers = {"Content-Type": "application/json"}
-            payload = {"userid_or_mobile": userid_or_mobile}
-            try:
-                response = requests.post(url, json=payload, headers=headers)
-                data = response.json()
-                if data.get("status") == "success":
-                    messages.success(request, data.get("message"))
-                else:
-                    messages.error(request, data.get("message"))
-            except Exception as e:
-                messages.error(request, f"Something went wrong: {str(e)}")
-    return render(request, "service/forgot_password.html")  ''' 
 
 
 
@@ -328,7 +567,7 @@ import requests
 
 def pay_bill_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
 
     return render(request,'service/paybill.html',{'user_data':user_data})
@@ -343,16 +582,10 @@ def transaction_search_view(request):
 
     return render(request,'service/transaction_search.html',{'user_data':user_data})
 
-def receipt_view(request):
-    if 'user_data' not in request.session: 
-        return redirect('login') 
-    user_data = request.session.get('user_data', {})
-
-    return render(request,'service/receipt.html',{'user_data':user_data})
 
 def complaint_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
 
     return render(request,'service/complaint_page.html',{'user_data':user_data})
@@ -360,7 +593,7 @@ def complaint_view(request):
 
 def bills_form_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
 
     return render(request,'service/bill_form.html',{'user_data':user_data})
@@ -369,27 +602,16 @@ def bills_form_view(request):
 
 def fetch_bill_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
 
     return render(request,'service/fetch_bill.html',{'user_data':user_data})
 
 
 
-def raise_complain_view(request):
-    user_data = request.session.get('user_data', {})
 
-    return render(request,'service/raise_complaint_page.html',{'user_data':user_data})
 
-def check_complaint_status(request):
-    user_data = request.session.get('user_data', {})
 
-    return render(request,'service/check_complain_status.html',{'user_data':user_data})
-
-def query_transaction(request):
-    user_data = request.session.get('user_data', {})
-
-    return render(request,'service/query_transaction.html',{'user_data':user_data})
 
 '''
 ===============================================================================================================
