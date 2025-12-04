@@ -27,3 +27,9 @@ https://jinorainternet.co.in/admin
 Usernmae:      Jinorainternet
 Email address: jinorainternet@gmail.com
 Password :     jinorainternet@12    '''
+
+
+'''
+Usernmae:      root
+Email address: root@gmail.com
+Password :     root   '''
