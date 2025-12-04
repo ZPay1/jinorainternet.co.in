@@ -32,6 +32,7 @@ urlpatterns = [
     path('register/', views.register_view, name='register_view'),
     path('register-account/', views.register_account, name='register_account'),
     path('logout/',views.logout_view, name='logout'),
+    path('recharges/', views.recharge_page_view, name='recharge_page_view'),
     # path("download-test-pdf/", views.download_test_pdf, name="download_test_pdf"),
     # path("forgot-password/",views.forgot_password_view, name="forgot_password"),
 
@@ -70,6 +71,8 @@ urlpatterns = [
     path('privacy-policy/', views.privacy_policy_view, name='privacy_policy'),
     path('refund-policy/', views.refund_policy_view, name='refund_policy'),
     path('term-condition/', views.term_condition_view, name='term_condition'),
+ 
+    
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # urls.py

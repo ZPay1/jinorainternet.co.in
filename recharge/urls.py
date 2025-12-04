@@ -9,8 +9,10 @@ from django.urls import path
 from . import views  # <-- same app ke views import karo
 
 urlpatterns = [
+    path("success/", views.recharge_success, name="recharge_success"),
 
 
+    path('', views.recharge_view, name='recharge_view'),
     path('mobile-prepaid/', views.mobile_prepaid_view, name='mobile_prepaid'),
     # path('recharge-success/', views.recharge_success_view, name='recharge_success'),
     path('mobile-postpaid/', views.mobile_postpaid_view, name='mobile_postpaid'),
@@ -23,7 +25,7 @@ urlpatterns = [
     path('education/', views.education_view, name='education'),
     path('water/', views.water_view, name='water'),
     path('lpg-book-gas/', views.lpg_book_gas_view, name='lpg_book_gas'),
-    path('', views.recharge_view, name='recharge_view'),
+  
 
     # Footer url  =========================================
     path('privacy-policy/', views.privacy_policy_view, name='privacy_policy_view'),
@@ -34,11 +36,12 @@ urlpatterns = [
     path('team/', views.team_view, name='team_view'),
     path('career-page/', views.career_page_view, name='career_page_view'),
     path('bbps-tsp/', views.bbps_tsp_view, name='bbps_tsp_view'),
-    path('receipt/', views.receipt_view, name='receipt'),
+    path('receipt/<int:id>/', views.receipt_view, name='receipt'),
     
     path('query-transaction/', views.query_transaction, name='query_transaction'),
     path('raise-complain/', views.raise_complain_view, name='raise_complain'),
     path('check-complaint-status/', views.check_complaint_status, name='check_complaint_status'),
+    path('sms/', views.sms_slip_view, name='sms_slip_view'),
     
     # path('term-condition/', views.term_condition_view, name='term_condition'),
     

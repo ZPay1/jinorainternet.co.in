@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMS Receipt</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    body {
+        background-color: #e5e5e5;
+        font-family: Arial, sans-serif;
+    }
+    .phone-frame {
+        width: 390px;
+        margin: 40px auto;
+        border: 10px solid #000;
+        border-radius: 30px;
+        background: #f7f7f7;
+        position: relative;
+    }
+    .top-bar {
+        background: #ffffff;
+        padding: 12px 14px;
+        border-bottom: 1px solid #ddd;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+    }
+    .sms-time {
+        text-align: center;
+        color: #7a7a7a;
+        font-size: 12px;
+        margin: 10px 0;
+    }
+    .sms-bubble {
+        background: #d1d7d876;
+        padding: 50px 20px;
+        margin: 10px;
+        border-radius: 18px;
+        font-size: 18px;
+        line-height: 1.6;
+        box-shadow: 0px 2px 8px rgba(0,0,0,0.18);
+    }
+    .highlight {
+        font-weight: bold;
+        color: #0056D2;
+    }
+    .bottom-space {
+        height: 20px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="phone-frame">
+
+    <!-- Top Sender Name -->
+    <div class="top-bar">AD-JNRTECN-S</div>
+
+    <!-- Time divider -->
+    <div class="sms-time">10:39 AM</div>
+
+    <!-- SMS Bubble -->
+    <div class="sms-bubble">
+        Thank you for payment of <span class="highlight">₹ 895.62</span> against
+        <b>ACT Fibernet</b>, Consumer no
+        <span class="highlight">102907526828</span> transaction reference
+        <span class="highlight">IF3153295S3FFNMB7I8Y</span> on
+        <span class="highlight">25-11-2025 10:39:28 AM</span> vide ACT Fibernet powered by Jinorainternet.
+    </div>
+
+    <div class="sms-bubble">
+        Your complaint has been registered successfully for Txn Ref ID
+        <span class="highlight">IF3153295S3FFNMB7I8Y</span>.
+        <br>Your Complaint ID is <span class="highlight">IF3125329428666</span>.
+        <br>You can track the status of your Complaint using your Complaint ID.
+        <br><b>Powered by Jinorainternet</b>.
+    </div>
+
+    <div class="sms-time">10:40 AM • airtel</div>
+
+    <div class="bottom-space"></div>
+</div>
+
+</body>
+</html>

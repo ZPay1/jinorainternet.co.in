@@ -35,7 +35,7 @@ body {
 .filter-group {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
     flex-wrap: wrap;
 }
 
@@ -53,28 +53,17 @@ body {
     border-color: #007bff;
 }
 
-.filter-search {
-    display: flex;
-    align-items: center;
-    border: 1px solid #00a3ff;
-    border-radius: 25px;
-    overflow: hidden;
-    background: #fff;
-    padding-right: 10px;
-}
+
 
 .filter-search input {
     border: none;
     outline: none;
     padding: 8px 14px;
-    width: 220px;
+    width: 320px;
     font-size: 0.9rem;
 }
 
-.filter-search i {
-    color: #00a3ff;
-    cursor: pointer;
-}
+
 
 .logo-img {
     width: 90px;
@@ -132,42 +121,44 @@ body {
 
 <div class="container container-box">
   <div class="header-row mb-3">
-    <div class="header-title">Complaint History</div>
-
+    <div class="header-title">Transaction History</div>
+     <img src="/media/recharge/BBPSLogo.png" class="logo-img" alt="Bharat BillPay">
     <div class="filter-group">
-      <select class="filter-select">
-        <option>Month</option>
-        <option>January</option>
-        <option>February</option>
-        <option>March</option>
+       <form id="filterForm" method="get" action="">
+      <!-- Start Date -->
+      <label for="start_date" class="sr-only">Start date</label>
+      <input type="date" id="start_date" name="start_date" class="filter-select"
+             value="{{ start_date }}">
+
+      <!-- End Date -->
+      <label for="end_date" class="sr-only">End date</label>
+      <input type="date" id="end_date" name="end_date" class="filter-select"
+             value="{{ end_date }}">
+
+      <!-- Category -->
+      <select name="category" class="filter-select" onchange="this.form.submit();">
+        {% for val,label in categories %}
+          <option value="{{ val }}" {% if selected_category == val %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
       </select>
 
-      <select class="filter-select">
-        <option>Category</option>
-        <option>Electricity</option>
-        <option>Gas</option>
-        <option>Water</option>
+      <!-- Status -->
+      <select name="status" class="filter-select" onchange="this.form.submit();">
+        {% for val,label in statuses %}
+          <option value="{{ val }}" {% if selected_status == val %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
       </select>
 
-      <select class="filter-select">
-        <option>Status</option>
-        <option>Pending</option>
-        <option>Success</option>
-        <option>Failed</option>
-      </select>
-
-      <div class="filter-search">
-        <input type="text" placeholder="Mobile Number or Reference ID">
-        <i class="fas fa-search"></i>
+      <!-- Search -->
+      <div class="filter-search" style="display:inline-block;" >
+        <input type="text" name="search" placeholder="Mobile Number or Reference ID or OrderID"
+               value="{{ search_query }}">
+        <button type="submit" class="btn btn-sm btn-primary ">Search</button>
       </div>
-
-      <img src="/media/recharge/BBPSLogo.png" class="logo-img" alt="Bharat BillPay">
-      
-      <a href="{% url 'query_transaction' %}">
-        <button class="raise-complain-btn" type="button">Transaction detail</button>
-      </a>
+       
+    </form>
     </div>
-
+  
   </div>
 
 
@@ -175,22 +166,28 @@ body {
     <table class="custom-table">
       <thead>
         <tr>
-          <th>Product Detail</th>
-          <th>Order No.</th>
-          <th>Price</th>
+          <th>B-Connect Txn ID</th>
+          <th>Service Type</th>
+          <th>Amount</th>
           <th>Status</th>
+          <th>User</th>
+          <th>Mobile Number </th>
+          <th>Date</th>
+          <!-- <th>End Date</th> -->
         </tr>
       </thead>
       <tbody>
         {% if services %}
           {% for s in services %}
             <tr>
-           
-                <td><a href="{% url 'query_transaction' %}" style="text-decoration: none; color: grey;">{{ s.get_service_type_display }}</a></td>
               
+              <td><a href="{% url 'receipt' s.id %}" style="text-decoration: none; color: rgb(112, 96, 253);">{{ s.orderid }}</a></td>
+              <td>{{ s.get_service_type_display }}</td>
          
-              <td>{{ s.orderid }}</td>
+              
               <td>₹{{ s.amount|default:"0.00" }}</td>
+              
+              
               <td>
                 {% if s.status == 'success' %}
                   <span style="color:green;font-weight:600;">Success</span>
@@ -200,6 +197,10 @@ body {
                   <span style="color:red;font-weight:600;">Failed</span>
                 {% endif %}
               </td>
+              <td>{{ user_data.userid }}</td>
+              <td>{{ s.rechargers_number }}</td>
+              <td>{{ s.create_date }}</td>
+        
             </tr>
           {% endfor %}
         {% else %}

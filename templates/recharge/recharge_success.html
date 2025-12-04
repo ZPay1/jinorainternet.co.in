@@ -10,7 +10,7 @@
           <span style="color: black; font-size: 14px; text-align: center; display:inline-block; font-weight: 600;">
             RECHARGE CONFIRMATIONS
           </span>
-          <button type="button" class="position-absolute top-0 end-0 m-2 p-2" aria-label="Close" data-bs-dismiss="modal"
+          <button type="button" class="position-absolute top-0 end-0 m-2 p-2" onclick="goRecharge()"
             style="background: none; border: none; outline:none;">
             <span aria-hidden="true" style="font-size:1.40rem; font-weight:400; color: #ff2323; position: absolute; top: -6px; right: 8px; cursor:pointer;">
               <b>X</b>
@@ -45,5 +45,10 @@ function printPayment_Receipt() {
 
   // Show the button again after printing
   btn.style.display = 'inline-block';
+}
+</script>
+<script>
+function goRecharge() {
+    window.location.href = "{% url 'recharge_view' %}";
 }
 </script>

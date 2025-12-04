@@ -73,6 +73,12 @@ class Service(models.Model):
         null=False,
         default=uuid.uuid4
     )
+    
+    fees = models.IntegerField(null=True, blank=True)
+    total_amount = models.IntegerField(null=True, blank=True)
+    user_detail = models.CharField(max_length=100, blank=True, null=True)
+    create_date = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return dict(self.SERVICE_CHOICES).get(self.service_type, self.service_type)
