@@ -61,8 +61,11 @@ class Service(models.Model):
     ]
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    fees = models.IntegerField(null=True, blank=True)
+    total_amount = models.IntegerField(null=True, blank=True)
 
     refrence = models.CharField(max_length=55,blank=True, null=True)
+    
 
     # --- NEW: Add orderid field, auto-generate value ---
     orderid = models.CharField(
@@ -74,5 +77,12 @@ class Service(models.Model):
         default=uuid.uuid4
     )
 
+
+    user_detail = models.CharField(max_length=100, blank=True, null=True)
+    create_date = models.DateTimeField(null=True, blank=True)
+    
+    # created_at = models.DateTimeField(auto_now_add=True)
+  
+   
     def __str__(self):
         return dict(self.SERVICE_CHOICES).get(self.service_type, self.service_type)

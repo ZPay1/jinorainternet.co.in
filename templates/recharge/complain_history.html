@@ -172,19 +172,28 @@ body {
     <table class="custom-table">
       <thead>
         <tr>
-          <th>Product Detail</th>
-          <th>Order No.</th>
-          <th>Price</th>
+          <th>Service Type</th>
+          <th>Txn ID</th>
+          <th>Amount</th>
           <th>Status</th>
+          <th>User</th>
+          <th>Mobile Number </th>
+          <th>Date</th>
+          <!-- <th>End Date</th> -->
         </tr>
       </thead>
       <tbody>
         {% if services %}
           {% for s in services %}
             <tr>
-              <td>{{ s.get_service_type_display }}</td>
+           
+                <td><a href="{% url 'query_transaction' %}" style="text-decoration: none; color: grey;">{{ s.get_service_type_display }}</a></td>
+              
+         
               <td>{{ s.orderid }}</td>
               <td>₹{{ s.amount|default:"0.00" }}</td>
+              
+              
               <td>
                 {% if s.status == 'success' %}
                   <span style="color:green;font-weight:600;">Success</span>
@@ -194,6 +203,10 @@ body {
                   <span style="color:red;font-weight:600;">Failed</span>
                 {% endif %}
               </td>
+              <td>{{ user_data.userid }}</td>
+              <td>{{ s.rechargers_number }}</td>
+              <td>{{ s.create_date }}</td>
+        
             </tr>
           {% endfor %}
         {% else %}

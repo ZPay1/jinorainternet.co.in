@@ -10,7 +10,7 @@ from . import views  # <-- same app ke views import karo
 
 urlpatterns = [
 
-
+    path('', views.recharge_view, name='recharge_view'),
     path('mobile-prepaid/', views.mobile_prepaid_view, name='mobile_prepaid'),
     # path('recharge-success/', views.recharge_success_view, name='recharge_success'),
     path('mobile-postpaid/', views.mobile_postpaid_view, name='mobile_postpaid'),
@@ -23,7 +23,7 @@ urlpatterns = [
     path('education/', views.education_view, name='education'),
     path('water/', views.water_view, name='water'),
     path('lpg-book-gas/', views.lpg_book_gas_view, name='lpg_book_gas'),
-    path('', views.recharge_view, name='recharge_view'),
+  
 
     # Footer url  =========================================
     path('privacy-policy/', views.privacy_policy_view, name='privacy_policy_view'),

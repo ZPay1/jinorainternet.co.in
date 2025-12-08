@@ -67,7 +67,7 @@ body {
     border: none;
     outline: none;
     padding: 8px 14px;
-    width: 220px;
+    width: 180px;
     font-size: 0.9rem;
 }
 
@@ -132,34 +132,49 @@ body {
 
 <div class="container container-box">
   <div class="header-row mb-3">
-    <div class="header-title">Complaint History</div>
+    <div class="header-title">Transaction History</div>
 
     <div class="filter-group">
-      <select class="filter-select">
-        <option>Month</option>
-        <option>January</option>
-        <option>February</option>
-        <option>March</option>
-      </select>
+      <form method="get" class="filter-group">
 
-      <select class="filter-select">
-        <option>Category</option>
-        <option>Electricity</option>
-        <option>Gas</option>
-        <option>Water</option>
-      </select>
-
-      <select class="filter-select">
-        <option>Status</option>
-        <option>Pending</option>
-        <option>Success</option>
-        <option>Failed</option>
-      </select>
-
-      <div class="filter-search">
-        <input type="text" placeholder="Mobile Number or Reference ID">
-        <i class="fas fa-search"></i>
-      </div>
+        <select class="filter-select" name="month">
+          <option value="">Month</option>
+          <option value="1">January</option>
+          <option value="2">February</option>
+          <option value="3">March</option>
+          
+        </select>
+        
+       <input type="date" name="date" style="padding: 7px 10px; border: 1px solid #d5dce7; border-radius: 3px; font-size: 1rem; color: #333; margin-right: 10px;">
+        <select class="filter-select" name="category">
+          <option value="">Category</option>
+          <option value="mobile_prepaid">Mobile Prepaid</option>
+          <option value="mobile_postpaid">Mobile Postpaid</option>
+          <option value="dth">DTH</option>
+          <option value="cable_tv">Cable TV</option>
+          <option value="fastag">FasTag</option>
+          <option value="electricity_bill">Electricity Bill</option>
+        </select>
+        
+      
+        <select class="filter-select" name="status">
+          <option value="">Status</option>
+          <option value="pending">Pending</option>
+          <option value="success">Success</option>
+          <option value="failed">Failed</option>
+        </select>
+      
+        <div class="filter-search">
+          <input type="text" name="search" placeholder="Mobile Number or Reference ID">
+          <i class="fas fa-search"></i>
+        </div>
+ 
+          <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Filter </button>
+       
+      
+      </form>
+      
+      
 
       <img src="/media/recharge/BBPSLogo.png" class="logo-img" alt="Bharat BillPay">
       
@@ -175,22 +190,28 @@ body {
     <table class="custom-table">
       <thead>
         <tr>
-          <th>Product Detail</th>
-          <th>Order No.</th>
-          <th>Price</th>
+          <th>B-connect Txn ID</th>
+          <th>Service Type</th>
+          <th>Amount</th>
           <th>Status</th>
+          <th>User</th>
+          <th>Mobile Number </th>
+          <th>Date</th>
+          <!-- <th>End Date</th> -->
         </tr>
       </thead>
       <tbody>
         {% if services %}
           {% for s in services %}
             <tr>
-           
+              <td>{{ s.orderid }}</td>
                 <td><a href="{% url 'query_transaction' %}" style="text-decoration: none; color: grey;">{{ s.get_service_type_display }}</a></td>
               
          
-              <td>{{ s.orderid }}</td>
+              
               <td>₹{{ s.amount|default:"0.00" }}</td>
+              
+              
               <td>
                 {% if s.status == 'success' %}
                   <span style="color:green;font-weight:600;">Success</span>
@@ -200,6 +221,10 @@ body {
                   <span style="color:red;font-weight:600;">Failed</span>
                 {% endif %}
               </td>
+              <td>{{ user_data.userid }}</td>
+              <td>{{ s.rechargers_number }}</td>
+              <td>{{ s.create_date }}</td>
+        
             </tr>
           {% endfor %}
         {% else %}

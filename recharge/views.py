@@ -29,7 +29,7 @@ from .models import Service, State
 
 def mobile_prepaid_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     states = State.objects.all().order_by('name')
     # print(f'{states=}')
@@ -82,7 +82,7 @@ def mobile_prepaid_view(request):
 
 def mobile_postpaid_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     success_data = None
     if request.method == 'POST':
@@ -112,7 +112,8 @@ def mobile_postpaid_view(request):
 '''
 def dth_recharge_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
+        
     user_data = request.session.get('user_data', {})
     success_data = None
     if request.method == 'POST':
@@ -141,7 +142,7 @@ def dth_recharge_view(request):
 '''
 def fastag_recharge_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     return render(request, 'recharge/fastag_recharge.html', {'user_data': user_data})
 
@@ -157,7 +158,7 @@ def fastag_recharge_view(request):
 
 def electricity_bill_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     states = State.objects.all().order_by('name')
     success_data = None
@@ -200,7 +201,7 @@ def electricity_bill_view(request):
 '''
 def education_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     states = State.objects.all().order_by('name')
     return render(request,'recharge/education_fees.html',{'user_data':user_data,'states':states})
@@ -212,7 +213,7 @@ def education_view(request):
 '''
 def water_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     states = State.objects.all().order_by('name')
     # print(f'{states=}')
@@ -228,7 +229,7 @@ def water_view(request):
 '''
 def lpg_book_gas_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     states = State.objects.all().order_by('name')
     # print(f'{states=}')
@@ -245,26 +246,40 @@ def lpg_book_gas_view(request):
 
 def transaction_history_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
+
+    # userid = user_data.get('userid', None)
+    # print(f'{userid=}')
 
     # Base queryset (show only recent records)
     services = Service.objects.all().order_by('-id')
+    # print(f'{services=}')
+    
 
     # --- Filtering logic ---
     month = request.GET.get('month')
     category = request.GET.get('category')
     status = request.GET.get('status')
     search = request.GET.get('search')
+    date = request.GET.get('date')
 
+    if date:
+        services = services.filter(create_date__date=date)
+
+        
     if month:
-        services = services.filter(created_at__month=month)
+        services = services.filter(create_date__month=month)
+
+    # if month:
+    #     services = services.filter(created_at__month=month)
     if category:
         services = services.filter(service_type=category)
     if status:
         services = services.filter(status=status.lower())
     if search:
         services = services.filter(rechargers_number__icontains=search) | services.filter(refrence__icontains=search)
+    
 
     return render(request, 'recharge/transaction_history.html', {
         'user_data': user_data,
@@ -283,7 +298,7 @@ from django.http import HttpResponse
 
 def recharge_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     return render(request,'recharge/recharge_page.html',{'user_data':user_data})
 
@@ -295,7 +310,7 @@ def recharge_view(request):
 
 def not_found_page(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     return render(request,'recharge/not_foung_page.html',{'user_data':user_data})
 
@@ -308,7 +323,7 @@ def not_found_page(request):
 
 def complain_history_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     return render(request,'recharge/complain_history.html',{'user_data':user_data})
 
@@ -322,7 +337,7 @@ def complain_history_view(request):
 '''
 def privacy_policy_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     return render(request,'recharge/privacy_policy.html',{'user_data':user_data})
 
@@ -330,55 +345,55 @@ def privacy_policy_view(request):
 
 def term_of_us_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     return render(request,'recharge/term_of_us.html',{'user_data':user_data})
 
 
 def refund_policy_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     return render(request,'recharge/refund_policy.html',{'user_data':user_data})
 
 
 def about_us_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     return render(request,'recharge/about_us.html',{'user_data':user_data})
 
 
 def cookie_policy_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     return render(request,'recharge/cookie_policy.html',{'user_data':user_data})
 
 
 def team_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     return render(request,'recharge/team.html',{'user_data':user_data})
 
 
 def career_page_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     return render(request,'recharge/career.html',{'user_data':user_data})
 
 
 def bbps_tsp_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
     return render(request,'recharge/bbps_tsp.html',{'user_data':user_data})
 
 def receipt_view(request):
     if 'user_data' not in request.session: 
-        return redirect('login') 
+        return redirect('sign_in') 
     user_data = request.session.get('user_data', {})
 
     return render(request,'recharge/receipt.html',{'user_data':user_data})
