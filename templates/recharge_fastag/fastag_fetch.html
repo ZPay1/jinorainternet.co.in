@@ -1,0 +1,37 @@
+{% extends "service/service_base.html" %}
+{% block content %}
+
+
+{% include 'recharge/logo.html' %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow rounded-4">
+        <div class="card-body p-4">
+          <h5 class="text-center fw-bold mb-4">FASTag Recharge</h5>
+
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="billerId" value="{{ request.GET.billerId }}">
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Vehicle Number</label>
+              <input type="text" name="vehicle_number"
+                     class="form-control form-control-lg"
+                     placeholder="DL01AB1234" required>
+            </div>
+
+            <button class="btn btn-primary w-100 btn-lg">
+              Fetch Bill
+            </button>
+          </form>
+
+          <div class="alert small text-left">
+            Enter correct vehicle number to fetch FASTag details.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

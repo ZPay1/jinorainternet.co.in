@@ -1,46 +1,542 @@
 {% extends 'service/service_base.html' %}
-{% block title %}Recharge{% endblock %}
-
+{% block title %}Dashboard{% endblock %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
-  <title>Recharge Page</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    .recharge_image{
-      width: 300px; 
-      height: 300px;
-      object-fit: contain;
-    }
-    @media (max-width: 768px) {
-      .recharge_image{
-        width: 300px; 
-        height: 250px;
-        object-fit: contain;
-      }
-    }
-  </style>
-</head>
-<body class="bg-gray-100 text-gray-900 font-sans leading-normal tracking-normal">
+<style>
+  .fastag-form-container {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 5px 30px 0 #e2e2e273;
+      max-width: 410px;
+      margin: 40px auto;
+      padding: 34px 24px;
+      font-family: 'Inter', Arial, sans-serif;
+  }
+  .fastag-form-title {
+      font-size: 1.22rem;
+      font-weight: 700;
+      color: #2494ff;
+      text-align: center;
+      margin-bottom: 16px;
+      letter-spacing: 0.02em;
+  }
+  .fastag-form-label {
+      display: block;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 7px;
+      margin-top: 12px;
+      font-size: 1rem;
+  }
+  .fastag-form-input {
+      width: 100%;
+      padding: 12px 13px;
+      border: 1px solid #d5e6fa;
+      background: #fafdff;
+      border-radius: 7px;
+      font-size: 1.05rem;
+      outline: none;
+      margin-bottom: 6px;
+      transition: border 0.2s;
+  }
+  .fastag-form-input:focus {
+      border: 1.5px solid #37a9ee;
+      background: #fbfdff;
+  }
+  .fastag-form-btn {
+      width: 100%;
+      background:  #1e8fff;
+      color: white;
+      font-weight: 500;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      padding: 13px 0 12px 0;
+      margin-top: 17px;
+      cursor: pointer;
+      box-shadow: 0 1px 7px 1px #c6defb7d;
+      transition: background 0.14s, color 0.18s;
+  }
+  .fastag-form-btn:hover {
+      background:#0b78e6;;
+      color: #f2f9ff;
+  }
+  .fastag-form-biller {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 18px;
+  }
+  .fastag-form-billericon {
+      background: #f3faff;
+      color: #2494ff;
+      font-size: 1.38rem;
+      font-weight: 800;
+      display: inline-flex;
+      width: 43px;
+      height: 43px;
+      border-radius: 10px;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 9px 2px #ddeafa34;
+      border: 1px solid #e3e7f1;
+  }
+  .fastag-note {
+      font-size: 0.96rem;
+      color: #777;
+      margin-top: 15px;
+      text-align: center;
+  }
+</style>
 
-  <div class="container">
-    <div class="flex flex-col md:flex-row items-center justify-center min-h-screen py-10 px-4">
-      <!-- Left (Text) -->
-      <div class="w-full md:w-1/2 flex flex-col justify-center items-start mb-8 md:mb-0 md:pr-14">
-        <h1 class="font-bold mb-4 text-green-700" style="font-size:28px; font-weight:bold;">Recharge Services</h1>
-        <p class="mb-4 text-[12px] md:text-[18px]">
-          Recharge your Mobile, FASTag, DTH or pay your Electricity Bill easily and instantly from here. Choose the service below, enter your details and proceed to make a secure recharge or payment.
-        </p>
-        <a href="{% url 'dashboard_view' %}" class="inline-block mt-2 px-6 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition"style="text-decoration: none;">Back to Dashboard</a>
-      </div>
-      <!-- Right (Image) -->
-      <div class="w-full md:w-1/2 flex justify-center items-center">
-        <img src="/media/404.png" alt="recharge image" class="recharge_image" >
+<style>
+  body {
+      background: #f5f7fb;
+  }
+  .fa-fastag-header {
+      max-width: 430px;
+      margin: 36px auto 10px auto;
+      text-align: center;
+      padding: 0 10px;
+  }
+  .fa-fastag-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #0077ff;
+      margin-bottom: 8px;
+      letter-spacing: 0.021em;
+      position: relative;
+      display: inline-block;
+  }
+  .fa-fastag-title:after {
+      content: '';
+      display: block;
+      width: 60%;
+      margin: 0 auto;
+      border-bottom: 3px solid #38b6ff38;
+      border-radius: 1em;
+      margin-top: 2px;
+  }
+  .fa-fastag-desc {
+      font-size: 1.06em;
+      color: #404c5a;
+      margin-bottom: 0;
+      margin-top: 6px;
+  }
+
+  .fa-fastag-form-box {
+      background: #ffffff;
+      border-radius: 22px;
+      box-shadow: 0 7px 48px 0 #dae6fb;
+      padding: 42px 34px 32px 34px;
+      max-width: 430px;
+      margin: 16px auto 0 auto;
+      font-family: 'Inter', Arial, sans-serif;
+      position: relative;
+  }
+
+  .fa-fastag-label {
+      display: block;
+      font-weight: 700;
+      color: #234d62;
+      margin-top: 0;
+      margin-bottom: 13px;
+      font-size: 1.09rem;
+      letter-spacing: 0.005em;
+  }
+
+  .fa-fastag-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+  }
+  .fa-fastag-veh-icon {
+      font-size: 1.3em;
+      color: #2f8cee;
+      background: #edf7ff;
+      padding: 7px 8px 7px 8px;
+      border-radius: 8px;
+      margin-right: 4px;
+      min-width:33px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .fa-fastag-input {
+      width: 100%;
+      padding: 14px 15px;
+      border: 1.7px solid #cbe6ff;
+      background: #f9fbfc;
+      border-radius: 8px;
+      font-size: 1.08rem;
+      outline: none;
+      margin-bottom: 9px;
+      transition: border 0.22s;
+      color: #252631;
+      font-weight: 600;
+      letter-spacing:0.02em;
+  }
+  .fa-fastag-input:focus {
+      border: 1.5px solid #3687de;
+      background: #f4fbff;
+  }
+  .fa-fastag-small-note {
+      display: block;
+      font-size: 0.87em;
+      color: #987b09;
+      margin-top: 2px;
+      margin-bottom: 15px;
+      letter-spacing: 0.015em;
+      text-align:left;
+  }
+
+  .fa-fastag-btn {
+      width: 100%;
+      background: linear-gradient(90deg, #02a4ff 0%, #4ecbff 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.08rem;
+      border: none;
+      border-radius: 9px;
+      padding: 17px 0 15px 0;
+      margin-top: 16px;
+      cursor: pointer;
+      box-shadow: 0 2px 12px 1px #64b6fb4a;
+      transition: background 0.16s, transform 0.15s;
+  }
+  .fa-fastag-btn:hover {
+      background: linear-gradient(90deg, #007aff 0%, #44baff 100%);
+      color: #e2f6ff;
+      transform: translateY(-1.5px) scale(1.01);
+  }
+
+  .fa-fastag-bottom-note {
+      background: #eff6fb;
+      border-radius:12px;
+      padding: 15px 16px 12px 16px;
+      text-align: left;
+      color: #445366;
+      font-size:0.95em;
+      margin-top:24px;
+  }
+
+
+  /* Summary */
+  .fa-summary-maincard {
+      max-width: 720px;
+      margin: 28px auto 0 auto;
+      background: #f8fcff;
+      border-radius: 20px;
+      box-shadow: 0 4px 22px 0 #a9d8fb21;
+      padding: 20px 22px 29px 22px;
+      font-size: 1em;
+      color: #232323;
+      font-family: 'Inter', Arial, sans-serif;
+      position:relative;
+      border:1.6px solid #e3f2ff;
+  }
+  .fa-fastag-summary-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom:18px;
+  }
+  .fa-fastag-summary-section {
+      flex:1; 
+      min-width: 0;
+  }
+  .fa-summary-section-title {
+      font-size: 1.1em;
+      font-weight: 600;
+      color: #3584bf;
+      margin-bottom: 11px;
+      letter-spacing: 0.012em; 
+  }
+  .fa-summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 23px;
+      row-gap: 5px;
+  }
+  .fa-summary-detail-label {
+      color: #506080;
+      font-size: 0.97em;
+      font-weight: 500;
+      margin-bottom: 2px;
+  }
+  .fa-summary-detail-value {
+      font-size: 1.06em;
+      font-weight: 700;
+      color: #001b28;
+      margin-bottom: 10px;
+      display: block;
+  }
+  .fa-summary-divider {
+      width: 100%;
+      border-top: 1.6px dashed #85b8f164;
+      margin: 14px 0 19px 0;
+      border-radius: 11px;
+  }
+
+  /* Payment Form */
+  .fa-fastag-payform-box {
+      max-width: 440px;
+      margin: 25px auto 0 auto;
+      background: #eefdff;
+      border-radius: 13px;
+      box-shadow: 0 1.5px 8px 0 #baddfa6c;
+      padding: 18px 17px 27px 19px;
+      font-size: 1em;
+      border:1px solid #dbf1fe;
+  }
+  .fa-fastag-payform-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 14px;
+  }
+  .fa-fastag-payform-label {
+      font-weight: 700;
+      color: #005870;
+      min-width: 135px;
+      font-size: 1.02em;
+  }
+  .fa-fastag-payform-input {
+      background: #f7fcff;
+      border: 1.5px solid #8fd3ff;
+      color: #222;
+      font-size: 1.08em;
+      width: 200px;
+      margin-left: 10px;
+      border-radius: 8px;
+      padding: 10px 13px;
+      font-weight:600;
+  }
+  .fa-fastag-payform-note {
+      font-size: 0.89em;
+      color: #6a82a5;
+      margin-bottom: 5px;
+      margin-top: 2px;
+      margin-left:3px;
+  }
+  .fa-fastag-pay-btn {
+      width: 100%;
+      background: linear-gradient(90deg, #0d86ec 0%, #82eafd 100%);
+      color: #fff;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 0 14px 0;
+      margin-top: 9px;
+      font-size: 1.13em;
+      letter-spacing: 0.020em;
+      cursor: pointer;
+      box-shadow: 0 1.5px 6px 0 #8dddf45e;
+      transition: background 0.14s, color 0.18s, transform 0.1s;
+  }
+  .fa-fastag-pay-btn:hover {
+      background: linear-gradient(90deg, #21a8ec 0%, #4bc7ff 100%);
+      color: #ebf8ff;
+      transform: scale(1.012);
+  }
+  @media (max-width: 700px) {
+      .fa-summary-maincard { padding: 12px 5vw 24px 5vw; }
+      .fa-fastag-summary-header, .fa-summary-grid { flex-direction:column; grid-template-columns:1fr }
+  }
+  @media (max-width: 480px) {
+      .fa-fastag-title { font-size: 1.36rem; }
+      .fa-fastag-form-box, .fa-fastag-header, .fa-fastag-payform-box { padding-left: 3vw; padding-right: 3vw;}
+  }
+</style>
+
+<div class="cont">
+  <div class="fixed-bharat-connect-header">
+    <div class="container d-flex justify-content-end align-items-center">
+      <div class="navbar-brand m-0 ms-auto">
+        <img src="/media/bharat_connect_images.png" alt="Logo" style="height:40px; width:auto; mix-blend-mode:multiply;">
       </div>
     </div>
   </div>
+<div class="fastag-form-container" id="fastagFormContainer" {% if payload %}style="display:none"{% endif %}>
+  <form method="post" action="{% url 'fastag_recharge' %}" id="fastagFetchForm">
+      {% csrf_token %}
+      <input type="hidden" name="billerId" value="{{ billerId }}">
+      
+      <label class="fastag-form-label" for="vehicle_number">
+          Vehicle Number 
+      </label>
+      <input type="text"
+             id="vehicle_number"
+             name="vehicle_number"
+             class="fastag-form-input"
+             required
+      >
+     <small style="display:block; font-size: 0.82em; color: #73777e; margin-top: 4px;">Please Enter Valid Vehicle Number</small>
+      <button type="submit" class="fastag-form-btn">
+          Proceed to Recharge
+      </button>
+      <div style="margin-top:20px; background: #f9fbfc; border-radius:8px; padding:13px 14px; text-align:left; color: rgb(113, 112, 112); font-size:0.77em;">
+          After proceeding, you'll be redirected to the payment or recharge status page. Please ensure your vehicle number is correct before continuing.
+      </div>
+  </form>
+</div>
+{% if payload %}
+<style>
+  .fastag-summary-card {
+    max-width: 620px;
+    margin: 22px auto 0 auto;
+    background: #fafcfd98;
+    border-radius: 8px;
+    box-shadow: 0 1px 7px 0 #ebebeb75;
+    padding: 9px 11px 12px 11px;
+    font-size: 0.89em;
+    color: #232323;
+    font-family: 'Inter', Arial, sans-serif;
+  }
+  .fastag-summary-grid {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+  }
+  .fastag-summary-label {
+    display: block;
+    color: #484848;
+    font-weight: 500;
+    font-size: 0.87em;
+    margin-bottom: 2px;
+  }
+  .fastag-summary-value {
+    font-weight: 700;
+    font-size: 0.95em;
+    color: #1a1a1a;
+    margin-bottom: 7px;
+    display: block;
+  }
+  .fastag-summary-section {
+    flex: 1;
+    min-width: 0;
+  }
+  .fastag-summary-row {
+    margin-bottom: 0.45em;
+  }
+  .fastag-amount-row {
+    margin: 0.6em 0 0.36em 0;
+  }
+  .fastag-payment-btn {
+    width: 100%;
+    background: #181819;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    padding: 7px 0 7px 0;
+    margin-top: 7px;
+    font-size: 0.95rem;
+    letter-spacing: 0.012em;
+    cursor: pointer;
+    transition: background 0.16s, color 0.16s;
+  }
+  .fastag-payment-btn:hover {
+    background: #353a43;
+    color: #f7f7f7;
+  }
+  .fastag-splitter {
+    height: 1px;
+    background: #ddd;
+    margin: 7px 0 7px 0;
+    border-radius: 4px;
+  }
+  .fastag-form-payment-container {
+    max-width: 430px;
+    margin: 0 auto 0 auto;
+    background: #f7fbff;
+    border-radius: 7px;
+    box-shadow: 0 0.5px 3px 0 #e2e2e262;
+    padding: 14px 9px 19px 9px;
+    font-size: 0.91em;
+  }
+  .fastag-form-payment-label {
+    font-weight: 600;
+    color: #333;
+    min-width: 105px;
+    font-size: 0.90em;
+  }
+  .fastag-form-payment-input {
+    margin-top: 1px;
+    background: #f6f7fa;
+    border: 1px solid #bfc4cc;
+    color: #2b2b2b;
+    font-size: 0.97em;
+    width: 160px;
+    margin-left: 7px;
+    border-radius: 6px;
+    padding: 7px 8px;
+  }
+  .fastag-form-payment-note {
+    font-size: 0.78em;
+    color: #7a7a7a;
+    margin-bottom: 5px;
+    margin-top: 6px;
+  }
+</style>
 
-  {% endblock %}
+  <div class="fa-summary-maincard">
+  
+      <div class="fa-fastag-summary-header">
+          <span class="fa-summary-section-title">
+              <svg height="22" width="26" style="vertical-align: middle; margin-bottom:-4px">
+                  <ellipse cx="12" cy="11" rx="12" ry="10" fill="#eaf6ff"></ellipse>
+                  <rect x="6" y="6" width="13" height="8" rx="4" fill="#37acf8"></rect>
+                  <rect x="10" y="12" width="5" height="3" rx="1.2" fill="#d6f1ff"></rect>
+              </svg>
+              FASTag Account Overview
+          </span>
+        
+      </div>
+      <div class="fa-summary-divider"></div>
+      <div class="fa-summary-grid">
+          <div>
+              <div class="fa-summary-detail-label">Vehicle No.</div>
+              <span class="fa-summary-detail-value">{{ vehicle_number|default:"—" }}</span>
+              <div class="fa-summary-detail-label">Account Holder</div>
+              <span class="fa-summary-detail-value">{{ payload.billerResponse.accountHolderName|default:"—" }}</span>
+              <div class="fa-summary-detail-label">Tag Status</div>
+              <span class="fa-summary-detail-value">{{ payload.additionalParams.Tag_Status|default:"N/A" }}</span>
+              <div class="fa-summary-detail-label">Due Date</div>
+              <span class="fa-summary-detail-value">{{ payload.billerResponse.dueDate|default:"—" }}</span>
+              <div class="fa-summary-detail-label">Bill Date</div>
+              <span class="fa-summary-detail-value">{{ payload.billerResponse.billDate|default:"—" }}</span>
+          </div>
+          <div>
+              <div class="fa-summary-detail-label">Ref ID</div>
+              <span class="fa-summary-detail-value">{{ payload.refId|default:"—" }}</span>
+              <div class="fa-summary-detail-label">Max Recharge</div>
+              <span class="fa-summary-detail-value">₹{{ payload.additionalParams.Maximum_Permissible_Recharge_Amount|default:"—" }}</span>
+              <div class="fa-summary-detail-label">Amount Due</div>
+              <span class="fa-summary-detail-value">₹{{ payload.billerResponse.amount|default:"—" }}</span>
+              <div class="fa-summary-detail-label">Bill Number</div>
+              <span class="fa-summary-detail-value">{{ payload.billerResponse.billNumber|default:"—" }}</span>
+              <div class="fa-summary-detail-label">Account Status</div>
+              <span class="fa-summary-detail-value">{{ payload.billerResponse.status|default:"Active" }}</span>
+          </div>
+      </div>
+  
+      <div class="fa-fastag-payform-box">
+          <form method="post" action="{% url 'fastag_payment' %}">
+              {% csrf_token %}
+              <input type="hidden" name="return_payload" value='{{ return_payload_json|escapejs }}'>
+              <div class="fa-fastag-payform-row">
+                  <label class="fa-fastag-payform-label" for="recharge-amt">Recharge Amount</label>
+                  <input type="number" name="amount" value="{{ payload.billerResponse.amount }} id="recharge-amt" class="fa-fastag-payform-input" min="1" 
+                         placeholder="Enter amount" required>
+              </div>
+              <span class="fa-fastag-payform-note">Minimum recharge: ₹1. Enter amount to proceed.</span>
+              <button type="submit" class="fa-fastag-pay-btn">
+                  Pay & Complete Recharge &raquo;
+              </button>
+          </form>
+      </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

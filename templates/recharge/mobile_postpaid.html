@@ -118,12 +118,17 @@
   </style>
 </head>
 <body>
-  <div class="container-fluid mt-3 mb-4 text-center" style="width:100%;">
-    <img src="/media/recharge/bbpsdesktop.png" alt="" class="img-fluid rounded shadow-sm" style="max-width:100%; width:100%;">
-  </div>
-  {% if success_data %}
+  <div class="cont">
+    <div class="fixed-bharat-connect-header">
+      <div class="container d-flex justify-content-end align-items-center">
+        <div class="navbar-brand m-0 ms-auto">
+          <img src="/media/bharat_connect_images.png" alt="Logo" style="height:40px; width:auto; mix-blend-mode:multiply;">
+        </div>
+      </div>
+    </div>
+  <!-- {% if success_data %}
     {% include "recharge/recharge_success.html" %} 
-  {% else %}  
+  {% else %}   -->
 
   <div class="recharge-card">
     <h3 class="fw-bold">Mobile Postpaid Bill</h3>
@@ -148,7 +153,11 @@
     
       <div class="custom-input">
         <label for="">Mobile NUmber <span class="text-danger fw-bold">*</span></label>
-        <input type="text" name="rechargers_number" class="form-control" placeholder="Enter Mobile Number" required>
+        <input type="text" name="rechargers_number" class="form-control" placeholder="Enter Mobile Number" required pattern="[6-9][0-9]{9}"
+        maxlength="10"
+        minlength="10"
+        inputmode="numeric"
+        oninput="this.value=this.value.replace(/[^0-9]/g,'');">
       </div>
 
       
@@ -187,9 +196,9 @@
     </form>
 
     
-    <div class="footer-logo mt-3">
+    <!-- <div class="footer-logo mt-3">
       <img src="/media/bharat_connect_images.png" alt="Bharat Connect">
-    </div>
+    </div> -->
   </div>
 
   {% endif %}

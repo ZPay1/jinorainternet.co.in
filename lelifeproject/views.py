@@ -31,23 +31,23 @@ def decrypt_data(data):
 '''
 
 def google_login(request):
-    print('google_login method calledd............')
+    #print('google_login method calledd............')
     # Check if 'state' parameter is passed, otherwise default to 'login'
     state = request.GET.get('state', 'login')  # 'login' default state
-    print(f'{state=}')
+    #print(f'{state=}')
     if request.method == 'POST':
         identifier = request.POST.get('identifier', '').strip()
-        print(f'{identifier=}')
+        #print(f'{identifier=}')
         password = request.POST.get('password', '').strip()
-        print(f'{password=}')
+        #print(f'{password=}')
         remember_me = request.POST.get('remember_me')
-        print(f'{remember_me=}')
+        #print(f'{remember_me=}')
 
         # ✅ Encrypt & save in session instead of URL
         encrypted_identifier = encrypt_data(identifier)
-        print(f'{encrypted_identifier}')
+        #print(f'{encrypted_identifier}')
         encrypted_password = encrypt_data(password)
-        print(f'{encrypted_password}')
+        #print(f'{encrypted_password}')
 
 
         request.session['google_login_temp'] = {
@@ -76,19 +76,19 @@ def google_login(request):
 '''
 
 def google_callback(request):
-    print('google_callback method calledd')
+    #print('google_callback method calledd')
     code = request.GET.get('code')
-    print(f'=================={code=}')
+    #print(f'=================={code=}')
     state = request.GET.get('state', 'login')  # Default to 'login' if state is not provided
-    print(f'{state=}')
+    #print(f'{state=}')
     
-    # 👇 Ye line poora current URL (including domain + query params) print karegi
+    # 👇 Ye line poora current URL (including domain + query params) #print karegi
     full_url = request.build_absolute_uri()
-    print(f"Current full callback URL: {full_url}")
+    #print(f"Current full callback URL: {full_url}")
 
     # Agar sirf base path (domain + path, without query params) chahiye:
     base_path = request.build_absolute_uri(request.path)
-    print(f"Base path only: {base_path}")
+    #print(f"Base path only: {base_path}")
     
     if not code:
         messages.error(request, 'Authorization code not received')
@@ -119,8 +119,8 @@ def google_callback(request):
 
     email = user_info.get('email')
     name = user_info.get('name')
-    print(f'{email}')
-    print(f'{name=}')
+    #print(f'{email}')
+    #print(f'{name=}')
     if not email:
         messages.error(request, 'Failed to get user info')
         return redirect('sign_in')
@@ -128,7 +128,7 @@ def google_callback(request):
     if state == 'login':   
         # Retrieve encrypted data from session
         temp_data = request.session.get('google_login_temp')
-        # print(f'{temp_data=}') 
+        # #print(f'{temp_data=}') 
         if not temp_data:
             messages.error(request, "Session expired or invalid.")
             return redirect('sign_in')
@@ -152,14 +152,14 @@ def google_callback(request):
             'email':email
          
         }
-        print(f'{payload=}')
+        #print(f'{payload=}')
 
         try:
             # Step 3: POST login request
             response = session.post(f"{Baseurl}/user/login/", json=payload, headers=headers, verify=False)
-            print(f'{response=}')
+            #print(f'{response=}')
             data = response.json()
-            print(f'{data=}')
+            #print(f'{data=}')
 
             if data.get('status') == 'success':
                 # Save user info and access token in session
@@ -187,67 +187,76 @@ def google_callback(request):
         except ValueError:
             messages.error(request, "Invalid response from login API.")
             return redirect('sign_in')
-
     elif state == 'register':   
         register_data = request.session.get('register_data')
-   
+
         if register_data["email"] != email:
             messages.error(request, "Email verification failed: The email you entered does not match the registered email.")
-
             return redirect('sign_in')
-     
-        sponsor = register_data['sponsor']
 
-        # ✅ Common data fields
-        data = register_data
-        # print(f'{data=}')
+        sponsor = register_data.get('sponsor')
+        data = register_data  
 
         try:
-            # ✅ Sponsor check & API selection
             if sponsor:
-                data['sponsor'] = sponsor
                 url = f"{Baseurl}/register-user/"
             else:
                 url = f"{Baseurl}/user/register/"
 
             response = requests.post(url, json=data)
-         
-            # # #print(f'{response.text}')
-
             api_response = response.json()
-            
-            
-            if api_response.get('status') is True:
-                # message = api_response.get('message', 'Account created successfully.')
-                if 'register_data' in request.session:
-                    del request.session['register_data']
-                  
-                messages.success(request, data.get('message', 'Account created successfully'))
+
+            #print("API RAW RESPONSE:", api_response)
+
+            if api_response.get("status") != "success":
+                messages.error(request, api_response.get("message", "Registration failed"))
                 return redirect('sign_in')
 
+            user_data = api_response.get("data", {})
+            #print(f'{user_data=}')
 
-            else:
-                message = api_response.get('message', 'Failed to register.')
-                messages.error(request, data.get('message', f'{message}'))
-                return redirect('sign_in')
+            user_raw = user_data.get("user", {})
+            sponsor_raw = user_data.get("sponsor", {})
 
-        except ValueError:
-            # message = 'Invalid response from API.'
-            messages.error(request, data.get('message', 'Invalid response from API.'))
+            user_info = {
+                "user_id": user_raw.get("User ID"),
+                "name": user_raw.get("User Name"),
+                "email": user_raw.get("Email ID"),
+                "mobile": user_raw.get("Mobile"),
+                "password": user_raw.get("Password"),
+                "registration_date": user_raw.get("Registration Date"),
+            }
+
+            sponsor_info = {
+                "sponsor_id": sponsor_raw.get("Sponsor ID"),
+                "sponsor_name": sponsor_raw.get("Sponsor Name"),
+                "sponsor_mobile": sponsor_raw.get("Sponsor Mobile"),
+            }
+
+            message = api_response.get("message", "Account created successfully")
+            # return redirect('sign_in')
+            # Popup message
+            request.session["popup_message"] = message
+            messages.success(request, message)
+
+            if 'register_data' in request.session:
+                del request.session['register_data']
+
+            return render(request, 'service/register.html', {
+                'user_info': user_info,
+                'sponsor_info': sponsor_info,
+                'message': message,
+                "show_popup": True,
+            })
+
+        except Exception as e:
+            messages.error(request, f"API request failed: {str(e)}")
             return redirect('sign_in')
-        except requests.exceptions.RequestException as e:
-            # message = f'API request failed: {str(e)}'
-            messages.error(request, data.get('message', f'API request failed: {str(e)}'))
-            return redirect('sign_in')
+
+   
 
 
-
-    else:
-        messages.error(request, 'Invalid state parameter')
-        return redirect('sign_in')
-
-
-
+   
 def register_account(request):
     state = "register" #request.GET.get('state', 'login')  # 'login' default state
 
@@ -293,10 +302,10 @@ def get_csrf_token(session):
         data = response.json()
         return data.get("csrfToken")
     except requests.exceptions.RequestException as e:
-        # # #print(f"Error fetching CSRF token: {e}")
+        # # ##print(f"Error fetching CSRF token: {e}")
         return None
     except ValueError:
-        # # #print("Invalid JSON response when fetching CSRF token")
+        # # ##print("Invalid JSON response when fetching CSRF token")
         return None
 
 
@@ -309,7 +318,7 @@ import base64
 
 @csrf_exempt
 def sign_in_view(request):
-    print('sign_in_view method calledddd')
+    #print('sign_in_view method calledddd')
     if request.method == 'POST':
         identifier = request.POST.get('identifier', '').strip()
         password = request.POST.get('password', '').strip()
@@ -332,18 +341,19 @@ def sign_in_view(request):
             'email':email
          
         }
-        print(f'==============={payload=}')
+        # #print(f'==============={payload=}')
         try:
             # Step 3: POST login request
             response = session.post(f"{Baseurl}/user/login/", json=payload, headers=headers, verify=False)
-            print(f'{response=}')
+            #print(f'{response=}')
             data = response.json()
-            print(f'{data=}')
+            ##print(f'{data=}')
 
             if data.get('status') == 'success':
-                print(f'{data=}')
+                #print(f'{data=}')
                 # Save user info and access token in session
                 request.session['access_token'] = data.get('access')
+                request.session['refresh_token'] = data.get('refresh')  # ✅ ALWAYS SAVE
       
                 request.session['user_data'] = data
 
@@ -420,14 +430,14 @@ def register_view(request):
         try:
             response = requests.post(f"{Baseurl}/user/register/", json=data)
             api_response = response.json()
-            # print(f'{api_response=}')
+            # #print(f'{api_response=}')
             if api_response.get('status') is True:
               
                 message = api_response.get('message', 'Account created successfully.')
-                
+                return redirect('sign_in')
             else:
                 message = api_response.get('message', 'Failed to register.')
-                # print(f'{message=}')
+                # #print(f'{message=}')
         except ValueError:
             message = 'Invalid response from API.'
         except requests.exceptions.RequestException as e:
@@ -485,6 +495,7 @@ def logout_view(request):
 '''
 
 def dashboard_view(request):
+    
     if 'user_data' not in request.session: 
         return redirect('sign_in') 
       
@@ -503,7 +514,7 @@ from django.shortcuts import render
 
 
 def profile_view(request):
-    print('profile method called')
+    #print('profile method called')
     if 'user_data' not in request.session: 
         return redirect('sign_in') 
 
@@ -535,7 +546,7 @@ def profile_view(request):
         if response.status_code == 200:
             response.raise_for_status()
             profile_data = response.json().get('data', {})
-            print(f'{profile_data=}')
+            #print(f'{profile_data=}')
           
            
   
@@ -627,7 +638,8 @@ def fetch_bill_view(request):
 
 #     return render(request, 'our_service.html', {'services': services})
 
-
+def recharge_page_view(request):
+    return render(request,'recharge.html')
 
 
 
@@ -689,14 +701,14 @@ import logging
 def contact_us_view(request):
     if request.method == 'POST':
         name = request.POST.get('name')
-        #print(name)
+        ##print(name)
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
-        #print(email)
+        ##print(email)
         mobile = request.POST.get('mobile')
-        #print(mobile)
+        ##print(mobile)
         message = request.POST.get('message')
-        #print(message)
+        ##print(message)
 
         # Save to database
         Contact.objects.create(
@@ -715,9 +727,9 @@ def contact_us_view(request):
                 recipient_list=[email],
                 fail_silently=False,
             )
-            #print("send mail")
+            ##print("send mail")
         except Exception as e:
-             #print(f'{e=}')
+             ##print(f'{e=}')
              pass #  (f"Error sending confirmation email: {e}")
 
         messages.success(request, 'Your message has been submitted.')

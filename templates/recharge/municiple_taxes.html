@@ -1,0 +1,181 @@
+{% extends 'service/service_base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+<style>
+  body {
+    background-color: #f5f8fc;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  .recharge-card {
+    max-width: 400px;
+    margin: 50px auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 25px 20px 15px;
+  }
+  .recharge-card h3 {
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 15px;
+  }
+  .custom-input {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.60rem;
+  }
+  .custom-input label {
+    position: absolute;
+    top: -0.6rem;
+    left: 12px;
+    background: #fff;
+    padding: 0 5px;
+    font-size: 0.85rem;
+    color: #555;
+    z-index: 2;
+  }
+  .custom-input input,
+  .custom-input select {
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease-in-out;
+    background-color: #fff;
+  }
+  .custom-input input:focus,
+  .custom-input select:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 0.15rem rgba(74,144,226,0.15);
+  }
+  .custom-input small {
+    margin-top: 4px;
+    font-size: 0.8rem;
+    color: #777;
+  }
+  .btn-proceed {
+    width: 100%;
+    background: #e9e9e9;
+    color: #777;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: not-allowed;
+  }
+  .footer-logo {
+    text-align: center;
+    padding-top: 10px;
+  }
+  .footer-logo img {
+    height: 40px;
+  }
+</style>
+
+<div class="cont">
+  <div class="fixed-bharat-connect-header">
+    <div class="container d-flex justify-content-end align-items-center">
+      <div class="navbar-brand m-0 ms-auto">
+        <img src="/media/bharat_connect_images.png" alt="Logo" style="height:40px; width:auto; mix-blend-mode:multiply;">
+      </div>
+    </div>
+  </div>
+
+{% if success_data %}
+  {% include "recharge/recharge_success.html" %}
+{% endif %}
+
+<div class="recharge-card">
+  <h3 class="fw-bold">Pay Municipal Taxes</h3>
+  <form method="POST">
+    {% csrf_token %}
+    <!-- State -->
+    <div class="custom-input">
+      <label>State</label>
+      <select name="related_state" required>
+        <option value="">Select State</option>
+        {% for state in states %}
+          <option value="{{ state.id }}">{{ state.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  
+    <div class="custom-input">
+      <label>Municipal Corporation</label>
+      <select name="refrence" required>
+        <option value="">Select Municipal Corporation</option>
+        <option value="mumbai_municipal_corporation">Brihanmumbai Municipal Corporation (BMC)</option>
+        <option value="delhi_municipal_corporation">Municipal Corporation of Delhi (MCD)</option>
+        <option value="bangalore_municipal_corporation">Bruhat Bengaluru Mahanagara Palike (BBMP)</option>
+        <option value="chennai_municipal_corporation">Greater Chennai Corporation</option>
+        <option value="kolkata_municipal_corporation">Kolkata Municipal Corporation (KMC)</option>
+        <option value="hyderabad_municipal_corporation">Greater Hyderabad Municipal Corporation (GHMC)</option>
+        <option value="pune_municipal_corporation">Pune Municipal Corporation (PMC)</option>
+        <option value="ahmedabad_municipal_corporation">Ahmedabad Municipal Corporation (AMC)</option>
+        <option value="surat_municipal_corporation">Surat Municipal Corporation</option>
+        <option value="jaipur_municipal_corporation">Jaipur Municipal Corporation</option>
+        <option value="lucknow_municipal_corporation">Lucknow Municipal Corporation</option>
+        <option value="kanpur_municipal_corporation">Kanpur Municipal Corporation</option>
+        <option value="nagpur_municipal_corporation">Nagpur Municipal Corporation</option>
+        <option value="indore_municipal_corporation">Indore Municipal Corporation</option>
+        <option value="patna_municipal_corporation">Patna Municipal Corporation</option>
+        <option value="bhopal_municipal_corporation">Bhopal Municipal Corporation</option>
+        <option value="thane_municipal_corporation">Thane Municipal Corporation</option>
+        <option value="visakhapatnam_municipal_corporation">Greater Visakhapatnam Municipal Corporation (GVMC)</option>
+        <option value="vadodara_municipal_corporation">Vadodara Municipal Corporation</option>
+        <option value="coimbatore_municipal_corporation">Coimbatore Municipal Corporation</option>
+        <option value="rajkot_municipal_corporation">Rajkot Municipal Corporation</option>
+        <option value="meerut_municipal_corporation">Meerut Municipal Corporation</option>
+        <option value="jabalpur_municipal_corporation">Jabalpur Municipal Corporation</option>
+        <option value="jamshedpur_municipal_corporation">Jamshedpur Notified Area Committee</option>
+      </select>
+    </div>
+    
+    <div class="custom-input">
+      <label>Property ID / Assessment Number <span class="text-danger fw-bold">*</span></label>
+      <input type="text" name="rechargers_number" placeholder="Enter Property ID or Assessment Number" required>
+    </div>
+    
+
+    <!-- Proceed Button -->
+    <button type="submit" id="dynamicProceed" class="btn-proceed mt-3" disabled>Proceed</button>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector("form");
+        const btn = document.getElementById("dynamicProceed");
+        function checkValidity() {
+          const requiredFields = form.querySelectorAll("[required]");
+          for (let i = 0; i < requiredFields.length; i++) {
+            if (!requiredFields[i].value.trim()) {
+              btn.disabled = true;
+              btn.style.background = "#e9e9e9";
+              btn.style.color = "#777";
+              btn.style.cursor = "not-allowed";
+              return;
+            }
+          }
+          btn.disabled = false;
+          btn.style.background = "#021331";
+          btn.style.color = "#fff";
+          btn.style.cursor = "pointer";
+        }
+        form.addEventListener("input", checkValidity);
+        checkValidity();
+      });
+    </script>
+  </form>
+  <!-- <div class="footer-logo mt-3">
+    <img src="/media/bharat_connect_images.png" alt="Bharat Connect">
+  </div> -->
+</div>
+{% endblock %}

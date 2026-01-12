@@ -1,0 +1,219 @@
+{% extends "service/service_base.html" %}
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+{% include 'recharge/logo.html' %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow rounded-4 text-center" id="paymentPopupCard" style="padding: 0 0 18px 0;">
+        <div class="card-body p-4" style="padding-bottom:0!important;">
+          <div class="display-4 text-success mb-2" style="font-size: 3.2rem;">✔</div>
+          <h4 class="fw-bold mb-1 mt-2">Recharge Successful</h4>
+          {% if message %}
+            <p class="text-muted small">{{ message }}</p>
+          {% endif %}
+
+          <div class="d-flex justify-content-between border-bottom py-1">
+            <span class="text-muted">Customer Name</span>
+            <div class="col-7 text-end text-success fw-bold">
+                {{ receipt.customer_name }}
+            </div>
+          </div>
+        
+          <div class="d-flex justify-content-between border-bottom py-1">
+            <span class="text-muted">Bill Amount</span>
+            <span class="fw-bold" style="color:#1e63d1;">₹{{ receipt.amount }}</span>
+          </div>
+        
+          <div class="d-flex justify-content-between border-bottom py-1">
+            <span class="text-muted">Transaction ID</span>
+            <div class="col-7 text-end fw-semibold text-success">{{ receipt.transaction_id }}</div>
+          </div>
+        
+          <div class="d-flex justify-content-between border-bottom py-1">
+            <span class="text-muted">Reference ID</span>
+            <div class="col-7 text-end">{{ receipt.reference_id }}</div>
+          </div>
+        
+          <div class="d-flex justify-content-between border-bottom py-1">
+            <span class="text-muted">Status</span>
+            <small class="col-7 text-end">{{ receipt.status }}</small>
+          </div>
+
+          <div class="rounded-4 px-2 mt-3 mb-2" style="background: linear-gradient(120deg, #e6fff1 80%, #f7f7fc 100%); border: 1.5px solid #20bb67;">
+            <div class="d-flex flex-column align-items-center py-2">
+              <div style="background: #fff; border-radius:50%; width:60px; height:60px; box-shadow:0 2px 10px rgba(40,160,100,.13); display:flex; align-items:center; justify-content:center; margin-bottom:5px; border:2px solid #20bb67;">
+                <img src="/media/JINORA_logo.png" alt="JINORA logo" style="width:40px; height:40px; border-radius:50%;">
+              </div>
+              <strong style="color:#20bb67; font-size:0.89rem;">Congratulations</strong>
+              <span>
+                <small class="text-success" style="font-size:12px;">
+                  {% if messages %}
+                    {% for message in messages %}
+                      <span>{{ message }}</span>
+                    {% endfor %}
+                  {% endif %}
+                </small>
+              </span>
+              <p class="mb-0 mt-1 text-center" style="font-size:10px; color:#333;">
+                You have earned <span style="color:#20bb67; font-weight:700;"><span class="fw-semibold">80</span> service points</span> with Jinora platform.<br>
+                Want to earn more? <b>Just Refer &amp; Earn!</b>
+              </p>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-center gap-2 mt-3 payment-popup-btns">
+            <button type="button" class="btn btn-primary btn-sm payment-btn-print d-flex align-items-center gap-1"
+              style="font-weight:500;"
+              title="Download">
+              <i class="fa fa-download" aria-hidden="true"></i>
+              <span>Download</span>
+            </button>
+            <button type="button" class="btn btn-outline-success btn-sm payment-btn-share d-flex align-items-center gap-1"
+              style="font-weight:500;"
+              title="Share">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+              <span>Share</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ✅ Notification Audio -->
+<audio id="successSound">
+    <source src="/media/music/BharatConnect.wav" type="audio/mpeg">
+  </audio>
+  
+  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:350px;">
+      <div class="modal-content text-center p-4 position-relative">
+        <div style="width:100%; text-align:center; margin-bottom:2px; text-decoration: underline;">
+          <span style="color: black; font-size: 14px; text-align: center; display:inline-block; font-weight: 600;">
+            RECHARGE CONFIRMATIONS
+          </span>
+          <button type="button" class="position-absolute top-0 end-0 m-2 p-2"
+            style="background: none; border: none; outline:none;"
+            onclick="var modal = bootstrap.Modal.getInstance(document.getElementById('successModal')); if(modal) modal.hide();">
+            <span aria-hidden="true" style="font-size:1.40rem; font-weight:400; color: #ff2323; position: absolute; top: -6px; right: 8px; cursor:pointer;">
+              <b>X</b>
+            </span>
+          </button>
+        </div>
+  
+        <img src="/media/Bbps_assured_logo.png" alt="Success" style="height:120px; width:auto; margin:auto;">
+        <p class="mt-3 text-success text-md fw-bold">PAYMENT SUCCESSFULL</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- ✅ Show modal + play sound -->
+  <script>
+  window.addEventListener('load', function() {
+      var myModal = new bootstrap.Modal(document.getElementById('successModal'));
+      myModal.show();
+  
+      // *Play Sound*
+      var sound = document.getElementById("successSound");
+      sound.volume = 1.0;
+  
+      // Try autoplay
+      var playPromise = sound.play();
+  
+      if (playPromise !== undefined) {
+          playPromise.catch(() => {
+              // User interaction required → play after any click
+              document.addEventListener('click', () => {
+                  sound.play();
+              }, { once: true });
+          });
+      }
+  });
+  </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    
+      const printBtn = document.querySelector(".payment-btn-print");
+      const shareBtn = document.querySelector(".payment-btn-share");
+      const card = document.getElementById("paymentPopupCard");
+    
+      function downloadPDF() {
+        if (!window.jspdf || !window.html2canvas) {
+          alert('PDF download not available.');
+          return;
+        }
+        const { jsPDF } = window.jspdf;
+        html2canvas(card, { scale: 2, backgroundColor: "#ffffff" }).then(canvas => {
+          const imgData = canvas.toDataURL("image/png");
+          const pdf = new jsPDF("p", "mm", "a4");
+          const pageWidth = pdf.internal.pageSize.getWidth();
+          const pageHeight = pdf.internal.pageSize.getHeight();
+          const imgWidth = pageWidth;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+          let heightLeft = imgHeight;
+          let y = 0;
+    
+          pdf.addImage(imgData, "PNG", 0, y, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+    
+          while (heightLeft > 0) {
+            pdf.addPage();
+            y = heightLeft - imgHeight;
+            pdf.addImage(imgData, "PNG", 0, y, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+          }
+    
+          pdf.save("payment-receipt.pdf");
+        });
+      }
+    
+      function shareReceipt() {
+        if (!window.html2canvas) {
+          alert('Sharing not available.');
+          return;
+        }
+        html2canvas(card, { scale: 2, backgroundColor: "#ffffff" }).then(canvas => {
+          canvas.toBlob(blob => {
+            const file = new File([blob], "receipt.png", { type: "image/png" });
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+              navigator.share({
+                title: "Payment Receipt",
+                text: "Here is your payment receipt.",
+                files: [file]
+              }).catch(err => console.error(err));
+            } else {
+              // fallback download
+              const link = document.createElement('a');
+              link.href = URL.createObjectURL(file);
+              link.download = "receipt.png";
+              link.click();
+            }
+          });
+        });
+      }
+    
+      if (printBtn) printBtn.addEventListener("click", downloadPDF);
+      if (shareBtn) shareBtn.addEventListener("click", shareReceipt);
+    
+    });
+    </script>
+    
+<style>
+.nofade {
+  background: #fff !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+}
+</style>
+
+{% endblock %}

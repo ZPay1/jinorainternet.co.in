@@ -82,9 +82,15 @@
   }
 </style>
 
-<div class="container-fluid mt-3 mb-4 text-center" style="width:100%;">
-  <img src="/media/recharge/bbpsdesktop.png" alt="" class="img-fluid rounded shadow-sm" style="max-width:100%; width:100%;">
-</div>
+<div class="cont">
+  <div class="fixed-bharat-connect-header">
+    <div class="container d-flex justify-content-end align-items-center">
+      <div class="navbar-brand m-0 ms-auto">
+        <img src="/media/bharat_connect_images.png" alt="Logo" style="height:40px; width:auto; mix-blend-mode:multiply;">
+      </div>
+    </div>
+  </div>
+
 {% if success_data %}
   {% include "recharge/recharge_success.html" %}
 {% endif %}
@@ -109,8 +115,27 @@
       <label>Water Board</label>
       <select name="provider" required>
         <option value="">Select Water Board</option>
-        <option value="am_world_school">Port Blair Municipal Council - Water</option>
-      
+        <option value="port_blair_municipal_council">Port Blair Municipal Council - Water</option>
+        <option value="delhi_jal_board">Delhi Jal Board</option>
+        <option value="bengaluru_water_supply">Bangalore Water Supply and Sewerage Board (BWSSB)</option>
+        <option value="mumbai_municipal_corporation">Brihanmumbai Municipal Corporation (BMC) - Water</option>
+        <option value="chennai_metropolitan_water">Chennai Metropolitan Water Supply and Sewerage Board (CMWSSB)</option>
+        <option value="hyderabad_metropolitan_water">Hyderabad Metropolitan Water Supply & Sewerage Board (HMWSSB)</option>
+        <option value="kolkata_municipal_corporation">Kolkata Municipal Corporation - Water</option>
+        <option value="jaipur_jal_board">Jaipur Jal Board (Jal Mahal)</option>
+        <option value="pune_municipal_corporation">Pune Municipal Corporation - Water</option>
+        <option value="ahmedabad_municipal_corporation">Ahmedabad Municipal Corporation (AMC) - Water</option>
+        <option value="lucknow_jal_sansthan">Lucknow Jal Sansthan</option>
+        <option value="nagpur_municipal_corporation">Nagpur Municipal Corporation - Water</option>
+        <option value="kanpur_jal_sansthan">Kanpur Jal Sansthan</option>
+        <option value="indore_municipal_corporation">Indore Municipal Corporation - Water</option>
+        <option value="surat_municipal_corporation">Surat Municipal Corporation - Water</option>
+        <option value="patna_municipal_corporation">Patna Municipal Corporation - Water</option>
+        <option value="bhopal_municipal_corporation">Bhopal Municipal Corporation - Water</option>
+        <option value="coimbatore_municipal_corporation">Coimbatore Municipal Corporation - Water</option>
+        <option value="ludhiana_municipal_corporation">Ludhiana Municipal Corporation - Water</option>
+        <option value="agra_jal_sansthan">Agra Jal Sansthan</option>
+        <!-- Add more water boards here as needed -->
       </select>
     </div>
     <div class="custom-input">
@@ -146,8 +171,8 @@
       });
     </script>
   </form>
-  <div class="footer-logo mt-3">
+  <!-- <div class="footer-logo mt-3">
     <img src="/media/bharat_connect_images.png" alt="Bharat Connect">
-  </div>
+  </div> -->
 </div>
 {% endblock %}

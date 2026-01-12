@@ -1,0 +1,142 @@
+
+{% extends 'service/service_base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<style>
+    .biller-list-container {
+        background: #fff;
+        padding: 30px 25px;
+        border-radius: 10px;
+        box-shadow: 0 6px 32px 2px #e4e2e266;
+        max-width: 420px;
+        margin: 40px auto;
+    }
+    .biller-list-title {
+        font-size: 1.15rem;
+        font-weight: bold;
+        margin-bottom: 1.35em;
+        color: #2c3e50;
+    }
+    .biller-list {
+        display: flex;
+        flex-direction: column;
+        gap: 17px;
+        margin-bottom: 20px;
+    }
+    .biller-option {
+        display: flex;
+        align-items: center;
+        padding: 11px 12px;
+        border: 1px solid #e2e1e1;
+        border-radius: 6px;
+        background: #fafbff;
+        transition: box-shadow 0.18s, background 0.18s;
+        cursor: pointer;
+        position: relative;
+    }
+    .biller-radio {
+        margin-right: 15px;
+    }
+    .biller-icon-holder {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f6fafd;
+        border-radius: 8px;
+        margin-right: 13px;
+        box-shadow: 0 2px 8px 2px #ddeafa40;
+        flex-shrink: 0;
+        border: 1px solid #e3e7f1;
+        overflow: hidden;
+    }
+    .biller-icon-holder img {
+        max-width: 32px;
+        max-height: 32px;
+        object-fit: contain;
+    }
+    .biller-name {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #444;
+    }
+    .biller-option input[type="radio"]:focus + .biller-icon-holder {
+        border: 2px solid #4ba4f8;
+    }
+    .biller-option.selected {
+        border-color: #3fa9f5;
+        background: #eef6fe;
+    }
+    .proceed-btn {
+        width: 100%;
+        background: linear-gradient(90deg, #2494ff 30%, #37dbff 100%);
+        color: #fff;
+        font-weight: 600;
+        font-size: 1.09rem;
+        padding: 11px 0;
+        border: none;
+        border-radius: 6px;
+        transition: background 0.21s;
+        box-shadow: 0 1px 6px 1px #c7e6fa81;
+    }
+    .proceed-btn:hover {
+        background: linear-gradient(90deg, #2494ff 10%, #37dbff 100%);
+        color: #fdfdfd;
+    }
+</style>
+
+
+
+
+
+<div class="cont">
+    <div class="fixed-bharat-connect-header">
+      <div class="container d-flex justify-content-end align-items-center">
+        <div class="navbar-brand m-0 ms-auto">
+          <img src="/media/bharat_connect_images.png" alt="Logo" style="height:40px; width:auto; mix-blend-mode:multiply;">
+        </div>
+      </div>
+    </div>
+  
+
+<div class="biller-list-container">
+    <div class="biller-list-title">
+        Select Your FASTag Biller
+    </div>
+        {% csrf_token %}
+        <div class="biller-list">
+            {% for biller in billers %}
+            <a href="{% url 'fastag_recharge' %}?billerId={{ biller.billerId }}&billerName={{ biller.billerName|urlencode }}"
+               style="text-decoration:none;color:inherit;">
+            
+                <div class="biller-option">
+                    <span class="biller-icon-holder">
+                        <span style="display:inline-block;width:40px;height:40px;line-height:40px;
+                        background:#e2ecf6;color:#2494ff;font-weight:bold;font-size:1.5rem;
+                        text-align:center;border-radius:8px;">
+                            {{ biller.billerName|slice:":1" }}
+                        </span>
+                    </span>
+            
+                    <span class="biller-name">
+                        {{ biller.billerName }}
+                    </span>
+                </div>
+            
+            </a>
+            {% endfor %}
+      
+    </form>
+</div>
+
+
+<script>
+    // Highlight selected biller (for UX only)
+    function selectBiller(ev) {
+        let options = document.querySelectorAll('.biller-option');
+        options.forEach(opt => opt.classList.remove('selected'));
+        ev.closest('.biller-option').classList.add('selected');
+    }
+</script>
+{% endblock %}

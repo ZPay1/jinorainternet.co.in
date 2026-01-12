@@ -5,26 +5,105 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 
 <style>
-    /* Transparent Header on Hero */
-    .main_header_area {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 3;
- 
-  
-    }
-    .topbar-area {
-      background: rgba(0,0,0,0.5);
-    }
-    .main-navbar {
-  
-      background: rgba(255, 255, 255, 0.961); 
-      backdrop-filter: blur(5px); 
-    }
+  /* Transparent Header on Hero */
+  .main_header_area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 3;
+  }
 
-   
+  .topbar-area {
+    background: rgba(0,0,0,0.5);
+  }
+
+  .main-navbar {
+    background: rgba(255, 255, 255, 0.961);
+    backdrop-filter: blur(5px);
+  }
+
+  /* Floating image animation */
+  @keyframes floatY {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
+  .floaty-icon {
+    animation: floatY 2s ease-in-out infinite;
+  }
+
+  /* Offcanvas styling */
+  .offcanvas-menu {
+    background: linear-gradient(to bottom right, #ffffff, #f8fbff);
+    /* border-top-left-radius: 20px;
+       border-top-right-radius: 20px; */
+    box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+  }
+
+  body {
+    padding-top: 90px; /* match navbar height */
+  }
+
+
+
+  .fixed-bharat-connect-header {
+    position: fixed;
+    top: 150px;
+    left: 0;
+    width: 100vw;
+    z-index: 999;
+    padding: 3px 0;
+  }
+  .fixed-bharat-connect-header .navbar-brand img {
+  
+    height: 90px !important;
+    width: auto !important;
+    mix-blend-mode: multiply;
+    max-width: unset !important;
+    max-height: unset !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    display: block;
+  }
+  .cont{
+  margin-top: 20px;
+}
+
+
+  @media (max-width: 576px) {
+    .contact-info-item {
+      font-size: 0.9rem;
+    }
+    .contact-info-item a {
+      font-size: 0.9rem;
+    }
+    .contact-info-item i {
+      font-size: 0.95rem;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .contact-info-item {
+      font-size: 0.82rem;
+    }
+    .contact-info-item a {
+      font-size: 0.82rem;
+    }
+    .contact-info-item i {
+      font-size: 0.87rem;
+    }
+  }
+
+
+ 
 </style>
 
 <!-- Header (Transparent Overlay) -->
@@ -35,16 +114,23 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6">
                     <ul class="list-inline mb-0">
-                        <li class="list-inline-item">
-                            <a href="{% url 'homepage_view' %}" class="text-white me-2"><i class="fab fa-facebook"></i></a>
-                            <a href="{% url 'homepage_view' %}" class="text-white me-2"><i class="fab fa-twitter-square"></i></a>
-                            <a href="{% url 'homepage_view' %}" class="text-white me-2"><i class="fab fa-instagram"></i></a>
-                            <a href="{% url 'homepage_view' %}" class="text-white"><i class="fab fa-linkedin"></i></a>
+                        <!-- <li class="list-inline-item">
+                            <a href="https://www.facebook.com/share/17nJPSesQX/?mibextid=wwXIfr " class="text-white me-2"><i class="fab fa-facebook"></i></a>
+                            <a href="https://t.me/officialjinorainternetchannel " class="text-white me-2"><i class="fab fa-telegram-plane"></i></a>
+                            <a href="https://www.instagram.com/officialjinorainternetchannel?igsh=MWJuNHBiZzcxM3JrbQ%3D%3D&utm_source=qr " class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                          
+                        </li> -->
+                        <li class="list-inline-item ms-3 contact-info-item">
+                            <i class="fas fa-phone-alt"></i>
+                            <a href="tel:+91 9917623425" style="text-decoration: none;" class="text-white">+91 9917623425</a>
                         </li>
-                        <li class="list-inline-item ms-3"><i class="fas fa-phone-alt"></i> <a href="tel:+91 9917623425" style="text-decoration: none;" class="text-white">+91 9917623425</a></li>
-                        <li class="list-inline-item ms-3"><i class="fas fa-envelope"></i> <a href="mailto:jinorainternet@gmail.com" style="text-decoration: none;" class="text-white">jinorainternet@gmail.com</a></li>
+                        <li class="list-inline-item ms-3 contact-info-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info.jinorainternet@gmail.com" style="text-decoration: none;" class="text-white">info.jinorainternet@gmail.com</a>
+                        </li>
+                        
                     </ul>
-                </div>
+                </div> 
                 <div class="col-lg-6 col-md-6 text-end">
                     <ul class="list-inline mb-0">
                         <li class="list-inline-item"><a href="{% url 'sign_in' %}" style="text-decoration: none;" class="text-white">Sign in</a></li>
@@ -69,21 +155,22 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item mb-2">
+                            <a href="{% url 'recharge_page_view' %}" class="nav-link sidebar-link d-flex align-items-center">
+                              <img src="/media/Bbps.png" alt="logo" class="me-2 floaty-icon" style="width:27px;height:25px;">
+                             <span class="fw-bold"> Pay Bills</span>
+                            </a>
+                          </li>
                         <li class="nav-item"><a href="{% url 'homepage_view' %}" class="nav-link custom-nav-link">Home</a></li>
                         <li class="nav-item"><a href="{% url 'about_us' %}" class="nav-link custom-nav-link">About Us</a></li>
                         <li class="nav-item"><a href="{% url 'our_service' %}" class="nav-link custom-nav-link">Services</a></li>
                         <li class="nav-item"><a href="{% url 'career_view' %}" class="nav-link custom-nav-link">Career</a></li>
                         <li class="nav-item"><a href="{% url 'contact_us' %}" class="nav-link custom-nav-link">Contact Us</a></li>
-                      
-                        <!-- <li class="nav-item">
-                            <a href="{% url 'sign_in' %}" class="nav-link custom-nav-link">Login</a>
-                          </li>
-                          
-                        <li class="nav-item "><a href="{% url 'register_view' %}" class="nav-link custom-nav-link">Registration</a></li> -->
                     </ul>
                 </div>
             </nav>
         </div>
     </div>
+ 
 </header>
 

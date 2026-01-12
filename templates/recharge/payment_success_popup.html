@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<!-- Improved Payment Receipt Popup -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+body.no-scroll { overflow: hidden; }
+
+.payment-popup-modal {
+  position: fixed; top: 0; left: 0;
+  width: 100vw; height: 100vh;
+
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+
+  padding: 10px;
+}
+
+.payment-popup-card {
+  background: #ffffff;
+  width: 350px;
+  /* height:500px ; */
+  max-width: 95vw;
+  border-radius: 10px;
+  padding: 20px 18px;
+  box-shadow: 0 6px 32px rgba(0,0,0,0.27);
+  position: relative;
+  animation: popIn .35s ease-out;
+  text-align:center;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.75); opacity:0; }
+  70% { transform: scale(1.04); opacity:1; }
+  100% { transform: scale(1); }
+}
+
+.payment-success-icon {
+  font-size: 70px;
+  color:#1cb45d;
+  margin-bottom: 14px;
+}
+
+.payment-heading-title {
+  font-weight:700; font-size:1.35rem;
+  color:#222;
+  margin-bottom:4px;
+}
+.payment-success-heading {
+  font-weight:600; color:#1cb45d;
+  font-size:1.05rem; 
+  margin-bottom:5px;
+}
+
+.payment-receipt-number {
+  font-size:1.18rem; font-weight:700;
+  color:#1e3c72;
+}
+
+.payment-success-details {
+  background:#f1f6fb;
+  padding:10px; border-radius:12px;
+  /* margin-top:5px; */
+  text-align:left;
+  font-size:1rem;
+  border:1px solid #e3e9ef;
+}
+
+.payment-row {
+ 
+  display:flex; justify-content:space-between;
+  /* margin-top:6px; font-weight:500; */
+}
+.payment-row-detail{
+
+  font-size: 15px;
+}
+.payment-row span:last-child {
+  font-weight:600; color:#1e3c72;
+}
+
+.payment-popup-btns {
+  display:flex; justify-content:center; gap:14px;
+  margin-top:10px;
+}
+
+.payment-btn {
+  /* padding:7px 17px; font-size:1rem; */
+  border-radius:5px; border:none;
+  font-weight:600; cursor:pointer;
+  transition:all .2s ease;
+}
+
+.payment-btn-print {
+  background:#1e63d1; color:#fff;
+}
+.payment-btn-print:hover {
+  background:#134da8;
+}
+
+.payment-btn-cancel {
+  background:#ececec; color:#333;
+}
+.payment-btn-cancel:hover {
+  background:#dcdcdc;
+}
+
+.payment-popup-close-x {
+  position:absolute; top:14px; right:18px;
+  background:none; border:none;
+  font-size:28px; color:#aaa;
+  cursor:pointer; transition:.2s;
+}
+.payment-popup-close-x:hover { color:#ff4444; }
+
+@media(max-width:576px){
+  .payment-popup-card{padding:22px 18px;}
+  .payment-success-details {padding:16px 18px;}
+}
+</style>
+<body>
+
+<!-- <div class="payment-popup-modal" id="popupBanner">
+  <div class="payment-popup-card" id="paymentPopupCard">
+    <button class="payment-popup-close-x" onclick="closePopup()">&times;</button>
+ -->
+ <div class="payment-popup-modal" id="popupBanner">
+  <div class="payment-popup-card shadow-lg" id="paymentPopupCard" style="
+    background: #ffffff;
+    border-radius: 18px;
+    width:400px;
+    max-width:96vw;
+    padding:22px 20px;
+    border:1px solid #e7ecf3;
+    box-shadow:0 8px 35px rgba(0,0,0,.12);
+  ">
+
+    <button class="payment-popup-close-x" onclick="closePopup()">&times;</button>
+
+    <!-- Header -->
+    <div class="text-center mb-3">
+      <div class="success-anim-wrapper" style="width:56px;height:56px;margin:0 auto;">
+        <svg class="success-circle-anim" width="56" height="56" viewBox="0 0 56 56">
+          <circle class="success-bg" cx="28" cy="28" r="24" fill="#fff" stroke="#1ecb75" stroke-width="3"/>
+          <circle class="success-progress" cx="28" cy="28" r="24" fill="none" stroke="#1ecb75" stroke-width="3"
+                  stroke-dasharray="150.72" stroke-dashoffset="150.72"/>
+          <polyline class="success-tick" points="17,30 25,37 39,20" fill="none" stroke="#1ecb75"
+            stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <style>
+        .success-anim-wrapper {
+          position: relative;
+        }
+        .success-circle-anim .success-progress {
+          animation: circle-pop 0.9s cubic-bezier(.85,0,.15,1) forwards;
+        }
+        @keyframes circle-pop {
+          to {
+            stroke-dashoffset: 0;
+          }
+        }
+        .success-tick {
+          stroke-dasharray: 30;
+          stroke-dashoffset: 30;
+          opacity: 0;
+          animation: draw-tick 0.6s 0.6s cubic-bezier(.85,0,.26,1) forwards;
+        }
+        @keyframes draw-tick {
+          to {
+            stroke-dashoffset: 0;
+            opacity: 1;
+          }
+        }
+        /* subtle bounce on wrapper */
+        .success-anim-wrapper {
+          animation: pop-bounce 0.45s cubic-bezier(.4,2,.5,1) 0.3s both;
+        }
+        @keyframes pop-bounce {
+          0% { transform:scale(.6);}
+          50% {transform:scale(1.18);}
+          90% {transform:scale(.95);}
+          100% {transform:scale(1);}
+        }
+      </style>
+      <h5 class="mt-2 fw-bold" style="color:#1e3c72;">Recharge Successful</h5>
+      <!-- <span class="badge" style="background:#1ecb75;color:#fff;padding:4px 14px;font-size:13px;border-radius:20px;">
+        {{ data.data.status }}
+      </span> -->
+    </div>
+
+    <div class="payment-success-details">
+      <div class="payment-detail-header mb-2" style="text-align:center;">
+        <span style="font-size:1rem;font-weight:600;letter-spacing:.5px;">Transaction Details</span>
+      </div>
+
+      <div class="d-flex justify-content-between border-bottom py-1">
+        <span class="text-muted">Customer Name</span>
+        <div class="col-7 text-end  text-success fw-bold">
+          {{ data.data.customer_name }}  
+        </div>
+      </div>
+    
+        <div class="d-flex justify-content-between border-bottom py-1">
+        <span class="text-muted">Bill type</span>
+        <div class="col-7 text-end text-dark">{{ data.data.biller_type }}</div>
+      </div>
+      
+     
+       {% if data.data.mobile %}
+       <div class="row mb-1 g-1  align-items-center payment-row-detail">
+        <div class="d-flex justify-content-between border-bottom py-1">
+          <span class="text-muted">Mobile</span>
+        
+        <div class="col-7 text-end">{{ data.data.mobile }}</div>
+      </div>
+
+      {% endif %}
+
+      {% if data.data.bill_number %}
+      <div class="row mb-1 g-1  align-items-center payment-row-detail">
+       <div class="d-flex justify-content-between border-bottom py-1">
+         <span class="text-muted">Bill Number</span>
+       
+       <div class="col-7 text-end">{{ data.data.bill_number }}</div>
+     </div>
+     
+     {% endif %}
+
+      <div class="d-flex justify-content-between border-bottom py-1">
+        <span class="text-muted">Bill Amount</span>
+        <span class="fw-bold" style="color:#1e63d1;">₹{{ data.data.amount }}</span>
+      </div>
+
+      {% if data.data.payment_method %}
+        <div class="d-flex justify-content-between border-bottom py-1">
+          <span class="text-muted">bill Number </span>
+        <div class="col-7 text-end">{{ data.data.payment_method }}</div>
+      </div>
+      {% endif %}
+      
+      
+      <!-- <div class="row  align-items-center payment-row-detail">
+        <div class="col-5 text-muted text-start fw-semibold">Bill Date & Time</div>
+        <div class="col-7 text-end">{{ data.data.datetime }}</div>
+      </div>
+       -->
+     
+      <div class="d-flex justify-content-between border-bottom py-1">
+          <span class="text-muted">Payment Status</span>
+        <div class="col-7 text-end">{{ data.data.pay_status }}</div>
+      </div>
+
+     
+      <!-- <div class="d-flex justify-content-between border-bottom py-1">
+          <span class="text-muted">Remark</span>
+        <small class="col-7 text-end">{{ data.data.remark }}</small>
+      </div>
+      
+    -->
+        <div class="d-flex justify-content-between border-bottom py-1">
+          <span class="text-muted">Transaction ID</span>
+        <div class="col-7 text-end fw-semibold text-success">{{ data.data.transaction_id }}</div>
+      </div>
+
+      {% if data.data.payment_method %}
+   
+        <div class="d-flex justify-content-between border-bottom py-1">
+          <span class="text-muted">Payment method</span>
+        <div class="col-7 text-end">{{ data.data.payment_method }}</div>
+      </div>
+      {% endif %}
+  
+      </div>
+     
+      <div class="row mb-1 g-1 align-items-center payment-row-detail">
+        {% if data.data.refer_id %}
+        <div class="col-5 text-muted text-start fw-semibold">Refer ID</div>
+        <div class="col-7 text-end"> {{ data.data.refer_id }}</span></div>
+        {% endif %}
+      </div>
+      <div class="d-flex justify-content-between border-bottom py-1">
+        <span class="text-muted">Status</span>
+      <small class="col-7 text-end">{{ data.data.status }}</small>
+    </div>
+    
+      
+     
+      <div class="rounded-4 px-2 mt-2 mb-2" style="background: linear-gradient(120deg, #e6fff1 80%, #f7f7fc 100%); border: 1.7px solid #20bb67; box-shadow: 0 2px 14px rgba(40,200,110,0.09);">
+        <div class="d-flex flex-column align-items-center">
+          <div style="background: #fff; border-radius:50%; width:70px; height:70px; box-shadow:0 2px 10px rgba(40,160,100,.13); display:flex; align-items:center; justify-content:center; margin-bottom:8px; border:2.5px solid #20bb67;">
+            <img src="/media/JINORA_logo.png" alt="JINORA logo" style="width:48px; height:48px; border-radius:50%;">
+          </div>
+          <strong style="color:#20bb67; font-size:1rem; letter-spacing:.02em;">
+            Congratulations
+          </strong>
+          <span>
+            <small class="text-success" style="font-size: 12px;">
+              {% if messages %}
+                {% for message in messages %}
+                  <span style="padding: 0; margin: 0; display: inline; background: none; border: none; box-shadow: none;">{{ message }}</span>
+                {% endfor %}
+              {% endif %}
+            </small>
+          </span>
+          
+          <p class="mb-1 g-1 text-center"  style="font-size:9px; color:#333; max-width:96%;">
+            You have earned <span style="color:#20bb67; font-weight:700;"> <span class="fw-semibold">80</span>  service points</span> with Jinora platform.<br>
+            Want to earn more? <b>Just Refer &amp; Earn!</b>
+          </p>
+        </div>
+      </div>
+      <!-- <div class="text-muted mt-3" style="font-size:.95em;">Thank you! Your payment was received successfully and credited instantly.</div> -->
+    </div>
+
+    <div class="payment-popup-btns d-flex align-items-center gap-2" style="justify-content:center;">
+      <button class="payment-btn payment-btn-print d-flex align-items-center gap-1"
+        title="Print">
+        <i class="fa fa-download" aria-hidden="true"></i>
+        <span>Download</span>
+      </button>
+   
+        
+      <button class="payment-btn payment-btn-share d-flex align-items-center gap-1"  title="Share">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+        <span>Share</span>
+      </button>
+    </div>  
+     </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.add("no-scroll");
+});
+
+function closePopup(){
+  document.getElementById("popupBanner").style.display="none";
+  document.body.classList.remove("no-scroll");
+}
+
+function printPopupDetails(){
+  let card=document.getElementById("paymentPopupCard");
+  card.querySelector(".payment-popup-close-x").style.display="none";
+  card.querySelector(".payment-popup-btns").style.display="none";
+
+  let printContents = card.innerHTML;
+  let w = window.open('', '', 'height=450,width=420');
+  w.document.write(`<html><head><title>Payment Receipt</title></head><body>${printContents}</body></html>`);
+  w.document.close();
+
+  setTimeout(()=>{
+      w.print();w.close();
+      card.querySelector(".payment-popup-close-x").style.display="";
+      card.querySelector(".payment-popup-btns").style.display="flex";
+  },500);
+}
+</script>
+<script>
+  document.querySelector(".payment-btn-print").addEventListener("click", downloadPDF);
+  
+  async function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      let card = document.getElementById("paymentPopupCard");
+  
+      // Fade हटाएँ
+      card.classList.add("nofade");
+  
+      // Wait for CSS effect
+      await new Promise(res => setTimeout(res, 100));
+  
+      // Canvas बनाने का code
+      const canvas = await html2canvas(card, {
+          scale: 2,
+          backgroundColor: "#ffffff"
+      });
+  
+      card.classList.remove("nofade");
+  
+      const imgData = canvas.toDataURL("image/png");
+  
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+  
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  
+      let heightLeft = imgHeight;
+      let yPosition = 0;
+  
+      // Add first page
+      pdf.addImage(imgData, "PNG", 0, yPosition, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+  
+      // MULTI PAGE AUTO-ADD
+      while (heightLeft > 0) {
+          pdf.addPage();
+          yPosition = heightLeft - imgHeight;
+          pdf.addImage(imgData, "PNG", 0, yPosition, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+      }
+  
+      pdf.save("payment-receipt.pdf");
+  }
+  </script>
+  
+
+  
+<style>
+  .nofade {
+      background: #fff !important;
+      opacity: 1 !important;
+      backdrop-filter: none !important;
+  }
+  </style>
+<script>
+  document.querySelector(".payment-btn-share").addEventListener("click", shareReceipt);
+  
+  async function shareReceipt() {
+  
+      let card = document.getElementById("paymentPopupCard");
+  
+      // 👉 Fade हटाएँ
+      card.classList.add("nofade");
+  
+      const canvas = await html2canvas(card, {
+          scale: 2,
+          backgroundColor: "#ffffff"
+      });
+  
+      card.classList.remove("nofade"); // वापस remove
+  
+      canvas.toBlob(async (blob) => {
+          const file = new File([blob], "receipt.png", { type: "image/png" });
+  
+          if (navigator.share) {
+              navigator.share({
+                  title: "Payment Receipt",
+                  text: "Here is your payment receipt.",
+                  files: [file]
+              }).catch(err => {});
+          } else {
+              alert("Sharing not supported on this device!");
+          }
+      });
+  }
+  </script>
+      
+  
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
+</body>
+</html>

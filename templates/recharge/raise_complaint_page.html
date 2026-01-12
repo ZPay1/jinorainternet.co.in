@@ -233,13 +233,59 @@
           margin-bottom: 10px;
       }
   }
+
+  .fixed-bharat-connect-header {
+    position: sticky;
+    top: 0;
+    /* top: 150px; */
+    left: 0;
+    /* width: 100vw; */
+    z-index: 999;
+    padding: 3px 0;
+  }
+  .fixed-bharat-connect-header .navbar-brand img {
+  
+  height: 90px !important;
+  width: auto !important;
+  mix-blend-mode: multiply;
+  max-width: unset !important;
+  max-height: unset !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  display: block;
+}
+  
+@media (max-width: 576px) {
+
+.fixed-bharat-connect-header{
+  margin-top: 50px;
+}
+.fixed-bharat-connect-header .navbar-brand img {
+  
+  height: 60px !important;
+  width: auto !important;
+  
+}
+.cont{
+    margin-top: 100px;
+  }
+}
 </style>
 <div class="complaint-title1">Bill Complain</div>
-<div class="container d-flex align-items-center justify-content-between">
-    <!-- Logo (Right Aligned) -->
-    <div class="logo ms-auto">
-        <img src="/media/bharat_connect_images.png" alt="Logo" style="height:60px; width:auto; mix-blend-mode: multiply;">
+<div class="cont">
+    <div class="fixed-bharat-connect-header">
+      <div class="container d-flex justify-content-end align-items-center">
+        <div class="navbar-brand m-0 ms-auto">
+          <img src="/media/bharat_connect_images.png" alt="Logo" style="height:40px; width:auto; mix-blend-mode:multiply;">
+        </div>
+      </div>
     </div>
+<div class="container d-flex align-items-center justify-content-between">
+   
+    <!-- Logo (Right Aligned) -->
+    <!-- <div class="logo ms-auto">
+        <img src="/media/bharat_connect_images.png" alt="Logo" style="height:90px; width:auto; mix-blend-mode: multiply;">
+    </div> -->
 </div>
 
 <div class="container bg-white shadow rounded p-4">

@@ -32,10 +32,33 @@ class Service(models.Model):
         ('mobile_prepaid', 'Mobile Prepaid'),
         ('mobile_postpaid', 'Mobile Postpaid'),
         ('dth', 'DTH'),
-        ('cable_tv', 'Cable TV'),
         ('fastag', 'FasTag'),
-        ('electricity_bill', 'ELECTRICITY_BILL'),
-       
+        ('electricity_bill', 'Electricity Bill'),
+        ('prepaid_meter', 'Prepaid Meter'),
+        ('education', 'Education'),
+        ('water', 'Water'),
+        ('lpg_book_gas', 'LPG Book Gas'),
+        ('rental', 'Rental'),
+        ('landline_postpaid', 'Landline Postpaid'),
+        ('cable_tv', 'Cable TV'),
+        ('generic_gas', 'Generic Gas'),
+        ('brosdband_postpaid', 'Broadband Postpaid'),
+        ('insurance', 'Insurance'),
+        ('municiple_taxes', 'Municipal Taxes'),
+        ('subscription', 'Subscription'),
+        ('club_association', 'Club Association'),
+        ('donation', 'Donation'),
+        ('ev_recharge', 'EV Recharge'),
+        ('housing_society', 'Housing Society'),
+        ('recurring_deposit', 'Recurring Deposit'),
+        ('credit_card', 'Credit Card'),
+        ('e_challan', 'eChallan'),
+        ('loan_repayment', 'Loan Repayment'),
+        ('national_pension_system', 'National Pension System'),
+        ('prepaid_meter', 'Prepaid Meter'),
+        ('ncmc_recharge', 'NCMC Recharge'),
+        ('fleet_card_recharge', 'Fleet Card Recharge'),
+        ('agent_collection', 'Agent Collection'),
     ]
 
     service_type = models.CharField(
@@ -73,6 +96,12 @@ class Service(models.Model):
         null=False,
         default=uuid.uuid4
     )
+    
+    fees = models.IntegerField(null=True, blank=True)
+    total_amount = models.IntegerField(null=True, blank=True)
+    user_detail = models.CharField(max_length=100, blank=True, null=True)
+    create_date = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return dict(self.SERVICE_CHOICES).get(self.service_type, self.service_type)

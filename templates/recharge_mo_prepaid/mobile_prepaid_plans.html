@@ -1,0 +1,38 @@
+{% extends "service/service_base.html" %}
+{% block content %}
+{% include 'recharge/logo.html' %}
+
+<div class="container py-4">
+  <h5 class="fw-bold mb-3 text-center">Select Recharge Plan</h5>
+
+  {% if plans %}
+    {% for plan in plans %}
+    <a href="{% url 'mobile_prepaid_fetch' %}?plan_id={{ plan.id }}&billerId={{ billerId }}"
+   class="text-decoration-none text-dark">
+
+
+        <div class="card w-100 mb-3 p-3 shadow-sm hover-shadow">
+          <div class="d-flex justify-content-between">
+            <div class="fw-bold">₹{{ plan.amountinrupees }}</div>
+            <div class="text-muted">{{ plan.categorytype }}</div>
+          </div>
+          <div class="mt-1">{{ plan.plandescription }}</div>
+
+          {% if plan.planadditionalinfo.Tag %}
+            <ul class="mt-2 mb-0 list-unstyled small text-muted">
+              {% for tag in plan.planadditionalinfo.Tag %}
+                <li>{{ tag.paramName }}: {{ tag.paramValue }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+        </div>
+      </a>
+ 
+    {% endfor %}
+  {% else %}
+    <p class="text-center">No plans available for this biller.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

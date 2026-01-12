@@ -1,0 +1,106 @@
+{% extends "service/service_base.html" %}
+{% block content %}
+{% include 'recharge/logo.html' %}
+
+<style>
+  /* Container spacing */
+  .message-container {
+  position: relative;
+  margin: 15px auto;
+  max-width: 700px;
+}
+
+/* Base message box */
+.alert-custom {
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+/* Optional shadow animation */
+.fade-in {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Message types */
+.alert-success {
+  background: #e6f4ea;
+  color: #1b5e20;
+
+}
+
+.alert-error, .alert-danger {
+  background: #fdecea;
+  color: #b71c1c;
+ 
+}
+
+.alert-warning {
+  background: #fff8e1;
+  color: #795548;
+
+}
+
+.alert-info {
+  background: #e3f2fd;
+  color: #0d47a1;
+
+}
+
+/* Hover animation */
+.alert-custom:hover {
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+</style>
+{% if messages %}
+<div class="message-container">
+  {% for message in messages %}
+    <div class="alert alert-custom {% if message.tags %}alert-{{ message.tags }}{% endif %} shadow-sm fade-in">
+      <i class="fa 
+        {% if message.tags == 'success' %}fa-check-circle text-success{% elif message.tags == 'error' %}fa-times-circle text-danger{% elif message.tags == 'warning' %}fa-exclamation-triangle text-warning{% else %}fa-info-circle text-primary{% endif %}
+      me-2"></i>
+      {{ message }}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-sm rounded-4">
+        <div class="card-body">
+          <h5 class="fw-bold text-center mb-4">Select Mobile Prepaid Provider</h5>
+
+          {% for biller in billers %}
+          <a href="{% url 'mobile_prepaid_plans' %}?billerId={{ biller.billerId }}"
+             class="text-decoration-none text-dark">
+            <div class="d-flex align-items-center border rounded-3 p-3 mb-2 hover-shadow">
+              <div class="bg-primary text-white rounded-circle fw-bold me-3"
+                   style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;">
+                {{ biller.billerName|slice:":1" }}
+              </div>
+              <!-- <p>{{ biller.billerId }}</p> -->
+              <div class="fw-semibold">{{ biller.billerName }}</div>
+            </div>
+          </a>
+          {% empty %}
+          <p class="text-muted text-center">No billers available</p>
+          {% endfor %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

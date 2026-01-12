@@ -1,0 +1,157 @@
+{% extends 'service/service_base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+<style>
+  body {
+    background-color: #f5f8fc;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  .recharge-card {
+    max-width: 400px;
+    margin: 50px auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 25px 20px 15px;
+  }
+  .recharge-card h3 {
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 15px;
+  }
+  .custom-input {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.60rem;
+  }
+  .custom-input label {
+    position: absolute;
+    top: -0.6rem;
+    left: 12px;
+    background: #fff;
+    padding: 0 5px;
+    font-size: 0.85rem;
+    color: #555;
+    z-index: 2;
+  }
+  .custom-input input,
+  .custom-input select {
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease-in-out;
+    background-color: #fff;
+  }
+  .custom-input input:focus,
+  .custom-input select:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 0.15rem rgba(74,144,226,0.15);
+  }
+  .custom-input small {
+    margin-top: 4px;
+    font-size: 0.8rem;
+    color: #777;
+  }
+  .btn-proceed {
+    width: 100%;
+    background: #e9e9e9;
+    color: #777;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: not-allowed;
+  }
+  .footer-logo {
+    text-align: center;
+    padding-top: 10px;
+  }
+  .footer-logo img {
+    height: 40px;
+  }
+</style>
+
+<div class="cont">
+  <div class="fixed-bharat-connect-header">
+    <div class="container d-flex justify-content-end align-items-center">
+      <div class="navbar-brand m-0 ms-auto">
+        <img src="/media/bharat_connect_images.png" alt="Logo" style="height:40px; width:auto; mix-blend-mode:multiply;">
+      </div>
+    </div>
+  </div>
+
+{% if success_data %}
+  {% include "recharge/recharge_success.html" %}
+{% endif %}
+
+<div class="recharge-card">
+  <h3 class="fw-bold">Cable TV Bill</h3>
+  <form method="POST">
+    {% csrf_token %}
+  
+    <div class="custom-input">
+      <label>Provider</label>
+      <select name="refrence" required>
+        <option value="">Select Provider</option>
+        <option value="hathway_cable">Hathway Cable</option>
+        <option value="den_networks">DEN Networks</option>
+        <option value="siti_cable">Siti Cable</option>
+        <option value="gtpl_cable">GTPL Cable</option>
+        <option value="fastway_cable">Fastway Cable</option>
+        <option value="asianet_cable">Asianet Cable</option>
+        <option value="incable_cable">InCable</option>
+        <option value="den_cable">DEN Cable</option>
+        <option value="tata_sky_cable">Tata Sky Cable</option>
+        <option value="act_cable">ACT Cable</option>
+      </select>
+    </div>
+    
+    <div class="custom-input">
+      <label>Customer ID / Subscriber ID <span class="text-danger fw-bold">*</span></label>
+      <input type="text" name="rechargers_number" placeholder="Enter Customer ID or Subscriber ID" required>
+    </div>
+    
+
+    <!-- Proceed Button -->
+    <button type="submit" id="dynamicProceed" class="btn-proceed mt-3" disabled>Proceed</button>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector("form");
+        const btn = document.getElementById("dynamicProceed");
+        function checkValidity() {
+          const requiredFields = form.querySelectorAll("[required]");
+          for (let i = 0; i < requiredFields.length; i++) {
+            if (!requiredFields[i].value.trim()) {
+              btn.disabled = true;
+              btn.style.background = "#e9e9e9";
+              btn.style.color = "#777";
+              btn.style.cursor = "not-allowed";
+              return;
+            }
+          }
+          btn.disabled = false;
+          btn.style.background = "#021331";
+          btn.style.color = "#fff";
+          btn.style.cursor = "pointer";
+        }
+        form.addEventListener("input", checkValidity);
+        checkValidity();
+      });
+    </script>
+  </form>
+  <!-- <div class="footer-logo mt-3">
+    <img src="/media/bharat_connect_images.png" alt="Bharat Connect">
+  </div> -->
+</div>
+{% endblock %}

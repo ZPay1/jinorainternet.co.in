@@ -134,81 +134,69 @@
             <img src="/media/JINORA_logo.png" class="receipt-logo" alt="Logo">
         </div>
         <div class="text-end">
-            <h5 class="mb-1 text-dark fw-semibold">Technical</h5>
-            <p class="mb-1 text-secondary">6260606372</p>
-            <p class="mb-0 text-secondary">jinorainternet.co.in</p>
+            <!-- Title + BBPS logo -->
+
+      
+                <div class="ms-auto">
+                    <img src="/media/Bbps_assured_logo.png" class="receipt-bbps-logo" alt="BBPS Logo">
+                </div>
+   
         </div>
     </div>
 
     <!-- Title + BBPS logo -->
     <div class="receipt-detail-row mb-4">
         <div class="receipt-title"> Receipt</div>
-        <div class="ms-auto">
-            <img src="/media/Bbps_assured_logo.png" class="receipt-bbps-logo" alt="BBPS Logo">
-        </div>
+       
     </div>
 
     <!-- Info Table -->
     <table class="receipt-info-table">
         <tr>
             <th>Name of the Biller: </th>
-            <td> P.B. Paschim  kshetra  Vidyut Vitaran</td>
+            <td>{{ service.user_detail }}</td>
         </tr>
         <tr>
             <th>Customer Name: </th>
-            <td>DHARMENDRA YADAV</td>
+            <td>{{ service.user_detail }}</td>
         </tr>
         <tr>
             <th>Bill Number: </th>
-            <td>N3474023883</td>
+            <td>{{ service.id }}</td>
         </tr>
         <tr>
             <th>Bill Date: </th>
-            <td>26 Aug 2025</td>
+            <td>{{ service.create_date }}</td>
         </tr>
-        <tr>
-            <th>Bill Due Date: </th>
-            <td>26 Aug 2025</td>
-        </tr>
+        
         <tr>
             <th>B-connect txn ID: </th>
-            <td>Mock14263BAAIYKUPC0345</td>
+            <td>{{ service.orderid }}</td>
         </tr>
         <tr>
             <th>Payment Mode: </th>
-            <td>Internet Banking</td>
+            <td>UPI</td>
         </tr>
-        <tr>
-            <th>Payment Channel: </th>
-            <td>Internet Banking ( Logged In)</td>
-        </tr>
+      
         <tr>
             <th>Bill Amount: </th>
-            <td>2146.0</td>
+            <td>{{ service.total_amount }}</td>
         </tr>
         <tr>
-            <th>Customer Convenience Fee: </th>
-            <td>0.00</td>
+            <th>CCF Number </th>
+            <!-- <th>Customer Convenience Fee:(CCF) </th> -->
+            <td>{{ service.fees }}</td>
         </tr>
-        <tr>
-            <th>Transaction date & Time: </th>
-            <td>26-Aug-2025 12:04:11 AM</td>
-        </tr>
-        <tr>
-            <th>Transaction Numnber: </th>
-            <td>TXN6540570</td>
-        </tr>
-        <tr>
-            <th>Order ID: </th>
-            <td>24015636208799</td>
-        </tr>
+       
+      
         <tr>
             <th>Service: </th>
-            <td>ELECTRICITY</td>
+            <td>{{ service.service_type }}</td>
         </tr>
         <tr>
             <th>Transaction Status: </th>
-            <td class="text-success">SUCCESS</td>
+            <td class="text-success">{{ service.status }}</td>
+           
         </tr>
         </table>
         

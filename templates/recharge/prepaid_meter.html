@@ -1,0 +1,185 @@
+{% extends 'service/service_base.html' %}
+{% block title %}Prepaid Meter Bill Payment{% endblock %}
+
+{% block content %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+  body {
+    background-color: #f5f8fc;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  .recharge-card {
+    max-width: 410px;
+    margin: 50px auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 25px 20px 18px;
+  }
+  .recharge-card h3 {
+    font-weight: 700;
+    color: #021331;
+    margin-bottom: 14px;
+  }
+  .custom-input {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.5rem;
+  }
+  .custom-input label {
+    position: absolute;
+    top: -0.7rem;
+    left: 12px;
+    background: #fff;
+    padding: 0 7px;
+    font-size: 0.9rem;
+    color: #555;
+    z-index: 2;
+  }
+  .custom-input input,
+  .custom-input select {
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s ease-in-out;
+    background-color: #fff;
+  }
+  .custom-input input:focus,
+  .custom-input select:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 0.15rem rgba(74,144,226,0.13);
+  }
+  .custom-input small {
+    margin-top: 4px;
+    font-size: 0.82rem;
+    color: #777;
+  }
+  .btn-proceed {
+    width: 100%;
+    background: #e9e9e9;
+    color: #777;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: not-allowed;
+    transition: 0.2s;
+  }
+  .footer-logo {
+    text-align: center;
+    padding-top: 10px;
+  }
+  .footer-logo img {
+    height: 40px;
+  }
+</style>
+
+<div class="cont">
+  <div class="fixed-bharat-connect-header">
+    <div class="container d-flex justify-content-end align-items-center">
+      <div class="navbar-brand m-0 ms-auto">
+        <img src="/media/bharat_connect_images.png" alt="Logo" style="height:40px; width:auto; mix-blend-mode:multiply;">
+      </div>
+    </div>
+  </div>
+
+{% if success_data %}
+  {% include "recharge/recharge_success.html" %}
+{% endif %}
+
+<div class="recharge-card">
+  <h3 class="fw-bold">Prepaid Meter Bill Payment</h3>
+  <form method="POST" autocomplete="off">
+    {% csrf_token %}
+    <!-- State -->
+    <div class="custom-input">
+      <label>State <span class="text-danger fw-bold">*</span></label>
+      <select name="related_state" required>
+        <option value="">Select State</option>
+        {% for state in states %}
+          <option value="{{ state.id }}">{{ state.name }}</option>
+        {% endfor %}
+      </select>
+      <small>Select the state where your prepaid meter is located</small>
+    </div>
+    <!-- Service Provider -->
+    <div class="custom-input">
+      <label>Service Provider <span class="text-danger fw-bold">*</span></label>
+      <select name="refrence" required>
+        <option value="">Select Service Provider</option>
+        <option value="dep_arunachal_prepaid">Department of Power, Government of Arunachal Pradesh - Prepaid</option>
+        <option value="bses_rajdhani_prepaid">BSES Rajdhani Power Limited - Prepaid</option>
+        <option value="bses_yamuna_prepaid">BSES Yamuna Power Limited - Prepaid</option>
+        <option value="tata_power_delhi_prepaid">Tata Power Delhi Distribution Limited - Prepaid</option>
+        <option value="mahavitaran_prepaid">Maharashtra State Electricity Distribution Co. Ltd. - Prepaid</option>
+        <option value="bescom_prepaid">Bangalore Electricity Supply Company Limited - Prepaid</option>
+        <option value="tsspdcl_prepaid">Telangana State Southern Power Distribution Company Limited - Prepaid</option>
+        <option value="tsnpdcl_prepaid">Telangana State Northern Power Distribution Company Limited - Prepaid</option>
+        <option value="apspdcl_prepaid">Andhra Pradesh Southern Power Distribution Company Limited - Prepaid</option>
+        <option value="apedcl_prepaid">Andhra Pradesh Eastern Power Distribution Company Limited - Prepaid</option>
+        <option value="tsedcl_prepaid">Tamil Nadu Generation and Distribution Corporation Limited - Prepaid</option>
+        <option value="west_bengal_state_prepaid">West Bengal State Electricity Distribution Company Limited - Prepaid</option>
+        <option value="pseb_prepaid">Punjab State Power Corporation Limited - Prepaid</option>
+        <option value="hpseb_prepaid">Himachal Pradesh State Electricity Board - Prepaid</option>
+        <option value="dakshin_haryana_prepaid">Dakshin Haryana Bijli Vitran Nigam - Prepaid</option>
+        <option value="uttar_haryana_prepaid">Uttar Haryana Bijli Vitran Nigam - Prepaid</option>
+        <option value="ugvcl_prepaid">Uttar Gujarat Vij Company Limited - Prepaid</option>
+        <option value="pgvcl_prepaid">Paschim Gujarat Vij Company Limited - Prepaid</option>
+        <option value="madhya_pradesh_prepaid">Madhya Pradesh Madhya Kshetra Vidyut Vitaran Company Limited - Prepaid</option>
+        <option value="other_prepaid">Other Service Provider - Prepaid</option>
+      </select>
+      <small>Select your prepaid meter service provider</small>
+    </div>
+    <!-- Consumer/Connection Number -->
+    <div class="custom-input">
+      <label>Consumer/Connection Number <span class="text-danger fw-bold">*</span></label>
+      <input type="text" name="rechargers_number" placeholder="Enter Consumer/Connection Number" maxlength="22" required>
+      <small>Enter your prepaid meter's consumer or connection number</small>
+    </div>
+    <!-- Recharge Amount -->
+    <div class="custom-input">
+      <label>Recharge Amount <span class="text-danger fw-bold">*</span></label>
+      <input type="number" name="amount" placeholder="Enter Recharge Amount" step="0.01" min="1" required>
+      <small>Enter the amount you want to recharge</small>
+    </div>
+    <!-- Proceed Button -->
+    <button type="submit" id="dynamicProceed" class="btn-proceed mt-3" disabled>Proceed</button>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector("form");
+        const btn = document.getElementById("dynamicProceed");
+        function checkValidity() {
+          const requiredFields = form.querySelectorAll("[required]");
+          for (let i = 0; i < requiredFields.length; i++) {
+            if (!requiredFields[i].value.trim()) {
+              btn.disabled = true;
+              btn.style.background = "#e9e9e9";
+              btn.style.color = "#777";
+              btn.style.cursor = "not-allowed";
+              return;
+            }
+          }
+          btn.disabled = false;
+          btn.style.background = "#021331";
+          btn.style.color = "#fff";
+          btn.style.cursor = "pointer";
+        }
+        form.addEventListener("input", checkValidity);
+        form.addEventListener("change", checkValidity);
+        checkValidity();
+      });
+    </script>
+  </form>
+  <!-- <div class="footer-logo mt-3">
+    <img src="/media/bharat_connect_images.png" alt="Bharat Connect">
+  </div> -->
+</div>
+{% endblock %}

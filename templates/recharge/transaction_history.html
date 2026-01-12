@@ -35,7 +35,7 @@ body {
 .filter-group {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
     flex-wrap: wrap;
 }
 
@@ -47,33 +47,39 @@ body {
     font-size: 0.9rem;
     outline: none;
     min-width: 150px;
+    white-space: nowrap;
+    /* Ensures the date stays in one line */
 }
 
 .filter-select:hover, .filter-input:focus {
     border-color: #007bff;
 }
 
-.filter-search {
-    display: flex;
-    align-items: center;
-    border: 1px solid #00a3ff;
-    border-radius: 25px;
-    overflow: hidden;
-    background: #fff;
-    padding-right: 10px;
-}
-
 .filter-search input {
     border: none;
     outline: none;
     padding: 8px 14px;
-    width: 220px;
+    width: 200px;
     font-size: 0.9rem;
 }
 
-.filter-search i {
-    color: #00a3ff;
-    cursor: pointer;
+/* --- Responsive Fix --- */
+@media (max-width: 768px) {
+    .filter-group {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+    .filter-select, .filter-input {
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+    .filter-search input {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+    }
 }
 
 .logo-img {
@@ -99,6 +105,7 @@ body {
     text-align: left;
     font-weight: 600;
     border-bottom: 1px solid #d5dce7;
+    white-space: nowrap;
 }
 
 .custom-table td {
@@ -106,6 +113,7 @@ body {
     border-bottom: 1px solid #e2e6ed;
     color: #333;
     font-size: 0.95rem;
+    white-space: nowrap;
 }
 
 .custom-table tr:hover {
@@ -128,68 +136,75 @@ body {
 </style>
 
 {% include "recharge/navbar.html" %}
-
+<div class="cont">
+  <div class="fixed-bharat-connect-header">
+    <div class="container d-flex justify-content-end align-items-center">
+      <div class="navbar-brand m-0 ms-auto">
+        <img src="/media/bharat_connect_images.png" alt="Logo" style="height:40px; width:auto; mix-blend-mode:multiply;">
+      </div>
+    </div>
+  </div>
 
 <div class="container container-box">
   <div class="header-row mb-3">
-    <div class="header-title">Complaint History</div>
-
+    <div class="header-title">Transaction History</div>
+     <img src="/media/recharge/BBPSLogo.png" class="logo-img" alt="Bharat BillPay">
     <div class="filter-group">
-      <select class="filter-select">
-        <option>Month</option>
-        <option>January</option>
-        <option>February</option>
-        <option>March</option>
+       <form id="filterForm" method="get" action="" style="display:flex; flex-wrap:wrap; gap:20px; align-items:center;">
+      <!-- Start Date -->
+      <label for="start_date" class="sr-only">Start date</label>
+      <input type="date" id="start_date" name="start_date" class="filter-select"
+             value="{{ start_date }}" style="white-space:nowrap;">
+
+      <!-- End Date -->
+      <label for="end_date" class="sr-only">End date</label>
+      <input type="date" id="end_date" name="end_date" class="filter-select"
+             value="{{ end_date }}" style="white-space:nowrap;">
+
+      <!-- Category -->
+      <select name="category" class="filter-select" onchange="this.form.submit();" style="white-space:nowrap;">
+        {% for val,label in categories %}
+          <option value="{{ val }}" {% if selected_category == val %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
       </select>
 
-      <select class="filter-select">
-        <option>Category</option>
-        <option>Electricity</option>
-        <option>Gas</option>
-        <option>Water</option>
+      <!-- Status -->
+      <select name="status" class="filter-select" onchange="this.form.submit();" style="white-space:nowrap;">
+        {% for val,label in statuses %}
+          <option value="{{ val }}" {% if selected_status == val %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
       </select>
 
-      <select class="filter-select">
-        <option>Status</option>
-        <option>Pending</option>
-        <option>Success</option>
-        <option>Failed</option>
-      </select>
-
-      <div class="filter-search">
-        <input type="text" placeholder="Mobile Number or Reference ID">
-        <i class="fas fa-search"></i>
+      <!-- Search (Bootstrap style) -->
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <input type="text" name="search" placeholder="Mobile Number or Reference ID or OrderID"
+               value="{{ search_query }}" class="form-control" style="min-width:230px; max-width: 300px;">
+        <button type="submit" class="btn btn-primary btn-sm">Search</button>
       </div>
-
-      <img src="/media/recharge/BBPSLogo.png" class="logo-img" alt="Bharat BillPay">
-      
-      <a href="{% url 'query_transaction' %}">
-        <button class="raise-complain-btn" type="button">Transaction detail</button>
-      </a>
+    </form>
     </div>
-
   </div>
-
 
   <div class="table-container">
     <table class="custom-table">
       <thead>
         <tr>
-          <th>Product Detail</th>
-          <th>Order No.</th>
-          <th>Price</th>
+          <!-- <th>B-Connect Txn ID</th> -->
+          <th>Transaction Reference ID</th>
+          <th>Service Type</th>
+          <th>Amount</th>
           <th>Status</th>
+          <th>User</th>
+          <th>Mobile Number </th>
+          <th>Date</th>
         </tr>
       </thead>
       <tbody>
         {% if services %}
           {% for s in services %}
             <tr>
-           
-                <td><a href="{% url 'query_transaction' %}" style="text-decoration: none; color: grey;">{{ s.get_service_type_display }}</a></td>
-              
-         
-              <td>{{ s.orderid }}</td>
+              <td><a href="{% url 'receipt' s.id %}" style="text-decoration: none; color: rgb(112, 96, 253); white-space:nowrap;">{{ s.orderid }}</a></td>
+              <td>{{ s.get_service_type_display }}</td>
               <td>₹{{ s.amount|default:"0.00" }}</td>
               <td>
                 {% if s.status == 'success' %}
@@ -200,11 +215,14 @@ body {
                   <span style="color:red;font-weight:600;">Failed</span>
                 {% endif %}
               </td>
+              <td>{{ user_data.userid }}</td>
+              <td>{{ s.rechargers_number }}</td>
+              <td style="white-space:nowrap;">{{ s.create_date }}</td>
             </tr>
           {% endfor %}
         {% else %}
             <tr>
-              <td colspan="4" style="text-align:center; color:#777; padding:40px;">
+              <td colspan="7" style="text-align:center; color:#777; padding:40px;">
                 No transactions found
               </td>
             </tr>
