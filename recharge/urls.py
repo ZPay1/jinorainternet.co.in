@@ -8,7 +8,7 @@
 from django.urls import path
 
 from recharge import views_mobile_prepaid
-from . import views,views_fastag  # <-- same app ke views import karo
+from . import views,views_fastag ,views_electricity_bill ,views_gas_bill,views_loan_repayment_bill
 
 urlpatterns = [
     path('', views.recharge_view, name='recharge_view'),
@@ -23,18 +23,43 @@ urlpatterns = [
     path("fastag/confirm/", views_fastag.fastag_confirm, name="fastag_confirm"),
     path("fastag/payment/", views_fastag.fastag_payment, name="fastag_payment"),
     path("success/", views.recharge_success, name="recharge_success"),
-   
+
+
+        
+    # =================== Electriv Bill URLS ===================
+    path("electricity/bill", views_electricity_bill.electricity_category_view, name="electricity_category"),
+    path("electricity/fetch/", views_electricity_bill.electricity_fetch_bill, name="electricity_fetch"),
+    path("electricity/confirm/", views_electricity_bill.electricity_confirm, name="electricity_confirm"),
+    path("electricity/payment/", views_electricity_bill.electricity_payment, name="electricity_payment"),
+    # path("success/", views.recharge_success, name="recharge_success"),
     
+  # =================== Gas Bill URLS ===================
+    path("gas/bill", views_gas_bill.gas_category_view, name="gas_category"),
+    path("gas/fetch/", views_gas_bill.gas_fetch_bill, name="gas_fetch"),
+    path("gas/confirm/", views_gas_bill.gas_bill_confirm, name="gas_bill_confirm"),
+    path("gas/payment/", views_gas_bill.gas_bill_payment, name="gas_bill_payment"),
+    # path("success/", views.recharge_success, name="recharge_success"),
+
+
+
+  # =================== Loan Bill URLS ===================
+    path("loan/repayment", views_loan_repayment_bill.loan_category_view, name="loan_category"),
+    path("loan/repayment/fetch/", views_loan_repayment_bill.loan_fetch_bill, name="loan_fetch"),
+    path("loan/repayment/confirm/", views_loan_repayment_bill.loan_bill_confirm, name="loan_confirm"),
+    path("loan/repayment/payment/", views_loan_repayment_bill.loan_bill_payment, name="loan_payment"),
+    # path("success/", views.recharge_success, name="recharge_success"),
+
+
     # =================== Mobile Prepaid RECHARGE URLS ===================
     path("mobile-prepaid/", views_mobile_prepaid.mobile_prepaid_category_view, name="mobile_prepaid_category"),
     path("mobile-prepaid/plans/",views_mobile_prepaid.mobile_prepaid_plans_view, name="mobile_prepaid_plans"),
-    # path("mobile-prepaid/fetch/",views_mobile_prepaid.mobile_prepaid_fetch_view, name="mobile_prepaid_fetch"),
-
-
     path("mobile-prepaid/validate/", views_mobile_prepaid.mobile_prepaid_validate_view, name="mobile_prepaid_fetch"),
     path("mobile-prepaid/confirm/", views_mobile_prepaid.mobile_prepaid_confirm, name="mobile_prepaid_confirm"),
     path("mobile-prepaid/payment/", views_mobile_prepaid.mobile_prepaid_payment, name="mobile_prepaid_payment"),
     # path("success/", views.recharge_success, name="recharge_success"),
+
+
+
 
     path('mobile-prepaid/', views.mobile_prepaid_view, name='mobile_prepaid'),
     # path('recharge-success/', views.recharge_success_view, name='recharge_success'),

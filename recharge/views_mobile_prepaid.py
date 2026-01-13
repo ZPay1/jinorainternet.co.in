@@ -10,8 +10,15 @@ Baseurl = "https://api.jinora.co.in/api"
 import requests
 from django.shortcuts import render, redirect
 
-   
+import json
+import requests
 
+   
+'''
+===============================================================================================================
+                       Category method
+===============================================================================================================
+'''
 
 def mobile_prepaid_category_view(request):
     if 'access_token' not in request.session:
@@ -21,7 +28,6 @@ def mobile_prepaid_category_view(request):
     user_data = request.session.get("user_data", {})
  
     category = request.GET.get("category", "Mobile Prepaid")
-    # access_token = request.session["user_data"]["access"]
 
     billers = []
 
@@ -151,20 +157,127 @@ def mobile_prepaid_plans_view(request):
 ===============================================================================================================
 '''
 
-import json
-import requests
-
-
-
 def mobile_prepaid_validate_view(request):
+
+    if 'access_token' not in request.session:
+        return redirect('sign_in')
 
     access_token = request.session.get("access_token")
     user_data = request.session.get("user_data", {})
 
+    def fetch_plans(token, biller_id):
+        return requests.get(
+            f"{Baseurl}/npci/mobile-prepaid/fetch-plans-by-biller/",
+            headers={
+                "Authorization": f"Bearer {token}",
+                "Content-Type": "application/json"
+            },
+            params={"billerId": biller_id},
+            timeout=10
+        )
+
+    def validate_plan(token, payload):
+        return requests.post(
+            f"{Baseurl}/npci/mobile-prepaid/validate/",
+            json=payload,
+            headers={
+                "Authorization": f"Bearer {token}",
+                "Content-Type": "application/json"
+            },
+            timeout=15
+        )
+
+    if request.method == "POST":
+        mobile_number = request.POST.get("mobile_number")
+        circle = request.POST.get("circle")
+        plan_id = request.POST.get("plan_id")
+        biller_id = request.POST.get("billerId")
+
+        # 🔁 STEP 1: Fetch plans
+        response = fetch_plans(access_token, biller_id)
+
+        # 🔁 TOKEN EXPIRED CASE
+        if response.status_code in (401, 403):
+            if refresh_tokents(request):
+                access_token = request.session.get("access_token")
+                response = fetch_plans(access_token, biller_id)
+            else:
+                messages.error(request, "Session expired. Please login again.")
+                return redirect("sign_in")
+
+        if response.status_code != 200:
+            messages.error(request, "Unable to fetch plans")
+            return redirect("mobile_prepaid_plans")
+
+        data = response.json()
+        # print(f'{data=}')
+        plan_list = (
+            data.get("data", {})
+                .get("payload", {})
+                .get("planDetails", [])
+        )
+
+        # 🔍 STEP 2: Find selected plan
+        selected_plan = next(
+            (p for p in plan_list if str(p.get("id")) == str(plan_id)),
+            None
+        )
+
+        if not selected_plan:
+            messages.error(request, "Invalid plan selected")
+            return redirect("mobile_prepaid_plans")
+
+        # 🔁 STEP 3: Validate plan
+        validate_payload = {
+            "mobile_number": mobile_number,
+            "circle": circle,
+            "plan": selected_plan
+        }
+
+        validate_response = validate_plan(access_token, validate_payload)
+        # print(f'{validate_response=}')
+        # 🔁 TOKEN EXPIRED CASE (validate API)
+        if validate_response.status_code in (401, 403):
+            if refresh_tokents(request):
+                access_token = request.session.get("access_token")
+                validate_response = validate_plan(access_token, validate_payload)
+            else:
+                messages.error(request, "Session expired. Please login again.")
+                return redirect("sign_in")
+
+        validate_data = validate_response.json()
+        # print(f'{validate_data=}')
+        if validate_response.status_code == 200 and validate_data.get("status"):
+            # 🔐 STORE IN SESSION
+            request.session["MOBILE_PREPAID_CONFIRM"] = {
+                "mobile_number": mobile_number,
+                "circle": circle,
+                "plan": selected_plan,
+                "amount": validate_data.get("amount"),
+                "return_payload": validate_data.get("return_payload"),
+            }
+            return redirect("mobile_prepaid_confirm")
+
+        messages.error(request, validate_data.get("message", "Validation failed"))
+
+    return render(
+        request,
+        "recharge_mo_prepaid/mobile_prepaid_fetch.html",
+        {
+            "user_data": user_data,
+            "access_token": access_token
+        }
+    )
+
+
+
+'''
+def mobile_prepaid_validate_view(request):
+
+    access_token = request.session.get("access_token")
+    user_data = request.session.get("user_data", {})
     if 'access_token' not in request.session:
         return redirect('sign_in') 
-
-    # access_token = request.session["user_data"]["access"]
 
     if request.method == "POST":
         mobile_number = request.POST.get("mobile_number")
@@ -241,7 +354,7 @@ def mobile_prepaid_validate_view(request):
 
     return render(request, "recharge_mo_prepaid/mobile_prepaid_fetch.html",{'user_data':user_data,'access_token':access_token})
 
-
+'''
 
 '''
 ===============================================================================================================
@@ -254,9 +367,8 @@ def mobile_prepaid_confirm(request):
 
     if 'access_token' not in request.session:
         return redirect('sign_in') 
+        
     data = request.session["MOBILE_PREPAID_CONFIRM"]
-    
-
     context = {
         "mobile_number": data.get("mobile_number"),
         "circle": data.get("circle"),
@@ -279,138 +391,6 @@ def mobile_prepaid_confirm(request):
 ===============================================================================================================
 '''
 
-
-'''def mobile_prepaid_payment(request):
-
-    user_data = request.session.get("user_data", {})
-    access_token = request.session.get("access_token")
-    biller_type = request.GET.get("biller_type", "Mobile Prepaid")
-    
-    if not access_token:
-        messages.error(request, "Session expired. Please sign in again.")
-        return redirect("sign_in")
-
-    bill = request.session.get("MOBILE_PREPAID_CONFIRM", {})
-    # print(f'{bill=}')
-    if request.method == "POST":
-        amount = request.POST.get("amount")
-        tpin = request.POST.get("tpin")
-        # print(f'{tpin=}')
-      
-        payload = {
-            "amount": amount,
-            'tpin':tpin,
-            "biller_type": biller_type,
-            "return_payload": bill.get("return_payload", {})
-        }
-        # print(f"Payload: {payload}")
-
-        
-
-        try:
-            res = requests.post(
-                f"{Baseurl}/recharge-payment/",
-                json=payload,
-                headers={"Authorization": f"Bearer {access_token}"},
-                timeout=20
-            )
-            print(f'Response: {res}')
-            data = res.json()
-            # print("PAYMENT RESPONSE:", data)
-
-           
-            if (
-                res.status_code == 200
-                and data.get("status") is True
-                and data.get("bill_data", {}).get("status") == "SUCCESS"
-            ):
-
-                # success_payload = data["data"]["payload"]
-                success_payload = data["bill_data"]["payload"]
-                # print(f'{success_payload=}')
-                # ✅ CLEAR SESSION (NO DOUBLE PAYMENT)
-                if "MOBILE_PREPAID_CONFIRM" in request.session:
-                    del request.session["MOBILE_PREPAID_CONFIRM"]
-
-                # Build receipt dictionary
-                receipt = {
-                    "customer_name": bill.get("return_payload", {})
-                        .get("customerDetails", {})
-                        .get("EMAIL", ""),
-
-                    "amount": amount,
-
-                    "vehicle_number": bill.get("return_payload", {})
-                        .get("customerParams", {})
-                        .get("Vehicle Registration Number", ""),
-
-                    "transaction_id": success_payload.get("additionalParams", {})
-                        .get("transactionID", ""),
-
-                    "reference_id": success_payload.get("additionalParams", {})
-                        .get("txnReferenceId", ""),
-
-                    "approval_ref": success_payload.get("reason", {})
-                        .get("approvalRefNum", ""),
-
-                    "time": success_payload.get("timeStamp", ""),
-                    "status": data.get("data", {}).get("status"),
-                    "mobile": bill.get("return_payload", {})
-                        .get("customerMobileNumber", ""),
-                    "biller_type": "MOBILE_PREPAID",
-                }
-                # print(f'{receipt=}')
-
-                return render(request, "recharge_mo_prepaid/mobile_prepaid_success.html", {
-                    "message": data.get("message"),
-                    "receipt": receipt,
-                    "user_data": user_data
-                })
-
-            # ❌ PAYMENT FAILED
-            # return render(request, "recharge_fastag/fastag_confirm.html", {
-            #     "vehicle_number": bill.get("vehicle_number", ""),
-            #     "payload": bill.get("payload", {}),
-            #     "error": data.get("message", "Payment Failed"),
-            #     "user_data": user_data
-            # })
-
-            # ❌ PAYMENT FAILED
-        
-            error_message = (
-                data.get("error", {})
-                    .get("payload", {})
-                    .get("errors", [{}])[0]
-                    .get("reason")
-                or data.get("message", "Payment Failed")
-            )
-
-            messages.error(request, error_message)
-            return redirect("mobile_prepaid_confirm")
-
-
-        except requests.RequestException as e:
-            #print("REQUEST ERROR:", e)
-            # ❌ PAYMENT FAILED
-            return render(request, "recharge_mo_prepaid/mobile_prepaid_confirm.html", {
-                "vehicle_number": bill.get("vehicle_number", ""),
-                "payload": bill.get("payload", {}),
-                "error": data.get("message", "Payment Failed"),
-                "user_data": user_data,
-                'access_token':access_token
-            })
-
-        except Exception as e:
-            #print("GENERAL ERROR:", e)
-            return render(request, "recharge_mo_prepaid/mobile_prepaid_confirm.html", {
-                "vehicle_number": bill.get("vehicle_number", ""),
-                "payload": bill.get("payload", {}),
-                "error": "Server error. Please try again.",
-                "user_data": user_data,
-                'access_token':access_token
-            })
-
-'''
 def mobile_prepaid_payment(request):
     user_data = request.session.get("user_data", {})
     access_token = request.session.get("access_token")
@@ -445,11 +425,12 @@ def mobile_prepaid_payment(request):
             "biller_type": 'Mobile Prepaid',
             "return_payload": bill.get("return_payload", {})
         }
+        # print(f'{payload=}')
 
         try:
             # 🔹 First attempt
             response = make_payment(access_token, payload)
-            print(f'{response=}')
+            # print(f'{response=}')
             # 🔁 Token expired → refresh & retry
             if response.status_code in (401, 403):
                 if refresh_tokents(request):
@@ -460,7 +441,7 @@ def mobile_prepaid_payment(request):
                     return redirect("sign_in")
 
             data = response.json()
-            print(f'{data=}')
+            # print(f'{data=}')
             # ✅ SUCCESS
             if (
                 response.status_code == 200
@@ -516,7 +497,7 @@ def mobile_prepaid_payment(request):
             return redirect("mobile_prepaid_confirm")
 
         except Exception:
-            print('ttttttttttt')
+         
             messages.error(request, "Server error. Please try again.")
             return redirect("mobile_prepaid_confirm")
     return render(request, "recharge_mo_prepaid/mobile_prepaid_success.html",
