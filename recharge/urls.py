@@ -118,7 +118,7 @@ urlpatterns = [
   # ===================  Navbar RECHARGE URLS ===================
     path('transaction-hisotry/', views.transaction_history_view, name='transaction_hisotry'),
     path('transaction-status/', views.check_transaction_status, name='check_transaction_status'),
-   
+    path("complaint-status/",views.check_complain_status, name="complaint_status"),
     # 🔹 NPCI complaint (GET = form + dispositions, POST = raise complaint)
     path(
         "raise-complaint/",views.

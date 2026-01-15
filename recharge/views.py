@@ -1980,6 +1980,75 @@ def transaction_history_view(request):
 #         }
 #     })
 
+
+
+
+import requests
+import json
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
+def check_complain_status(request):
+    user_data = request.session.get("user_data", {})
+    access_token = request.session.get("access_token")
+
+    if not access_token:
+        messages.error(request, "Session expired. Please login again.")
+        return redirect("sign_in")
+
+    complaint_data = None
+    ticket_id = ""
+
+    def complaint_status_api(token, ticket_id):
+        return requests.post(
+            f"{Baseurl}/npci/complaint-status/",
+            headers={
+                "Authorization": f"Bearer {token}",
+                "Content-Type": "application/json"
+            },
+            json={
+                "ticketId": ticket_id
+            },
+            timeout=15
+        )
+
+    if request.method == "POST":
+        ticket_id = request.POST.get("ticket_id")
+
+        if not ticket_id:
+            messages.error(request, "Please enter Ticket ID")
+        else:
+            response = complaint_status_api(access_token, ticket_id)
+            print(f'{response=}')
+            # 🔄 Refresh token handling (same pattern)
+            if response.status_code in (401, 403):
+                if refresh_tokents(request):
+                    new_token = request.session.get("access_token")
+                    response = complaint_status_api(new_token)
+                else:
+                    messages.error(request, "Session expired. Please login again.")
+                    return redirect("sign_in")
+            try:
+                data = response.json()
+                print(f'{data=}')
+                if response.status_code == 200 and data.get("status"):
+                    complaint_data = data.get("data")
+                else:
+                    messages.error(
+                        request,
+                        data.get("message", "Unable to fetch complaint status")
+                    )
+            except Exception:
+                messages.error(request, "Invalid response from server")
+
+    return render(request, "recharge/complain_status.html", {
+        "user_data": user_data,
+        "complaint_data": complaint_data,
+        "ticket_id": ticket_id,
+    })
+
+
+
 from django.http import HttpResponse
 
 

@@ -116,11 +116,11 @@ body {
     background: #1976d2;
     color: #fff;
     font-weight: 600;
-    padding: 7px 26px;
+    padding: 7px 10px;
     border: none;
     border-radius: 3px;
     font-size: 1rem;
-    margin-left: 16px;
+    margin-left: px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     cursor: pointer;
     transition: background 0.2s;
@@ -130,14 +130,7 @@ body {
 {% include "recharge/navbar.html" %}
 
 
-<div class="cont">
-  <div class="fixed-bharat-connect-header">
-    <div class="container d-flex justify-content-end align-items-center">
-      <div class="navbar-brand m-0 ms-auto">
-        <img src="/media/bharat_connect_images.png" alt="Logo" style="height:40px; width:auto; mix-blend-mode:multiply;">
-      </div>
-    </div>
-  </div>
+{% include "recharge/logo.html" %}
 <div class="container container-box">
   <div class="header-row mb-3">
     <div class="header-title">Complaint History</div>
@@ -163,15 +156,17 @@ body {
         <option>Success</option>
         <option>Failed</option>
       </select>
-
-      <div class="filter-search">
-        <input type="text" placeholder="Mobile Number or Reference ID">
-        <i class="fas fa-search"></i>
+      <div class="filter-search" >
+        <input type="text" placeholder="Mobile Number or Reference ID" style="width: 100%; min-width: 0; padding-right: 28px;">
+        <i class="fas fa-search" style="right: 10px; position: absolute; margin-top: 6px; color: #1976d2;"></i>
       </div>
 
       <img src="/media/recharge/BBPSLogo.png" class="logo-img" alt="Bharat BillPay">
       <a href="{% url 'raise_npci_complaint' %}">
         <button class="raise-complain-btn" type="button">Raise Complain</button>
+      </a>
+      <a href="{% url 'complaint_status' %}">
+        <button class="raise-complain-btn" type="button">Complain-Status</button>
       </a>
     </div>
 

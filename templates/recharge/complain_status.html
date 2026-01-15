@@ -1,0 +1,156 @@
+{% extends 'service/service_base.html' %}
+{% block title %}Transaction History{% endblock %}
+{% block content %}
+
+<style>
+.complain-status-container {
+    max-width: 640px;
+    margin: 60px auto 0 auto;
+    background: #f4f7fc;
+    border-radius: 10px;
+    box-shadow: 0 2px 14px rgba(25, 118, 210, 0.08);
+    padding: 32px 30px 40px 30px;
+}
+.complain-status-title {
+    color: #1976d2;
+    margin-bottom: 18px;
+    text-align: center;
+    font-weight: bold;
+    letter-spacing: 0.6px;
+    font-size: 1.22rem;
+}
+.complain-status-form .form-group {
+    margin-bottom: 18px;
+}
+.complain-status-input {
+    border-radius: 6px;
+    border: 1px solid #aecbeb;
+    padding: 9px 12px;
+    height: 44px;
+    font-size: 1rem;
+    background: #fff;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+.complain-status-input:focus {
+    outline: none;
+    border-color: #1976d2;
+    box-shadow: 0 1px 6px rgba(25, 118, 210, 0.11);
+}
+.complain-status-btn {
+    background: linear-gradient(90deg, #1976d2 72%, #00a3ff 100%);
+    color: #fff;
+    font-weight: 600;
+    padding: 10px 0;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 100%;
+    transition: background 0.18s;
+    box-shadow: 0 2px 7px rgba(25, 118, 210, 0.11);
+}
+.complain-status-btn:hover, .complain-status-btn:focus {
+    background: linear-gradient(85deg, #1566b2 75%, #00a3ff 100%);
+    color: #e6eaf3;
+}
+
+.complain-details-card {
+    margin-top: 35px;
+    background: #fff;
+    border-radius: 7px;
+    box-shadow: 0 2px 10px rgba(25,118,210,0.12);
+    padding: 20px 16px 16px 16px;
+    border-left: 4px solid #1976d2;
+}
+
+.complain-details-card h5 {
+    color: #1976d2;
+    margin-bottom: 16px;
+    font-size: 1.12rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.complain-details-card p {
+    margin-bottom: 11px;
+    color: #393e46;
+    font-size: 1rem;
+}
+
+.complain-details-card strong {
+    color: #0e4ca3;
+}
+@media (max-width: 568px) {
+    .complain-status-container {
+        padding: 18px 9px 26px 9px;
+    }
+}
+</style>
+{% include "recharge/logo.html" %}
+
+<div class="complain-status-container">
+    {% if messages %}
+    <div class="message-container" style="margin-bottom: 18px;">
+      {% for message in messages %}
+        <div 
+          class="alert alert-custom {% if message.tags %}alert-{{ message.tags }}{% endif %} shadow-sm fade-in"
+          style="display: flex; align-items: center; gap: 7px; border-radius: 10px; padding: 12px 16px; font-size: 0.90rem; margin-bottom: 12px;
+                {% if message.tags == 'success' %}background: #eafbe7; color: #218838; border:1px solid #90e2a2;
+                {% elif message.tags == 'error' %}background: #fff1f0; color: #d81b36; border:1px solid #fadcdc;
+                {% elif message.tags == 'warning' %}background:#fff7e6; color: #d68910; border:1px solid #f7dbb5;
+                {% else %}background: #e9f0fb; color:#243b55; border:1px solid #b9cdf4;{% endif %}">
+          <i class="fa
+            {% if message.tags == 'success' %}fa-check-circle text-success
+            {% elif message.tags == 'error' %}fa-times-circle text-danger
+            {% elif message.tags == 'warning' %}fa-exclamation-triangle text-warning
+            {% else %}fa-info-circle text-primary{% endif %}
+            me-2" aria-hidden="true"
+            style="font-size: 1.35em;
+              {% if message.tags == 'success' %}color: #39b265;
+              {% elif message.tags == 'error' %}color: #e74c3c;
+              {% elif message.tags == 'warning' %}color: #ffa426;
+              {% else %}color: #3566d4;{% endif %}"></i>
+          <span style="flex:1;">{{ message }}</span>
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div class="complain-status-title">Check Complaint Status</div>
+    <form method="post" class="complain-status-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="text"
+                   name="ticket_id"
+                   class="complain-status-input"
+                   placeholder="Enter Ticket ID"
+                   value="{{ ticket_id }}"
+                   required>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+            <button type="submit" class="complain-status-btn">
+                Check Status
+            </button>
+        </div>
+    </form>
+
+    {% if complaint_data %}
+    <div class="complain-details-card">
+        <h5>Complaint Details</h5>
+        <p><strong>Ticket ID:</strong> {{ complaint_data.ticketId }}</p>
+        <p>
+            <strong>Status:</strong>
+            {% if complaint_data.status|stringformat:"s" == "RESOLVED" or complaint_data.status|stringformat:"s" == "SUCCESS" %}
+                <span style="color:#16a34a;font-weight:600;">{{ complaint_data.status }}</span>
+            {% elif complaint_data.status|stringformat:"s" == "PENDING" %}
+                <span style="color:#efa800;font-weight:600;">{{ complaint_data.status }}</span>
+            {% else %}
+                <span style="color:#d32f2f;font-weight:600;">{{ complaint_data.status }}</span>
+            {% endif %}
+        </p>
+        <p><strong>Remarks:</strong> {{ complaint_data.remarks|default:"-" }}</p>
+        <p><strong>Updated At:</strong> {{ complaint_data.updated_at|default:"-" }}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
