@@ -1,0 +1,32 @@
+{% extends "service/service_base.html" %}
+{% block content %}
+{% include 'recharge/logo.html' %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-sm rounded-4">
+        <div class="card-body">
+          <h5 class="fw-bold text-center mb-4">Select Hospital Bill  Provider</h5>
+
+          {% for biller in billers %}
+          <a href="{% url 'hospital_fetch' %}?billerId={{ biller.billerId }}"
+             class="text-decoration-none text-dark">
+            <div class="d-flex align-items-center border rounded-3 p-3 mb-2 hover-shadow">
+              <div class="bg-primary text-white rounded-circle fw-bold me-3"
+                   style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;">
+                {{ biller.billerName|slice:":1" }}
+              </div>
+              <!-- <p>{{ biller.billerId }}</p> -->
+              <div class="fw-semibold">{{ biller.billerName }}</div>
+            </div>
+          </a>
+          {% empty %}
+          <p class="text-muted text-center">No billers available</p>
+          {% endfor %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

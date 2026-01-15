@@ -69,59 +69,6 @@ def fastag_category_view(request):
         "user_data": user_data
     })
 
-# def fastag_category_view(request):
-#     user_data = request.session.get("user_data", {})
-#     access_token = request.session.get("access_token")
-
-#     if not access_token:
-#         messages.error(request, "Session expired. Please sign in again.")
-#         return redirect("sign_in") 
-
-#     category = request.GET.get("category", "Fastag")
-
-
-#     billers = []
-
-#     def fastag_category_data(token):
-#         return requests.get(
-#             f"{Baseurl}/npci/get-biller-by-category/",
-#             headers={
-#                 "Authorization": f"Bearer {token}",
-#                 "Content-Type": "application/json"
-#             },
-#             params={"category": category},
-#             timeout=10
-#         )
-
-#     response = fastag_category_data(access_token)
-#     #print(f'{response=}')
-#     # 🔁 Token expire case
-#     if response.status_code in (401, 403):
-#         if refresh_tokents(request):
-#             new_token = request.session.get('access_token')
-#             response = fastag_category_data(new_token)
-#         else:
-#             return redirect('sign_in')
-
-#     # ✅ Success response
-#     try:
-#         if response.status_code == 200:
-#             data = response.json()
-#             #print(f'{data=}')
-#             if data.get("status"):
-#                 billers = data.get("data", [])
-#     except Exception as e:
-#         messages.error(request, f"API request failed: {str(e)}")
-#         return redirect('sign_in')
-
-#     return render(request, "recharge_fastag/fastag_billers.html", {
-#         "billers": billers,
-#         "category": category,
-#         "user_data": user_data
-#     })
-
-
-
 
 '''
 ===============================================================================================================
@@ -140,7 +87,7 @@ def fastag_fetch_bill(request):
         vehicle_number = request.POST.get("vehicle_number")
         billerId = request.POST.get("billerId")
 
-        if not vehicle_number or not billerId:
+        if not vehicle_number :
             messages.error(request, "Please enter vehicle number.")
             return redirect("fastag_fetch")
 
@@ -190,74 +137,10 @@ def fastag_fetch_bill(request):
 
         except Exception:
             messages.error(request, "Invalid response from FASTag server.")
-
+            return redirect('fastag_category')
     return render(request, "recharge_fastag/fastag_fetch.html", {
         "user_data": user_data
     })
-
-# def fastag_fetch_bill(request):
-#     user_data = request.session.get("user_data", {})
-#     access_token = request.session.get("access_token")
-
-
-#     if not access_token:
-#         messages.error(request, "Session expired. Please sign in again.")
-#         return redirect("sign_in") 
-
-#     if request.method == "POST":
-#         vehicle_number = request.POST.get("vehicle_number")
-#         billerId = request.POST.get("billerId")
-
-#         def fetch_fastag_bill(token):
-#             headers={
-#                     "Authorization": f"Bearer {token}",
-#                     "Content-Type": "application/json"
-#                 }
-#             return requests.post(
-#                 f"{Baseurl}/npci/fetch-fastag-bill/",
-#                 json={
-#                     "vehicle_number": vehicle_number,
-#                     "billerId": billerId
-#                 },
-#                 headers=headers,
-#                 timeout=15
-#             )
-
-#         try:
-#             response = fetch_fastag_bill(access_token)
-#             #print(f'{response=}')
-#             # 🔁 TOKEN EXPIRED CASE (same as category view)
-#             if response.status_code in (401, 403):
-#                 if refresh_tokents(request):
-#                     new_token = request.session.get("access_token")
-#                     response = fetch_fastag_bill(new_token)
-#                 else:
-
-#                     return redirect("sign_in")
-
-#             data = response.json()
-#             #print(f'{data=}')
-#             if response.status_code == 200 and data.get("status"):
-#                 # 🔐 STORE IN SESSION
-#                 request.session["FASTAG_BILL"] = {
-#                     "vehicle_number": vehicle_number,
-#                     "billerId": billerId,
-#                     "payload": data["data"]["payload"],
-#                     "return_payload": data["return_payload"]
-#                 }
-#                 return redirect("fastag_confirm")
-
-#             else:
-#                 messages.error(request, "Unable to fetch FASTag bill")
-
-#         except Exception as e:
-#             messages.error(request, f"FASTAG FETCH ERROR: {str(e)}")
-
-#     return render(request, "recharge_fastag/fastag_fetch.html", {
-#         "user_data": user_data
-#     })
-
-
 
 
 '''
@@ -269,35 +152,32 @@ def fastag_fetch_bill(request):
 def fastag_confirm(request):
     # 🔐 Session safety
     if "FASTAG_BILL" not in request.session:
-        return redirect("fastag_fetch")
+        return redirect("fastag_category")
 
     bill = request.session.get("FASTAG_BILL", {})
     user_data = request.session.get("user_data", {})
 
     payload = bill.get("payload", {})
-    biller_response = payload.get("billerResponse", {})
-    additional_params = payload.get("additionalParams", {})
+   
+    # biller_response = payload.get("billerResponse", {})
+    # additional_params = payload.get("additionalParams", {})
 
-    # 🔥 Normalize additionalParams (SPACE → SAFE KEYS)
-    additional = {
-        "tag_status": additional_params.get("Tag Status"),
-        "max_amount": additional_params.get("Maximum Permissible Recharge Amount"),
-        "wallet_balance": additional_params.get("Wallet Balance"),
-    }
+    # # 🔥 Normalize additionalParams (SPACE → SAFE KEYS)
+    # additional = {
+    #     "tag_status": additional_params.get("Tag Status"),
+    #     "max_amount": additional_params.get("Maximum Permissible Recharge Amount"),
+    #     "wallet_balance": additional_params.get("Wallet Balance"),
+    # }
 
     context = {
         "vehicle_number": bill.get("vehicle_number"),
         "billerId": bill.get("billerId"),
-
-        # original payload
         "payload": payload,
-
-        # extracted helpers
-        "biller": biller_response,
-        "additional": additional,
-
-        # user
         "user_data": user_data,
+        # extracted helpers
+        # "biller": biller_response,
+        # "additional": additional,
+        
     }
 
     return render(request, "recharge_fastag/fastag_confirm.html", context)
@@ -425,7 +305,125 @@ def fastag_confirm(request):
                        Payment method
 ===============================================================================================================
 '''
+from datetime import datetime
+
+
 def fastag_payment(request):
+    user_data = request.session.get("user_data", {})
+    access_token = request.session.get("access_token")
+
+    if not access_token:
+        messages.error(request, "Session expired. Please sign in again.")
+        return redirect("sign_in")
+
+    if "FASTAG_BILL" not in request.session:
+        return redirect("fastag_category")
+
+    bill = request.session.get("FASTAG_BILL", {})
+
+    def fastag_payment_api(token, payload):
+        return requests.post(
+            f"{Baseurl}/recharge-payment/",
+            json=payload,
+            headers={
+                "Authorization": f"Bearer {token}",
+                "Content-Type": "application/json"
+            },
+            timeout=20
+        )
+
+    if request.method == "POST":
+        amount = request.POST.get("amount")
+        tpin = request.POST.get("tpin")
+
+        payload = {
+            "amount": amount,
+            "tpin": tpin,
+            "biller_type": "Fastag",
+            "return_payload": bill.get("return_payload", {})
+        }
+
+        try:
+            res = fastag_payment_api(access_token, payload)
+
+            # 🔄 TOKEN REFRESH
+            if res.status_code in (401, 403):
+                if refresh_tokents(request):
+                    access_token = request.session.get("access_token")
+                    res = fastag_payment_api(access_token, payload)
+                else:
+                    messages.error(request, "Session expired. Please login again.")
+                    return redirect("sign_in")
+
+            data = res.json()
+            # print(f"{data=}")
+
+            # ✅ SUCCESS
+            if (
+                res.status_code == 200
+                and data.get("status") is True
+                and data.get("bill_data", {}).get("status") == "SUCCESS"
+            ):
+                success_payload = data["bill_data"]["payload"]
+
+                # ⏱ Time formatting
+                raw_time = success_payload.get("timeStamp")
+                formatted_time = ""
+
+                if raw_time:
+                    clean_time = raw_time.split("+")[0]
+                    formatted_time = datetime.strptime(
+                        clean_time, "%Y-%m-%dT%H:%M:%S"
+                    ).strftime("%d %b %Y, %I:%M %p")
+
+                # 🧹 Clear session
+                request.session.pop("FASTAG_BILL", None)
+
+                receipt = {
+                    "customer_name": data.get("name", ""),
+                    "amount": amount,
+                    "refid": success_payload.get("refId", ""),
+                    "time": formatted_time,
+
+                    "transaction_id": success_payload.get("additionalParams", {}).get("transactionID", ""),
+                    "reference_id": success_payload.get("additionalParams", {}).get("txnReferenceId", ""),
+                    "approval_ref": success_payload.get("reason", {}).get("approvalRefNum", ""),
+                    "responseCode": success_payload.get("reason", {}).get("responseCode", ""),
+                    "responseReason": success_payload.get("reason", {}).get("responseReason", ""),
+
+                    "mobile": bill.get("return_payload", {}).get("customerMobileNumber", ""),
+                    "biller_type": "Fastag",
+                }
+
+                return render(
+                    request,
+                    "recharge_fastag/fastag_success.html",
+                    {
+                        "message": data.get("message"),
+                        "receipt": receipt,
+                        "user_data": user_data
+                    }
+                )
+
+            # ❌ FAILED → redirect confirm page
+            error_message = (
+                data.get("error", {})
+                    .get("payload", {})
+                    .get("errors", [{}])[0]
+                    .get("errorDtl")
+                or data.get("message", "Payment Failed")
+            )
+
+            messages.error(request, error_message)
+            return redirect("fastag_confirm")
+
+        except requests.RequestException:
+            messages.error(request, "Server error. Please try again.")
+            return redirect("fastag_confirm")
+
+    return redirect("fastag_confirm")
+
+'''def fastag_payment(request):
     # print('rrrrrrrrrrrr')
     user_data = request.session.get("user_data", {})
     access_token = request.session.get("access_token")
@@ -476,22 +474,38 @@ def fastag_payment(request):
                 # success_payload = data["data"]["payload"]
                 success_payload = data["bill_data"]["payload"]
                 # print(f'{success_payload=}')
+
+
+                  # ✅ Time formatting
+                raw_time = success_payload.get("timeStamp")
+                formatted_time = ""
+
+                if raw_time:
+                    # Remove timezone
+                    clean_time = raw_time.split("+")[0]
+                    formatted_time = datetime.strptime(
+                        clean_time, "%Y-%m-%dT%H:%M:%S"
+                    ).strftime("%d %b %Y, %I:%M %p")
                 # ✅ CLEAR SESSION (NO DOUBLE PAYMENT)
                 if "FASTAG_BILL" in request.session:
                     del request.session["FASTAG_BILL"]
 
                 # Build receipt dictionary
                 receipt = {
-                    "customer_name": bill.get("return_payload", {}).get("customerDetails", {}).get("EMAIL", ""),
+                    "customer_name": data.get("name", ""),
                     "amount": amount,
-                    "vehicle_number": bill.get("return_payload", {}).get("customerParams", {}).get("Vehicle Registration Number", ""),
+                    "refid": success_payload.get("refId", ""),
+                    "time": formatted_time,
+
                     "transaction_id": success_payload.get("additionalParams", {}).get("transactionID", ""),
                     "reference_id": success_payload.get("additionalParams", {}).get("txnReferenceId", ""),
+
                     "approval_ref": success_payload.get("reason", {}).get("approvalRefNum", ""),
-                    "time": success_payload.get("timeStamp", ""),
-                    "status": data.get("data", {}).get("status"),
+                    "responseCode": success_payload.get("reason", {}).get("responseCode", ""),
+                    "responseReason": success_payload.get("reason", {}).get("responseReason", ""),
+
                     "mobile": bill.get("return_payload", {}).get("customerMobileNumber", ""),
-                    "biller_type": "FASTAG",
+                    "biller_type": "Fastag",
                 }
 
                 return render(request, "recharge_fastag/fastag_success.html", {
@@ -541,3 +555,4 @@ def fastag_payment(request):
 
 
 
+    return redirect("fastag_confirm")'''

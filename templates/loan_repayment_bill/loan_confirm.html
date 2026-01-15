@@ -161,7 +161,9 @@ input[type="number"]:focus, input[type="password"]:focus {
             <div class="row small">
   
              
-  
+              <div class="col-6 text-muted">Loan number</div>
+              <div class="col-6 fw-semibold">{{ Loan_Number }}</div>
+
               <div class="col-6 text-muted">Account Holder</div>
               <div class="col-6 fw-semibold">
                 {{ payload.billerResponse.accountHolderName }}
@@ -232,7 +234,7 @@ input[type="number"]:focus, input[type="password"]:focus {
 
           <a href="{% url 'loan_category' %}"
              class="btn btn-outline-secondary w-100 mt-2">
-            ← Change Vehicle Number
+            ← Change 
           </a>
         </div>
       </div>

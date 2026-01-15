@@ -1,0 +1,584 @@
+<style>
+
+
+    /* Section Title */
+    .section-title {
+      font-weight: 700;
+      font-size: 1.75rem;
+      margin: 2rem 0 1rem;
+      color: black;
+  
+    }
+  
+  /* Service Card */
+  .service-card {
+    background-color: #e8f1ff;
+    border-radius: 12px;
+    text-align: center;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  /* Icon container */
+  .service-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;   /* IMPORTANT */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    margin-bottom: 10px;
+  }
+  
+  /* Image fix */
+  .service-icon img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;   /* MOST IMPORTANT */
+    display: block;
+  }
+  
+  /* Text */
+  .service-card div {
+    font-weight: bold;
+    color: #000;
+    font-size: 1.2rem;
+    line-height: 1.3;
+  }
+    .service-card:hover .service-icon i {
+      color: #003366;
+      transform: scale(1.1);
+    }
+  
+    a {
+      text-decoration: none;
+    }
+   
+  </style>
+        
+        <div class="container rounded">
+            <!-- Recharge Section -->
+            <div class="section-title">Recharges</div>
+            <div class="row g-3 justify-content-start">
+              <div class="col-3 col-md-2 team-card">
+                <a href="{% url 'mobile_prepaid_category' %}">
+                  <div class="service-card">
+                    <div class="service-icon">
+                      <img src="/media/recharge/m_prepaid.svg" alt="Mobile Prepaid">
+                    </div>
+                    <div>Mobile<br>Prepaid</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+        
+           
+            
+                <!-- Pay Your Home Bills -->
+                <div class="section-title">Pay Your Home Bills</div>
+                <div class="row g-3 justify-content-start">
+        
+                  <div class="col-3 col-md-2 team-card">
+                    <a href="{% url 'fastag_category' %}">
+                      <div class="service-card">
+                        <div class="service-icon">
+                          <img src="/media/recharge/fastag.svg" alt="FASTag Recharge">
+                        </div>
+                        <div>Fastag</div>
+                      </div>
+                    </a>
+                  </div>
+                    <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'electricity_category' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/electricity_bill.svg" alt="Electricity Bill">
+                                </div>
+                                <div>Electricity<br>Bill</div>
+                            </div>
+                        </a>
+                    </div>
+        
+                    <div class="col-3 col-md-2 team-card">
+                      <a href="{% url 'gas_category' %}">
+                          <div class="service-card">
+                              <div class="service-icon">
+                                  <img src="/media/recharge/piped_gas_bill.svg" alt="Piped Gas Bill">
+                              </div>
+                              <div> Gas</div>
+                          </div>
+                      </a>
+                  </div>
+        
+                  <div class="col-3 col-md-2 team-card">
+                    <a href="{% url 'loan_category' %}">
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <img src="/media/recharge/investment.png" alt="Loan Repayment" style="width: 30px; height: 40px;">
+                            </div>
+                            <div>Loan<br>Repayment</div>
+                        </div>
+                    </a>
+                </div>
+        
+        
+                    <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'education_category' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/education_fees.svg" alt="Education Fees">
+                                </div>
+                                <div>Education<br>Fees</div>
+                            </div>
+                        </a>
+                    </div>
+        
+        
+                    
+                    <div class="col-3 col-md-2 team-card">
+                      <a href="{% url 'water_category' %}">
+                          <div class="service-card">
+                              <div class="service-icon">
+                                  <img src="/media/recharge/water_bill.svg" alt="Water Bill">
+                              </div>
+                              <div>Water</div>
+                          </div>
+                      </a>
+                  </div>
+        
+                  <div class="col-3 col-md-2 team-card">
+                    <a href="{% url 'insurance_category' %}">
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <img src="/media/recharge/lic_insurance.svg" alt="LIC Insurance">
+                            </div>
+                            <div>Insurance</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-3 col-md-2 team-card">
+                  <a href="{% url 'landline_postpaid_category' %}">
+                      <div class="service-card">
+                          <div class="service-icon">
+                              <img src="/media/recharge/landline_postpaid.svg" alt="Landline Postpaid">
+                          </div>
+                          <div>Landline<br>Postpaid</div>
+                      </div>
+                  </a>
+              </div>
+
+              <div class="col-3 col-md-2 team-card">
+                <a href="{% url 'rental_category' %}">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <img src="/media/recharge/pay_rent.svg" alt="Pay Rent">
+                        </div>
+                        <div>Rental</div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="col-3 col-md-2 team-card">
+                <a href="{% url 'cable_tv_category' %}">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <img src="/media/recharge/cable_tv.svg" alt="Cable TV">
+                        </div>
+                        <div>Cable<br>TV</div>
+                    </div>
+                </a>
+            </div>
+
+            
+            <div class="col-3 col-md-2 team-card">
+                <a href="{% url 'hospital_category' %}">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <img src="/media/recharge/housing_society.svg" alt="Housing Society">
+                        </div>
+                        <div>Hospital</div>
+                    </div>
+                </a>
+            </div>
+
+
+            <div class="col-3 col-md-2 team-card">
+                <a href="{% url 'health_insurance_category' %}">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <img src="/media/recharge/donation.jpg" alt="Donation">
+                        </div>
+                        <div>Health Insurance</div>
+                    </div>
+                </a>
+            </div>
+
+            
+            <div class="col-3 col-md-2 team-card">
+                <a href="{% url 'municiple_taxes_category' %}">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <img src="/media/recharge/manicipal_taxes.svg" alt="Municipal Taxes">
+                        </div>
+                        <div>Municipal<br>Taxes</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+
+        
+            
+             
+                        
+        
+               
+        
+              <div class="container rounded">
+                <!-- Recharge Section -->
+                <div class="section-title">Recharges</div>
+        
+                
+                <div class="row g-3 justify-content-start">
+                  <!-- <div class="col-3 col-md-2 team-card">
+                    <a href="{% url 'fastag_category' %}">
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <img src="/media/recharge/fastag.svg" alt="FASTag Recharge">
+                            </div>
+                            <div>Recharge<br>FASTag</div>
+                        </div>
+                    </a>
+                  </div>
+                  <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'mobile_prepaid_category' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/m_prepaid.svg" alt="Mobile Prepaid">
+                                </div>
+                                <div>Mobile<br>Prepaid</div>
+                            </div>
+                        </a>
+                    </div> -->
+        
+                    <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'mobile_postpaid' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/m_postpaid.svg" alt="Mobile Postpaid">
+                                </div>
+                                <div>Mobile<br>Postpaid</div>
+                            </div>
+                        </a>
+                    </div>
+        
+                    <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'dth_recharge' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/dth.svg" alt="DTH Recharge">
+                                </div>
+                                <div>DTH<br>Recharge</div>
+                            </div>
+                        </a>
+                    </div>
+        
+                    <!-- <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'category_view' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/fastag.svg" alt="FASTag Recharge">
+                                </div>
+                                <div>Recharge<br>FASTag</div>
+                            </div>
+                        </a>
+                    </div> -->
+                </div>
+        
+                <!-- Pay Your Home Bills -->
+                <!-- <div class="section-title">Pay Your Home Bills</div> -->
+                <div class="row g-3 justify-content-start">
+                    <!-- <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'electricity_category' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/electricity_bill.svg" alt="Electricity Bill">
+                                </div>
+                                <div>Electricity<br>Bill</div>
+                            </div>
+                        </a>
+                    </div>
+        
+                    <div class="col-3 col-md-2 team-card">
+                      <a href="{% url 'gas_category' %}">
+                          <div class="service-card">
+                              <div class="service-icon">
+                                  <img src="/media/recharge/piped_gas_bill.svg" alt="Piped Gas Bill">
+                              </div>
+                              <div> Gas</div>
+                          </div>
+                      </a>
+                  </div>
+        
+                  <div class="col-3 col-md-2 team-card">
+                    <a href="{% url 'loan_category' %}">
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <img src="/media/recharge/investment.png" alt="Loan Repayment" style="width: 30px; height: 40px;">
+                            </div>
+                            <div>Loan<br>Repayment</div>
+                        </div>
+                    </a>
+                </div>
+        
+        
+                    <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'education_category' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/education_fees.svg" alt="Education Fees">
+                                </div>
+                                <div>Education<br>Fees</div>
+                            </div>
+                        </a>
+                    </div> -->
+        
+                    <div class="section-title mt-3">Financial Services</div>
+                    <div class="row g-3 justify-content-start">
+                        <!-- <div class="col-3 col-md-2 team-card">
+                            <a href="{% url 'insurance_category' %}">
+                                <div class="service-card">
+                                    <div class="service-icon">
+                                        <img src="/media/recharge/lic_insurance.svg" alt="LIC Insurance">
+                                    </div>
+                                    <div>Insurance</div>
+                                </div>
+                            </a>
+                        </div>
+        
+                    <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'water_category' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/water_bill.svg" alt="Water Bill">
+                                </div>
+                                <div>Water</div>
+                            </div>
+                        </a>
+                    </div> -->
+        
+                    <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'lpg_book_gas' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/book_gas_cylinder.svg" alt="Book Gas Cylinder">
+                                </div>
+                                <div>LPG Gas</div>
+                            </div>
+                        </a>
+                    </div>
+        
+                  
+                   
+                   
+        
+                    <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'brosdband_postpaid_view' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/broad_band_postpaid.svg" alt="Broadband Postpaid">
+                                </div>
+                                <div>Broadband<br>Postpaid</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+        
+        
+        
+                <!-- Other Services -->
+                <div class="section-title">Other Services</div>
+                <div class="row g-3 justify-content-start">
+        
+                    <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'subscription_view' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/subcription.svg" alt="Subscription">
+                                </div>
+                                <div>Subscription</div>
+                            </div>
+                        </a>
+                    </div>
+        
+                    <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'club_assiciation_view' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/club_associations.svg" alt="Clubs">
+                                </div>
+                                <div>Clubs And <br>Association</div>
+                            </div>
+                        </a>
+                    </div>
+        
+                    <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'donation_view' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/donation.jpg" alt="Donation">
+                                </div>
+                                <div>Donation</div>
+                            </div>
+                        </a>
+                    </div>
+        
+                    <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'ev_recharge_view' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/ev_recharge.png" alt="EV Recharge" style="width: 30px; height: 40px;">
+                                </div>
+                                <div>EV Recharge</div>
+                            </div>
+                        </a>
+                    </div>
+        
+                    <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'housing_society_view' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/housing_society.svg" alt="Housing Society">
+                                </div>
+                                <div>Housing<br> Society</div>
+                            </div>
+                        </a>
+                    </div>
+        
+                    <div class="col-3 col-md-2 team-card">
+                        <a href="{% url 'municiple_services_view' %}">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <img src="/media/recharge/municipal_services.svg" alt="Municipal Services">
+                                </div>
+                                <div>Municipal<br> Services</div>
+                            </div>
+                        </a>
+                    </div>
+        
+                    <div class="col-3 col-md-2 team-card">
+                      <a href="{% url 'recurring_deposite_view' %}">
+                          <div class="service-card">
+                              <div class="service-icon">
+                                  <img src="/media/recharge/recurring_deposit.svg" alt="Recurring Deposit">
+                              </div>
+                              <div>Recurring<br>Deposit</div>
+                          </div>
+                      </a>
+                  </div>
+          
+                  <div class="col-3 col-md-2 team-card">
+                      <a href="{% url 'credit_card_view' %}">
+                          <div class="service-card">
+                              <div class="service-icon">
+                                  <img src="/media/recharge/credit-card.png" alt="Credit Card" style="width: 30px; height: 40px;">
+                              </div>
+                              <div>Credit<br>Card</div>
+                          </div>
+                      </a>
+                  </div>
+          
+                  <div class="col-3 col-md-2 team-card">
+                      <a href="{% url 'e_challan_view' %}">
+                          <div class="service-card">
+                              <div class="service-icon">
+                                  <img src="/media/recharge/car.png" alt="eChallan" style="width: 30px; height: 40px;">
+                              </div>
+                              <div>eChallan</div>
+                          </div>
+                      </a>
+                  </div>
+          
+                  
+                  <div class="col-3 col-md-2 team-card">
+                      <a href="{% url 'national_pension_system_view' %}">
+                          <div class="service-card">
+                              <div class="service-icon">
+                                  <img src="/media/recharge/money.png" alt="National Pension" style="width: 30px; height: 40px;">
+                              </div>
+                              <div>National<br>Pension System</div>
+                          </div>
+                      </a>
+                  </div>
+          
+                  <div class="col-3 col-md-2 team-card">
+                      <a href="{% url 'prepaid_meter_view' %}">
+                          <div class="service-card">
+                              <div class="service-icon">
+                                  <img src="/media/recharge/power-plug.png" alt="Prepaid Meter"style="width: 30px; height: 40px;">
+                              </div>
+                              <div>Prepaid<br>Meter</div>
+                          </div>
+                      </a>
+                  </div>
+          
+                  <div class="col-3 col-md-2 team-card">
+                      <a href="{% url 'ncmc_recharge_view' %}">
+                          <div class="service-card">
+                              <div class="service-icon">
+                                  <img src="/media/recharge/train.png" alt="National Pension" style="width: 30px; height: 40px;">
+                              </div>
+                              <div>NCMC Recharge</div>
+                          </div>
+                      </a>
+                  </div>
+          
+                  <!--
+                  <div class="col-3 col-md-2 team-card">
+                      <a href="{% url 'not_found_page' %}">
+                          <div class="service-card">
+                              <div class="service-icon">
+                                  <img src="/media/recharge/club_associations.svg" alt="Insurance">
+                              </div>
+                              <div>Club & Association</div>
+                          </div>
+                      </a>
+                  </div>
+                  -->
+          
+                  <div class="col-3 col-md-2 team-card">
+                      <a href="{% url 'fleet_card_recharge_view' %}">
+                          <div class="service-card">
+                              <div class="service-icon">
+                                  <img src="/media/recharge/fleet_card.png" alt="Fleet Card Recharge" style="width: 30px; height: 40px;">
+                              </div>
+                              <div>Fleet Card<br>Recharge</div>
+                          </div>
+                      </a>
+                  </div>
+          
+                  <div class="col-3 col-md-2 team-card">
+                      <a href="{% url 'agent_collection_view' %}">
+                          <div class="service-card">
+                              <div class="service-icon">
+                                  <img src="/media/recharge/agent_collection.png" alt="Agent Collection" style="width: 30px; height: 40px;">
+                              </div>
+                              <div>Agent<br>Collection</div>
+                          </div>
+                      </a>
+                  </div>
+                  </div>
+                </div> 
+          
+
+    
+    
+  </div>
+</div>

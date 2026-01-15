@@ -156,39 +156,54 @@ input[type="number"]:focus, input[type="password"]:focus {
         <!-- {% if payload %} -->
         <div class="card shadow rounded-4 mb-3">
           <div class="card-body">
-            <h5 class="fw-bold mb-3">Loan Repayment Summary</h5>
+            <h5 class="fw-bold mb-3">Gas Bill Summary</h5>
   
             <div class="row small">
   
-              <div class="col-6 text-muted">Customer Number</div>
+              {% if Consumer_number %}
+              <div class="col-6 text-muted">Consumer Number</div>
               <div class="col-6 fw-semibold">{{ Consumer_number }}</div>
+              {% endif %}
+              
+              {% if distributor_id %}
               <div class="col-6 text-muted">Distributor ID</div>
               <div class="col-6 fw-semibold">{{ distributor_id }}</div>
-  
+              {% endif %}
+
+              {% if payload.billerResponse.accountHolderName %}
               <div class="col-6 text-muted">Account Holder</div>
               <div class="col-6 fw-semibold">
                 {{ payload.billerResponse.accountHolderName }}
               </div>
-  
+              {% endif %}
+
+              {% if payload.billerResponse.amount %}
               <div class="col-6 text-muted">Amount Due</div>
               <div class="col-6 fw-bold text-success">
                 ₹ {{ payload.billerResponse.amount }}
               </div>
-  
+              {% endif %}
+
+              {% if payload.billerResponse.dueDate %}
               <div class="col-6 text-muted">Due Date</div>
               <div class="col-6 fw-semibold">
-                {{ payload.billerResponse.dueDate|default:"N/A" }}
+                {{ payload.billerResponse.dueDate }}
               </div>
-  
+              {% endif %}
+
+              {% if payload.billerResponse.billDate %}
               <div class="col-6 text-muted">Bill Date</div>
               <div class="col-6 fw-semibold">
-                {{ payload.billerResponse.billDate|default:"N/A" }}
+                {{ payload.billerResponse.billDate }}
               </div>
-  
+              {% endif %}
+
+              {% if payload.approvalRefNum %}
               <div class="col-6 text-muted">Approval Ref No</div>
               <div class="col-6 fw-semibold">
                 {{ payload.approvalRefNum }}
               </div>
+              {% endif %}
 
               
             
@@ -235,7 +250,7 @@ input[type="number"]:focus, input[type="password"]:focus {
 
           <a href="{% url 'gas_category' %}"
              class="btn btn-outline-secondary w-100 mt-2">
-            ← Change Vehicle Number
+            ← Change 
           </a>
         </div>
       </div>

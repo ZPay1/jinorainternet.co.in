@@ -1,0 +1,71 @@
+{% extends "service/service_base.html" %}
+{% block content %}
+
+
+{% include 'recharge/logo.html' %}
+
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+
+      {% if messages %}
+      <div class="message-container" style="margin-bottom: 18px;">
+        {% for message in messages %}
+          <div 
+            class="alert alert-custom {% if message.tags %}alert-{{ message.tags }}{% endif %} shadow-sm fade-in"
+            style="display: flex; align-items: center; gap: 7px; border-radius: 10px; padding: 12px 16px; font-size: 0.90rem; margin-bottom: 12px;
+                  {% if message.tags == 'success' %}background: #eafbe7; color: #218838; border:1px solid #90e2a2;
+                  {% elif message.tags == 'error' %}background: #fff1f0; color: #d81b36; border:1px solid #fadcdc;
+                  {% elif message.tags == 'warning' %}background:#fff7e6; color: #d68910; border:1px solid #f7dbb5;
+                  {% else %}background: #e9f0fb; color:#243b55; border:1px solid #b9cdf4;{% endif %}">
+            <i class="fa
+              {% if message.tags == 'success' %}fa-check-circle text-success
+              {% elif message.tags == 'error' %}fa-times-circle text-danger
+              {% elif message.tags == 'warning' %}fa-exclamation-triangle text-warning
+              {% else %}fa-info-circle text-primary{% endif %}
+              me-2" aria-hidden="true"
+              style="font-size: 1.35em;
+                {% if message.tags == 'success' %}color: #39b265;
+                {% elif message.tags == 'error' %}color: #e74c3c;
+                {% elif message.tags == 'warning' %}color: #ffa426;
+                {% else %}color: #3566d4;{% endif %}"></i>
+            <span style="flex:1;">{{ message }}</span>
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="card shadow rounded-4">
+        <div class="card-body p-4">
+          <h5 class="text-center fw-bold mb-4">Education Fess Bill </h5>
+
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="billerId" value="{{ request.GET.billerId }}">
+            
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Roll Number</label>
+              <input type="number" name="Roll_No"
+                     class="form-control form-control-lg"
+                     placeholder="Enter your Roll Number"
+                     required
+                     inputmode="numeric"
+                     pattern="[0-9]*"
+                     min="0"
+                     step="1">
+            </div>
+            <button class="btn btn-primary w-100 btn-lg">
+              Fetch Bill
+            </button>
+          </form>
+
+          <div class="alert small text-left">
+            Enter correct Roll number to fetch Education Fees Bill details.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -90,7 +90,7 @@ def mobile_prepaid_plans_view(request):
 
     planDetails = []
     params={"billerId": biller_id}
-    # print(f'{params=}')
+    print(f'{params=}')
     def fetch_plans(token):
     
         return requests.get(
@@ -105,7 +105,7 @@ def mobile_prepaid_plans_view(request):
     
 
     response = fetch_plans(access_token)
-    # print(f'{response=}')
+    print(f'{response=}')
     # 🔁 TOKEN EXPIRED CASE (same as category view)
     if response.status_code in (401, 403):
         if refresh_tokents(request):
@@ -259,6 +259,7 @@ def mobile_prepaid_validate_view(request):
             return redirect("mobile_prepaid_confirm")
 
         messages.error(request, validate_data.get("message", "Validation failed"))
+        return redirect('mobile_prepaid_category')
 
     return render(
         request,
@@ -271,90 +272,6 @@ def mobile_prepaid_validate_view(request):
 
 
 
-'''
-def mobile_prepaid_validate_view(request):
-
-    access_token = request.session.get("access_token")
-    user_data = request.session.get("user_data", {})
-    if 'access_token' not in request.session:
-        return redirect('sign_in') 
-
-    if request.method == "POST":
-        mobile_number = request.POST.get("mobile_number")
-        circle = request.POST.get("circle")
-        # print(f'{circle=}')
-        plan_id = request.POST.get("plan_id")
-        biller_id = request.POST.get("billerId")
-
-        # 🔁 Step 1: Fetch plans again
-        response = requests.get(
-            f"{Baseurl}/npci/mobile-prepaid/fetch-plans-by-biller/",
-            headers={
-                "Authorization": f"Bearer {access_token}",
-                "Content-Type": "application/json"
-            },
-            params={"billerId": biller_id},
-            timeout=10
-        )
-
-        if response.status_code != 200:
-            messages.error(request, "Unable to fetch plans")
-            return redirect("mobile_prepaid_plans")
-
-        data = response.json()
-        # print(f'{data=}')
-        plan_list = (
-            data.get("data", {})
-                .get("payload", {})
-                .get("planDetails", [])
-        )
-        # print(f'{plan_list=}')
-        # 🔍 Step 2: Find selected plan
-        selected_plan = next(
-            (p for p in plan_list if p.get("id") == plan_id),
-            None
-        )
-
-        if not selected_plan:
-            messages.error(request, "Invalid plan selected")
-            return redirect("mobile_prepaid_plans")
-
-        # 🔁 Step 3: Call validate API with FULL plan object
-        validate_response = requests.post(
-        f"{Baseurl}/npci/mobile-prepaid/validate/",
-        json={
-            "mobile_number": mobile_number,
-            "circle": circle,  
-            "plan": selected_plan
-        },
-        headers={
-            "Authorization": f"Bearer {access_token}",
-            "Content-Type": "application/json"
-        },
-        timeout=15
-    )
-
-
-        validate_data = validate_response.json()
-        # print(f'==================={validate_data=}')
-
-        if validate_response.status_code == 200 and validate_data.get("status"):
-                # 🔐 STORE IN SESSION
-                request.session["MOBILE_PREPAID_CONFIRM"] = {
-                    "mobile_number": mobile_number,
-                    "circle": circle,
-                    "plan": selected_plan,
-                    "amount": validate_data.get("amount"),
-                    "return_payload": validate_data.get("return_payload"),
-                }
-
-                return redirect("mobile_prepaid_confirm")
-      
-        messages.error(request, validate_data.get("message", "Validation failed"))
-
-    return render(request, "recharge_mo_prepaid/mobile_prepaid_fetch.html",{'user_data':user_data,'access_token':access_token})
-
-'''
 
 '''
 ===============================================================================================================
@@ -367,6 +284,8 @@ def mobile_prepaid_confirm(request):
 
     if 'access_token' not in request.session:
         return redirect('sign_in') 
+        
+
         
     data = request.session["MOBILE_PREPAID_CONFIRM"]
     context = {
@@ -390,7 +309,7 @@ def mobile_prepaid_confirm(request):
                        Payment method
 ===============================================================================================================
 '''
-
+from datetime import datetime
 def mobile_prepaid_payment(request):
     user_data = request.session.get("user_data", {})
     access_token = request.session.get("access_token")
@@ -400,6 +319,8 @@ def mobile_prepaid_payment(request):
     if not access_token:
         messages.error(request, "Session expired. Please sign in again.")
         return redirect("sign_in")
+    if "MOBILE_PREPAID_CONFIRM" not in request.session:
+            return redirect("mobile_prepaid_category")
 
     bill = request.session.get("MOBILE_PREPAID_CONFIRM", {})
 
@@ -441,7 +362,7 @@ def mobile_prepaid_payment(request):
                     return redirect("sign_in")
 
             data = response.json()
-            # print(f'{data=}')
+            print(f'{data=}')
             # ✅ SUCCESS
             if (
                 response.status_code == 200
@@ -449,25 +370,36 @@ def mobile_prepaid_payment(request):
                 and data.get("bill_data", {}).get("status") == "SUCCESS"
             ):
                 success_payload = data["bill_data"]["payload"]
+            # ✅ Time formatting
+                raw_time = success_payload.get("timeStamp")
+                formatted_time = ""
 
+                if raw_time:
+                    # timezone part remove karo
+                    clean_time = raw_time.split("+")[0]
+                    formatted_time = datetime.strptime(
+                        clean_time, "%Y-%m-%dT%H:%M:%S"
+                    ).strftime("%d %b %Y, %I:%M %p")
                 # ❌ Prevent double payment
                 request.session.pop("MOBILE_PREPAID_CONFIRM", None)
 
                 receipt = {
-                    "customer_name": bill.get("return_payload", {})
-                        .get("customerDetails", {})
-                        .get("EMAIL", ""),
+                    "customer_name": data.get("name", ""),
                     "amount": amount,
-                    "transaction_id": success_payload.get("additionalParams", {})
-                        .get("transactionID", ""),
-                    "reference_id": success_payload.get("additionalParams", {})
-                        .get("txnReferenceId", ""),
-                    "approval_ref": success_payload.get("reason", {})
-                        .get("approvalRefNum", ""),
-                    "time": success_payload.get("timeStamp", ""),
-                    "mobile": bill.get("return_payload", {})
-                        .get("customerMobileNumber", ""),
-                    "biller_type": "MOBILE_PREPAID",
+                    "refid": success_payload.get("refId", ""),
+
+                    "time": formatted_time,
+
+                    "transaction_id": success_payload.get("additionalParams", {}).get("transactionID", ""),
+                    "reference_id": success_payload.get("additionalParams", {}).get("txnReferenceId", ""),
+                    "biller_reference_number": success_payload.get("additionalParams", {}).get("billerReferenceNumber", ""),
+                    "approval_ref": success_payload.get("reason", {}).get("approvalRefNum", ""),
+                    "responseCode": success_payload.get("reason", {}).get("responseCode", ""),
+                    "responseReason": success_payload.get("reason", {}).get("responseReason", ""),
+            
+                    "mobile": data.get("mobile", ""),
+                    "self_cashback": data.get("self_cashback", ""),
+                    "biller_type": "Mobile Prepaid",
                 }
 
                 return render(

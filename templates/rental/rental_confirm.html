@@ -1,0 +1,343 @@
+{% extends "service/service_base.html" %}
+{% block content %}
+{% include 'recharge/logo.html' %}
+<style>
+  /* ------------------- INPUT ------------------- */
+input[type="number"], input[type="password"] {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 0.6rem 0.75rem;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="number"]:focus, input[type="password"]:focus {
+    border-color: #243b55;
+    box-shadow: 0 0 0 2px rgba(36,59,85,0.2);
+    outline: none;
+}
+
+/* ------------------- BUTTONS ------------------- */
+.btn-primary {
+    background: linear-gradient(90deg,#243b55 0,#141e30 100%);
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn-outline-secondary {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.btn-outline-secondary:hover {
+    background: #e9ecef;
+}
+
+/* ------------------- T-PIN MODAL ------------------- */
+#tpinModal.hidden { display: none; }
+#tpinModal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+#tpinModal .bg-white {
+    width: 90%;
+    max-width: 320px;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+#tpinBoxes {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.tpin-box {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+    text-align: center;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.tpin-box:focus {
+    border-color: #243b55;
+    box-shadow: 0 0 0 2px rgba(36,59,85,0.2);
+    outline: none;
+}
+
+/* T-PIN modal buttons */
+#tpinModal button {
+    border-radius: 25px;
+    padding: 8px 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: transform 0.1s;
+}
+
+#tpinModal button:hover {
+    transform: translateY(-1px);
+}
+
+/* ------------------- ANIMATION ------------------- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* ------------------- RESPONSIVE ------------------- */
+@media (max-width: 576px) {
+    .tpin-box {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+    .btn-primary {
+        font-size: 0.95rem;
+    }
+}
+
+
+</style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<div class="container py-4">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+  
+        {% if messages %}
+        <div class="message-container" style="margin-bottom: 18px;">
+          {% for message in messages %}
+            <div 
+              class="alert alert-custom {% if message.tags %}alert-{{ message.tags }}{% endif %} shadow-sm fade-in"
+              style="display: flex; align-items: center; gap: 7px; border-radius: 10px; padding: 12px 16px; font-size: 0.90rem; margin-bottom: 12px;
+                    {% if message.tags == 'success' %}background: #eafbe7; color: #218838; border:1px solid #90e2a2;
+                    {% elif message.tags == 'error' %}background: #fff1f0; color: #d81b36; border:1px solid #fadcdc;
+                    {% elif message.tags == 'warning' %}background:#fff7e6; color: #d68910; border:1px solid #f7dbb5;
+                    {% else %}background: #e9f0fb; color:#243b55; border:1px solid #b9cdf4;{% endif %}">
+              <i class="fa
+                {% if message.tags == 'success' %}fa-check-circle text-success
+                {% elif message.tags == 'error' %}fa-times-circle text-danger
+                {% elif message.tags == 'warning' %}fa-exclamation-triangle text-warning
+                {% else %}fa-info-circle text-primary{% endif %}
+                me-2" aria-hidden="true"
+                style="font-size: 1.35em;
+                  {% if message.tags == 'success' %}color: #39b265;
+                  {% elif message.tags == 'error' %}color: #e74c3c;
+                  {% elif message.tags == 'warning' %}color: #ffa426;
+                  {% else %}color: #3566d4;{% endif %}"></i>
+              <span style="flex:1;">{{ message }}</span>
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+  
+  
+        <!-- {% if payload %} -->
+        <div class="card shadow rounded-4 mb-3">
+          <div class="card-body">
+            <h5 class="fw-bold mb-3">Rental Bill Summary</h5>
+  
+            <div class="row small">
+  
+              <div class="col-6 text-muted">Bill Invoice number</div>
+              <div class="col-6 fw-semibold">{{ Bill_Invoice_No }}</div>
+  
+    
+  
+              <div class="col-6 text-muted">Account Holder</div>
+              <div class="col-6 fw-semibold">
+                {{ payload.billerResponse.accountHolderName }}
+              </div>
+  
+              <div class="col-6 text-muted">Amount Due</div>
+              <div class="col-6 fw-bold text-success">
+                ₹ {{ payload.billerResponse.amount }}
+              </div>
+  
+              <div class="col-6 text-muted">Due Date</div>
+              <div class="col-6 fw-semibold">
+                {{ payload.billerResponse.dueDate|default:"N/A" }}
+              </div>
+  
+              <div class="col-6 text-muted">Bill Date</div>
+              <div class="col-6 fw-semibold">
+                {{ payload.billerResponse.billDate|default:"N/A" }}
+              </div>
+  
+              <div class="col-6 text-muted">Approval Ref No</div>
+              <div class="col-6 fw-semibold">
+                {{ payload.approvalRefNum }}
+              </div>
+
+              
+            
+              
+          
+  
+              <!-- 🔥 ADDITIONAL PARAMS LOOP -->
+              {% if payload.additionalParams %}
+                {% for key, value in payload.additionalParams.items %}
+                  <div class="col-6 text-muted">{{ key }}</div>
+                  <div class="col-6 fw-semibold">{{ value }}</div>
+                {% endfor %}
+              {% endif %}
+  
+            </div>
+          </div>
+        </div>
+        <!-- {% else %}
+          <div class="alert alert-warning">
+            Session expired. Please fetch FASTag bill again.
+          </div>
+        {% endif %}
+          -->
+      <div class="card shadow rounded-4">
+        <div class="card-body">
+          <form method="post" action="{% url 'rental_payment' %}"  id="fastagForm">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Recharge Amount</label>
+              <input type="number" name="amount"
+                     class="form-control form-control-lg"
+                     value="{{ payload.billerResponse.amount }}"
+                     min="1" readonly>
+            </div>
+              
+        <!-- Hidden input for form submission -->
+        <input type="hidden" id="tpinInput" name="tpin" />
+            <button type="button" id="openTpinModal" class="btn btn-primary w-100 btn-lg">
+              Pay & Recharge
+            </button>
+
+      
+          </form>
+
+          <a href="{% url 'rental_category' %}"
+             class="btn btn-outline-secondary w-100 mt-2">
+            ← Change 
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+ <!-- ✅ T-PIN Modal -->
+ <div id="tpinModal" class="hidden fixed inset-0 flex justify-center items-center z-50">
+  <div class="bg-white rounded-2xl shadow-xl w-80 p-6 flex flex-col items-center">
+    
+    <div class="mb-4 text-center">
+      <h5 class="fw-bold mb-2 text-dark">Enter T-PIN</h5>
+      <p class="small mb-0 text-muted">For security, input your T-PIN below.</p>
+    </div>
+
+    <!-- 4 Input Boxes -->
+    <div id="tpinBoxes" class="flex gap-3 mb-5">
+      <input type="password" maxlength="1"  inputmode="numeric" pattern="[0-9]*" class="tpin-box w-12 h-12 text-center text-xl border border-gray-300 rounded-lg focus:ring-2 focus:ring-black-400 focus:outline-none" />
+      <input type="password" maxlength="1"  inputmode="numeric" pattern="[0-9]*" class="tpin-box w-12 h-12 text-center text-xl border border-gray-300 rounded-lg focus:ring-2 focus:ring-black-400 focus:outline-none" />
+      <input type="password" maxlength="1"  inputmode="numeric" pattern="[0-9]*" class="tpin-box w-12 h-12 text-center text-xl border border-gray-300 rounded-lg focus:ring-2 focus:ring-black-400 focus:outline-none" />
+      <input type="password" maxlength="1"  inputmode="numeric" pattern="[0-9]*" class="tpin-box w-12 h-12 text-center text-xl border border-gray-300 rounded-lg focus:ring-2 focus:ring-black-400 focus:outline-none" />
+    </div>
+
+    <div class="d-flex justify-content-between w-100 mt-2">
+      <button id="tpinCancelBtn" type="button" class="btn btn-outline-dark w-50 me-2 py-2 fw-semibold shadow-sm rounded-pill" style="letter-spacing:0.5px;">
+        <i class="fa-solid fa-xmark me-1"></i> Cancel
+      </button>
+      <button id="tpinConfirmBtn" type="button" class="btn btn-primary w-50 ms-2 py-2 fw-semibold shadow-sm rounded-pill" style="background: linear-gradient(90deg,#243b55 0,#141e30 100%); border:none; letter-spacing:0.5px;">
+        <i class="fa-solid fa-arrow-right-to-bracket me-1"></i> Continue
+      </button>
+    </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<script>
+  const modal = document.getElementById("tpinModal");
+  const openBtn = document.getElementById("openTpinModal");
+  const cancelBtn = document.getElementById("tpinCancelBtn");
+  const confirmBtn = document.getElementById("tpinConfirmBtn");
+  const form = document.getElementById("fastagForm");
+  const tpinInput = document.getElementById("tpinInput");
+  const tpinBoxes = document.querySelectorAll(".tpin-box");
+  
+  // Open modal
+  openBtn.addEventListener("click", () => {
+      modal.classList.remove("hidden");
+      tpinBoxes[0].focus();
+  });
+  
+  // Cancel modal
+  cancelBtn.addEventListener("click", () => {
+      modal.classList.add("hidden");
+      tpinBoxes.forEach(box => box.value = ""); // clear boxes
+      tpinInput.value = ""; // clear hidden input
+  });
+  
+  // Auto move focus & update hidden input
+  tpinBoxes.forEach((box, index) => {
+      box.addEventListener("input", (e) => {
+          // Only allow digits
+          box.value = box.value.replace(/[^0-9]/g, '');
+  
+          // Move to next box if exists
+          if (box.value.length === 1 && index < tpinBoxes.length - 1) {
+              tpinBoxes[index + 1].focus();
+          }
+  
+          // Move back if deleted
+          if (box.value.length === 0 && index > 0) {
+              tpinBoxes[index - 1].focus();
+          }
+  
+          // Update hidden input
+          tpinInput.value = Array.from(tpinBoxes).map(b => b.value).join("");
+      });
+  
+      // Optional: press backspace to move focus to previous
+      box.addEventListener("keydown", (e) => {
+          if (e.key === "Backspace" && box.value === "" && index > 0) {
+              tpinBoxes[index - 1].focus();
+          }
+      });
+  });
+  
+  // Confirm & submit form
+  confirmBtn.addEventListener("click", () => {
+      if (tpinInput.value.length !== 4) {
+          alert("Please enter 4 digit T-PIN");
+          return;
+      }
+      form.submit();
+  });
+  </script>
+  
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
+
+{% endblock %}

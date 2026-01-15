@@ -62,7 +62,7 @@ def electricity_category_view(request):
 
     except Exception:
         messages.error(request, "Invalid response from electricity server.")
-
+        return redirect('electricity_category')
     return render(request, "electricity_bill/electricity_billers.html", {
         "billers": billers,
         "category": category,
@@ -194,6 +194,8 @@ def electricity_confirm(request):
                        Payment method
 ===============================================================================================================
 '''
+
+from datetime import datetime
 def electricity_payment(request):
     user_data = request.session.get("user_data", {})
     access_token = request.session.get("access_token")
@@ -254,6 +256,16 @@ def electricity_payment(request):
                 and data.get("bill_data", {}).get("status") == "SUCCESS"
             ):
                 success_payload = data["bill_data"]["payload"]
+                # ✅ Time formatting
+                raw_time = success_payload.get("timeStamp")
+                formatted_time = ""
+
+                if raw_time:
+                    # Remove timezone
+                    clean_time = raw_time.split("+")[0]
+                    formatted_time = datetime.strptime(
+                        clean_time, "%Y-%m-%dT%H:%M:%S"
+                    ).strftime("%d %b %Y, %I:%M %p")
 
                 # ✅ prevent double payment
                 request.session.pop("ELECTRICITY_BILL", None)
@@ -261,7 +273,10 @@ def electricity_payment(request):
                 receipt = {
                     "customer_name": data.get("name", ""),
                     "amount": amount,
-                    "Consumer_Id": bill.get("return_payload", {}).get("customerParams", {}).get("CUstomer ID Registration Number", ""),
+                    # "Consumer_Id": bill.get("return_payload", {}).get("customerParams", {}).get("CUstomer ID Registration Number", ""),
+                    "refid": success_payload.get("refId", ""),
+                    
+                    "time": formatted_time,
                     "transaction_id": success_payload.get("additionalParams", {}).get("transactionID", ""),
                     "reference_id": success_payload.get("additionalParams", {}).get("txnReferenceId", ""),
                     "billerReferenceNumber": success_payload.get("additionalParams", {}).get("billerReferenceNumber", ""),
@@ -270,7 +285,7 @@ def electricity_payment(request):
                     "Outstanding_Amount": success_payload.get("additionalParams", {}).get("Total Outstanding Amount", ""),
                     "approval_ref": success_payload.get("reason", {}).get("approvalRefNum", ""),
                     "responseReason":success_payload.get("reason", {}).get("responseReason", ""),
-                    "time": success_payload.get("timeStamp", ""),
+                    # "time": success_payload.get("timeStamp", ""),
                     "status": data.get("data", {}).get("status"),
                     # "status":bill.get("return_payload", {}).get("status", {}),
                     "mobile": data.get("mobile", ""),

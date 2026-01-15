@@ -168,11 +168,11 @@ input[type="number"]:focus, input[type="password"]:focus {
                 {{ payload.billerResponse.accountHolderName }}
               </div>
   
-              <div class="col-6 text-muted">Amount Due</div>
+              <!-- <div class="col-6 text-muted">Amount Due</div>
               <div class="col-6 fw-bold text-success">
                 ₹ {{ payload.billerResponse.amount }}
               </div>
-  
+   -->
               <div class="col-6 text-muted">Due Date</div>
               <div class="col-6 fw-semibold">
                 {{ payload.billerResponse.dueDate|default:"N/A" }}
@@ -228,7 +228,7 @@ input[type="number"]:focus, input[type="password"]:focus {
 
           <a href="{% url 'fastag_category' %}"
              class="btn btn-outline-secondary w-100 mt-2">
-            ← Change Vehicle Number
+            ← Change 
           </a>
         </div>
       </div>

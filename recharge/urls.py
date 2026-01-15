@@ -7,8 +7,8 @@
 
 from django.urls import path
 
-from recharge import views_mobile_prepaid
-from . import views,views_fastag ,views_electricity_bill ,views_gas_bill,views_loan_repayment_bill
+from recharge import views_mobile_prepaid,views_rental,views_cable_tv,views_health_insurance
+from . import views,views_fastag ,views_electricity_bill ,views_gas_bill,views_loan_repayment_bill,views_education_fees,views_insurance,views_water,views_landline_postpaid,views_hospital,views_municiple_taxes
 
 urlpatterns = [
     path('', views.recharge_view, name='recharge_view'),
@@ -31,23 +31,78 @@ urlpatterns = [
     path("electricity/fetch/", views_electricity_bill.electricity_fetch_bill, name="electricity_fetch"),
     path("electricity/confirm/", views_electricity_bill.electricity_confirm, name="electricity_confirm"),
     path("electricity/payment/", views_electricity_bill.electricity_payment, name="electricity_payment"),
-    # path("success/", views.recharge_success, name="recharge_success"),
     
   # =================== Gas Bill URLS ===================
     path("gas/bill", views_gas_bill.gas_category_view, name="gas_category"),
     path("gas/fetch/", views_gas_bill.gas_fetch_bill, name="gas_fetch"),
     path("gas/confirm/", views_gas_bill.gas_bill_confirm, name="gas_bill_confirm"),
     path("gas/payment/", views_gas_bill.gas_bill_payment, name="gas_bill_payment"),
-    # path("success/", views.recharge_success, name="recharge_success"),
-
-
 
   # =================== Loan Bill URLS ===================
     path("loan/repayment", views_loan_repayment_bill.loan_category_view, name="loan_category"),
     path("loan/repayment/fetch/", views_loan_repayment_bill.loan_fetch_bill, name="loan_fetch"),
     path("loan/repayment/confirm/", views_loan_repayment_bill.loan_bill_confirm, name="loan_confirm"),
     path("loan/repayment/payment/", views_loan_repayment_bill.loan_bill_payment, name="loan_payment"),
-    # path("success/", views.recharge_success, name="recharge_success"),
+    
+  # =================== Education Fees Bill URLS ===================
+    path("education/fees/bill", views_education_fees.education_fees_category_view, name="education_category"),
+    path("education/fees/bill/fetch/", views_education_fees.education_fees_fetch_bill, name="education_fetch"),
+    path("education/fees/bill/confirm/", views_education_fees.education_fees_bill_confirm, name="education_confirm"),
+    path("education/fees/bill/payment/", views_education_fees.education_fees_payment, name="education_payment"),
+    
+
+  # =================== Insurance Bill URLS ===================
+    path("Insurance/bill", views_insurance.insurance_category_view, name="insurance_category"),
+    path("Insurance/bill/fetch/", views_insurance.insurance_fetch_bill, name="insurance_fetch"),
+    path("Insurance/bill/confirm/", views_insurance.insurance_bill_confirm, name="insurance_confirm"),
+    path("Insurance/bill/payment/", views_insurance.insurance_payment, name="insurance_payment"),
+    
+
+ # =================== Water Bill URLS ===================
+    path("water/bill", views_water.water_category_view, name="water_category"),
+    path("water/bill/fetch/", views_water.water_fetch_bill, name="water_fetch"),
+    path("water/bill/confirm/", views_water.water_bill_confirm, name="water_confirm"),
+    path("water/bill/payment/", views_water.water_payment, name="water_payment"),
+
+ # =================== Landline Postpaid Bill URLS ===================
+    path("landline/bill", views_landline_postpaid.landline_postpaid_category_view, name="landline_postpaid_category"),
+    path("landline/bill/fetch/", views_landline_postpaid.landline_postpaid_fetch_bill, name="landline_postpaid_fetch"),
+    path("landline/bill/confirm/", views_landline_postpaid.landline_postpaid_bill_confirm, name="landline_postpaid_confirm"),
+    path("landline/bill/payment/", views_landline_postpaid.landline_postpaid_payment, name="landline_postpaid_payment"),
+
+
+ # =================== Rental Bill URLS ===================
+    path("rental/bill", views_rental.rental_category_view, name="rental_category"),
+    path("rental/bill/fetch/", views_rental.rental_fetch_bill, name="rental_fetch"),
+    path("rental/bill/confirm/", views_rental.rental_bill_confirm, name="rental_confirm"),
+    path("rental/bill/payment/", views_rental.rental_bill_payment, name="rental_payment"),
+
+
+ # =================== Cable TV Bill URLS ===================
+    path("cable-tv/bill", views_cable_tv.cable_tv_category_view, name="cable_tv_category"),
+    path("cable-tv/bill/fetch/", views_cable_tv.cable_tv_fetch_bill, name="cable_tv_fetch"),
+    path("cable-tv/bill/confirm/", views_cable_tv.cable_tv_bill_confirm, name="cable_tv_confirm"),
+    path("cable-tv/bill/payment/", views_cable_tv.cable_tv_bill_payment, name="cable_tv_payment"),
+
+ # =================== Hospital Bill URLS ===================
+    path("hospital/bill", views_hospital.hospital_category_view, name="hospital_category"),
+    path("hospital/bill/fetch/", views_hospital.hospital_fetch_bill, name="hospital_fetch"),
+    path("hospital/bill/confirm/", views_hospital.hospital_bill_confirm, name="hospital_confirm"),
+    path("hospital/bill/payment/", views_hospital.hospital_bill_payment, name="hospital_payment"),
+
+
+ # =================== Health Insurance Bill URLS ===================
+    path("health-insurance/bill", views_health_insurance.health_insurance_category_view, name="health_insurance_category"),
+    path("health-insurance/bill/fetch/", views_health_insurance.health_insurance_fetch_bill, name="health_insurance_fetch"),
+    path("health-insurance/bill/confirm/", views_health_insurance.health_insurance_bill_confirm, name="health_insurance_confirm"),
+    path("health-insurance/bill/payment/", views_health_insurance.health_insurance_bill_payment, name="health_insurance_payment"),
+
+
+ # =================== Municiple Taxes Bill URLS ===================
+    path("municiple-taxes/bill", views_municiple_taxes.municiple_taxes_category_view, name="municiple_taxes_category"),
+    path("municiple-taxes/bill/fetch/", views_municiple_taxes.municiple_taxes_fetch_bill, name="municiple_taxes_fetch"),
+    path("municiple-taxes/bill/confirm/", views_municiple_taxes.municiple_taxes_bill_confirm, name="municiple_taxes_confirm"),
+    path("municiple-taxes/bill/payment/", views_municiple_taxes.municiple_taxes_bill_payment, name="municiple_taxes_payment"),
 
 
     # =================== Mobile Prepaid RECHARGE URLS ===================
@@ -57,6 +112,21 @@ urlpatterns = [
     path("mobile-prepaid/confirm/", views_mobile_prepaid.mobile_prepaid_confirm, name="mobile_prepaid_confirm"),
     path("mobile-prepaid/payment/", views_mobile_prepaid.mobile_prepaid_payment, name="mobile_prepaid_payment"),
     # path("success/", views.recharge_success, name="recharge_success"),
+
+
+
+  # ===================  Navbar RECHARGE URLS ===================
+    path('transaction-hisotry/', views.transaction_history_view, name='transaction_hisotry'),
+    path('transaction-status/', views.check_transaction_status, name='check_transaction_status'),
+   
+    # 🔹 NPCI complaint (GET = form + dispositions, POST = raise complaint)
+    path(
+        "raise-complaint/",views.
+        raise_npci_complaint,
+        name="raise_npci_complaint"
+    ),  
+    path('not-found/', views.not_found_page, name='not_found_page'),
+    path('complain-history/', views.complain_history_view, name='complain_history'),
 
 
 
@@ -95,9 +165,7 @@ urlpatterns = [
     path('agent-collection/', views.agent_collection_view, name='agent_collection_view'),
    
 
-    path('transaction-hisotry/', views.transaction_history_view, name='transaction_hisotry'),
-    path('not-found/', views.not_found_page, name='not_found_page'),
-    path('complain-history/', views.complain_history_view, name='complain_history'),
+    
 
 
     # Footer url  =========================================

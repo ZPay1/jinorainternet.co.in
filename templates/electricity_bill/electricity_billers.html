@@ -6,7 +6,7 @@
     <div class="col-md-6 col-lg-5">
       <div class="card shadow-sm rounded-4">
         <div class="card-body">
-          <h5 class="fw-bold text-center mb-4">Select ELECTRICITY Bill Provider</h5>
+          <h5 class="fw-bold text-center mb-4">Select Electricity Bill Provider</h5>
 
           {% for biller in billers %}
           <a href="{% url 'electricity_fetch' %}?billerId={{ biller.billerId }}"

@@ -149,7 +149,7 @@ def loan_fetch_bill(request):
 
         except Exception:
             messages.error(request, "Invalid response from Loan Repayment server.")
-
+            return redirect('loan_category')
     return render(request, "loan_repayment_bill/loan_fetch.html", {
         "user_data": user_data
     })
@@ -176,8 +176,7 @@ def loan_bill_confirm(request):
   
 
     context = {
-        "Consumer_number": bill.get("Consumer_number"),
-        "distributor_id": bill.get("distributor_id"),
+        "Loan_Number": bill.get("Loan_Number"),
         "billerId": bill.get("billerId"),
 
         "payload": payload,
@@ -197,6 +196,7 @@ def loan_bill_confirm(request):
                        Payment method
 ===============================================================================================================
 '''
+from datetime import datetime
 def loan_bill_payment(request):
     user_data = request.session.get("user_data", {})
     access_token = request.session.get("access_token")
@@ -253,23 +253,36 @@ def loan_bill_payment(request):
                 and data.get("bill_data", {}).get("status") == "SUCCESS"
             ):
                 success_payload = data["bill_data"]["payload"]
+                # ✅ Time formatting
+                raw_time = success_payload.get("timeStamp")
+                formatted_time = ""
 
+                if raw_time:
+                    # timezone part remove karo
+                    clean_time = raw_time.split("+")[0]
+                    formatted_time = datetime.strptime(
+                        clean_time, "%Y-%m-%dT%H:%M:%S"
+                    ).strftime("%d %b %Y, %I:%M %p")
                 # ✅ prevent double payment
                 request.session.pop("LOAN_REPAYMENT_BILL", None)
 
                 receipt = {
                     "customer_name": data.get("name", ""),
                     "amount": amount,
-                    "Consumer_number": bill.get("return_payload", {}).get("customerParams", {}).get("CUstomer ID Registration Number", ""),
-                    "distributor_id": bill.get("return_payload", {}).get("customerParams", {}).get("Distributor id Registration ID", ""),
+                    
+                    # "loan_number": bill.get("return_payload", {}).get("customerParams", {}).get("Loan Number Registration ID", ""),
 
+                    "refid": success_payload.get("refId", ""),
+                    
+                    "time": formatted_time,
                     "transaction_id": success_payload.get("additionalParams", {}).get("transactionID", ""),
                     "reference_id": success_payload.get("additionalParams", {}).get("txnReferenceId", ""),
                    
                     "Outstanding_Amount": success_payload.get("additionalParams", {}).get("Total Outstanding Amount", ""),
                     "approval_ref": success_payload.get("reason", {}).get("approvalRefNum", ""),
+                    "responseCode": success_payload.get("reason", {}).get("responseCode", ""),
                     "responseReason":success_payload.get("reason", {}).get("responseReason", ""),
-                    "time": success_payload.get("timeStamp", ""),
+                    # "time": success_payload.get("timeStamp", ""),
                     "status": data.get("data", {}).get("status"),
                     # "status":bill.get("return_payload", {}).get("status", {}),
                     "mobile": data.get("mobile", ""),

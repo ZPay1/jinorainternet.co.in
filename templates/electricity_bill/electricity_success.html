@@ -28,48 +28,62 @@
 
           <div class="d-flex justify-content-between border-bottom py-1">
             <span class="text-muted">Customer Mobile</span>
-            <span class="fw-bold" style="color:#1e63d1;">₹{{ receipt.mobile }}</span>
+            <span class="fw-bold">{{ receipt.mobile }}</span>
           </div>
 
           <div class="d-flex justify-content-between border-bottom py-1">
             <span class="text-muted">Bill Amount</span>
             <span class="fw-bold" style="color:#1e63d1;">₹{{ receipt.amount }}</span>
           </div>
-
           <div class="d-flex justify-content-between border-bottom py-1">
-            <span class="text-muted">Transaction</span>
-            <div class="col-7 text-end fw-semibold ">{{ receipt.responseReason }}</div>
+            <span class="text-muted">Ref ID</span>
+            <div class="col-7 text-end fw-semibold" style="font-size: 0.80em;">
+              {{ receipt.refid }}
+            </div>
           </div>
-
+          <div class="d-flex justify-content-between border-bottom py-1">
+            <span class="text-muted">Date & Time</span>
+            <div class="col-7 text-end fw-semibold">
+              {{ receipt.time }}
+            </div>
+          </div>
+          
           <div class="d-flex justify-content-between border-bottom py-1">
             <span class="text-muted">Transaction ID</span>
-            <div class="col-7 text-end fw-semibold text-success">{{ receipt.transaction_id }}</div>
+            <div class="col-7 text-end fw-semibold ">{{ receipt.transaction_id }}</div>
           </div>
 
+         
           <div class="d-flex justify-content-between border-bottom py-1">
-            <span class="text-muted">billerReferenceNumber</span>
-            <div class="col-7 text-end fw-semibold ">{{ receipt.billerReferenceNumber }}</div>
-          </div>
-
-          <div class="d-flex justify-content-between border-bottom py-1">
-            <span class="text-muted">biller_nique_number</span>
-            <div class="col-7 text-end fw-semibold ">{{ receipt.biller_nique_number }}</div>
-          </div>
-
-          <div class="d-flex justify-content-between border-bottom py-1">
-            <span class="text-muted">Reference ID</span>
+            <span class="text-muted"style="font-size: 0.95em;">Transaction Reference ID</span>
             <div class="col-7 text-end">{{ receipt.reference_id }}</div>
           </div>
 
           <div class="d-flex justify-content-between border-bottom py-1">
-            <span class="text-muted">Approval Refferance</span>
-            <div class="col-7 text-end">{{ receipt.approval_ref }}</div>
+            <span class="text-muted" style="font-size: 0.95em;">Biller Reference Number</span>
+            <div class="col-7 text-end fw-semibold ">{{ receipt.billerReferenceNumber }}</div>
           </div>
 
           <div class="d-flex justify-content-between border-bottom py-1">
+            <span class="text-muted"style="font-size: 0.95em;">Biller Unique number</span>
+            <div class="col-7 text-end fw-semibold ">{{ receipt.biller_nique_number }}</div>
+          </div>
+
+          <div class="d-flex justify-content-between border-bottom py-1">
+            <span class="text-muted">Transaction</span>
+            <div class="col-7 text-end fw-semibold text-success">{{ receipt.responseReason }}</div>
+          </div>
+
+
+          <div class="d-flex justify-content-between border-bottom py-1">
+            <span class="text-muted" style="font-size: 0.95em;">Approval Refferance No.</span>
+            <div class="col-7 text-end">{{ receipt.approval_ref }}</div>
+          </div>
+
+          <!-- <div class="d-flex justify-content-between border-bottom py-1">
             <span class="text-muted">Status</span>
             <small class="col-7 text-end">{{ receipt.status }}</small>
-          </div>
+          </div> -->
 
           <div class="d-flex justify-content-between border-bottom py-1">
             <span class="text-muted">Biller Type</span>
@@ -80,7 +94,7 @@
           <div class="rounded-4 px-2 mt-3 mb-2" style="background: linear-gradient(120deg, #e6fff1 80%, #f7f7fc 100%); border: 1.5px solid #20bb67;">
             <div class="d-flex flex-column align-items-center py-2">
               <div style="background: #fff; border-radius:50%; width:60px; height:60px; box-shadow:0 2px 10px rgba(40,160,100,.13); display:flex; align-items:center; justify-content:center; margin-bottom:5px; border:2px solid #20bb67;">
-                <img src="/media/JINORA_logo.png" alt="JINORA logo" style="width:40px; height:40px; border-radius:50%;">
+                <img src="/media/logo/jinora.jpeg" alt="JINORA logo" style="width:40px; height:40px; border-radius:50%;">
               </div>
               <strong style="color:#20bb67; font-size:0.89rem;">Congratulations</strong>
               <span>

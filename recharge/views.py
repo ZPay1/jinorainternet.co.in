@@ -1755,137 +1755,449 @@ def agent_collection_view(request):
                             Transaction History method
 ===============================================================================================================
 '''
-
-
-# def transaction_history_view(request):
-#     if 'user_data' not in request.session: 
-#         return redirect('sign_in') 
-#     user_data = request.session.get('user_data', {})
-
-#     # Base queryset (show only recent records)
-#     services = Service.objects.all().order_by('-id')
-#     # print(f'{services=}')
-
-#     # --- Filtering logic ---
-#     month = request.GET.get('month')
-#     category = request.GET.get('category')
-#     status = request.GET.get('status')
-#     search = request.GET.get('search')
-
-#     if month:
-#         services = services.filter(created_at__month=month)
-#     if category:
-#         services = services.filter(service_type=category)
-#     if status:
-#         services = services.filter(status=status.lower())
-#     if search:
-#         services = services.filter(rechargers_number__icontains=search) | services.filter(refrence__icontains=search)
-
-#     return render(request, 'recharge/transaction_history.html', {
-#         'user_data': user_data,
-#         'services': services,
-#     })
-
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from .models import Service
 from datetime import datetime
 from django.utils import timezone
 
+from lelifeproject.views import refresh_tokents
+import requests
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
+
 def transaction_history_view(request):
+    user_data = request.session.get("user_data", {})
+    access_token = request.session.get("access_token")
+
+    if not access_token:
+        messages.error(request, "Session expired. Please sign in again.")
+        return redirect("sign_in")
+
+    # 🔹 Filters
+    biller_type = request.GET.get("biller_type")
+    biller_status = request.GET.get("biller_status")
+    pay_status = request.GET.get("pay_status")
+    search = request.GET.get("search")
+
+    # mobile = request.GET.get("mobile")
+    # transaction_id = request.GET.get("transaction_id")
+    # txn_reference = request.GET.get("txn_reference")
+    start_date = request.GET.get("start_date")
+    end_date = request.GET.get("end_date")
+    page = int(request.GET.get("page", 1))
+
+    mobile = transaction_id = txn_reference = None
+
+    if search:
+            if search.isdigit() and len(search) >= 10:
+                mobile = search
+            else:
+                transaction_id = search
+                txn_reference = search
+                
+
+
+    transactions = []
+    pagination = {}
+
+    def transaction_history_api(token):
+        return requests.get(
+            f"{Baseurl}/npci/bill-payment/history/",
+            headers={
+                "Authorization": f"Bearer {token}",
+                "Content-Type": "application/json"
+            },
+            params={
+                "biller_type": biller_type,
+                "biller_status": biller_status,
+                "pay_status": pay_status,
+                # 'search':search,
+                "mobile": mobile,
+                "transaction_id": transaction_id,
+                "txn_reference": txn_reference,
+                "start_date": start_date,
+                "end_date": end_date,
+                "page": page,
+            },
+            timeout=15
+        )
+
+    response = transaction_history_api(access_token)
+
+    if response.status_code in (401, 403):
+        if refresh_tokents(request):
+            response = transaction_history_api(request.session.get("access_token"))
+        else:
+            messages.error(request, "Session expired. Please login again.")
+            return redirect("sign_in")
+
+    try:
+        data = response.json()
+
+        if response.status_code == 200 and data.get("status"):
+            transactions = data.get("data", [])
+
+            for txn in transactions:
+                modified_date = txn.get("modified_date")
+                if modified_date:
+                    dt = datetime.fromisoformat(modified_date)
+                    txn["formatted_date"] = dt.strftime("%d %b %Y, %I:%M %p")
+                else:
+                    txn["formatted_date"] = ""
+
+
+            # ✅ CORRECT PAGINATION
+            pagination = {
+                "current_page": data.get("current_page", 1),
+                "total_pages": data.get("total_pages", 1),
+                "total_records": data.get("total_records", 0),
+            }
+
+        else:
+            messages.error(request, "Unable to fetch transaction history.")
+
+    except Exception as e:
+        print(e)
+        messages.error(request, "Invalid response from server.")
+
+    return render(request, "recharge/transaction_history.html", {
+        "transactions": transactions,
+        "pagination": pagination,
+        "page_range": range(1, pagination.get("total_pages", 1) + 1),  # 👈 add this
+        "filters": request.GET,   # 🔥 filters safe rahenge
+        "user_data": user_data,
+        "mobile": mobile,
+        "transaction_id": transaction_id,
+        "txn_reference": txn_reference,
+    })
+
+# def transaction_history_view(request):
+#     user_data = request.session.get("user_data", {})
+#     access_token = request.session.get("access_token")
+
+#     if not access_token:
+#         messages.error(request, "Session expired. Please sign in again.")
+#         return redirect("sign_in")
+
+    
+#     transactions = []
+#     pagination = {}    
+
+#     # 🔹 Filters
+#     biller_type = request.GET.get("biller_type")
+#     biller_status = request.GET.get("biller_status")
+#     pay_status = request.GET.get("pay_status")
+#     mobile = request.GET.get("mobile")
+#     transaction_id = request.GET.get("transaction_id")
+#     txn_reference = request.GET.get("txn_reference")
+#     start_date = request.GET.get("start_date")
+#     end_date = request.GET.get("end_date")
+#     page = request.GET.get("page", 1)
+
+#     transactions = []
+
+#     def transaction_history_api(token):
+#         return requests.get(
+#             f"{Baseurl}/npci/bill-payment/history/",
+#             headers={
+#                 "Authorization": f"Bearer {token}",
+#                 "Content-Type": "application/json"
+#             },
+#             params={
+#                 "biller_type": biller_type,
+#                 "biller_status": biller_status,
+#                 "pay_status": pay_status,
+#                 "mobile": mobile,
+#                 "transaction_id": transaction_id,
+#                 "txn_reference": txn_reference,
+#                 "start_date": start_date,
+#                 "end_date": end_date,
+#                 "page": page
+#             },
+#             timeout=15
+#         )
+
+#     # 🔁 Step 1: First API call
+#     response = transaction_history_api(access_token)
+#     print(f'{response=}')
+#     # 🔁 Step 2: Token expired → refresh → retry
+#     if response.status_code in (401, 403):
+#         if refresh_tokents(request):
+#             new_token = request.session.get("access_token")
+#             response = transaction_history_api(new_token)
+#         else:
+#             messages.error(request, "Session expired. Please login again.")
+#             return redirect("sign_in")
+
+#     try:
+#         data = response.json()
+#         print(f'{data=}')
+#         if response.status_code == 200 and data.get("status"):
+#             transactions = data.get("data", [])
+#             for txn in transactions:
+#                 modified_date = txn.get("modified_date")
+
+#                 if modified_date:
+#                     # ISO string ko datetime me convert
+#                     dt = datetime.fromisoformat(modified_date)
+
+#                     # Format: 14 Jan 2026, 12:08 PM
+#                     txn["formatted_date"] = dt.strftime("%d %b %Y, %I:%M %p")
+#                 else:
+#                     txn["formatted_date"] = ""
+#             # ✅ CORRECT PAGINATION
+#             pagination = {
+#                 "current_page": data.get("current_page", 1),
+#                 "total_pages": data.get("total_pages", 1),
+#                 "total_records": data.get("total_records", 0),
+#             }
+#         else:
+#             messages.error(request, "Unable to fetch transaction history.")
+          
+
+#     except Exception:
+#         messages.error(request, "Invalid response from server.")
+        
+
+#     return render(request, "recharge/transaction_history.html", {
+#         "transactions": transactions,
+#         "pagination": pagination,
+#         "range": range(1, pagination.get("total_pages", 1) + 1),
+#         "user_data": user_data,
+        
+#         "filters": {
+#             "biller_type": biller_type,
+#             "biller_status": biller_status,
+#             "pay_status": pay_status,
+#             "mobile": mobile,
+#             "transaction_id": transaction_id,
+#             "txn_reference": txn_reference,
+#             "start_date": start_date,
+#             "end_date": end_date,
+            
+#         }
+#     })
+
+from django.http import HttpResponse
+
+
+
+'''
+===============================================================================================================
+                             check_status_view method
+===============================================================================================================
+'''
+
+
+import requests
+import json
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
+
+
+def check_transaction_status(request):
     if 'user_data' not in request.session:
         return redirect('sign_in')
     user_data = request.session.get('user_data', {})
+    access_token = request.session.get("access_token")
 
-    # services = Service.objects.all().order_by('-id')
-    user_data = request.session.get('user_data', {})
-    userid = user_data.get('userid')
-    username = user_data.get('username')
-    userdt = f'{username}-({userid})'
+    if not access_token:
+        messages.error(request, "Session expired. Please login again.")
+        return redirect("sign_in")
 
-   # services = Service.objects.all().order_by('-id')
-    services = Service.objects.filter(user_detail = userdt ).order_by('-id')
-    # Get filters
-    start_date_str = request.GET.get('start_date', '').strip()
-    end_date_str = request.GET.get('end_date', '').strip()
-    category = request.GET.get('category', '').strip()
-    status = request.GET.get('status', '').strip()
-    search = request.GET.get('search', '').strip()
+    if request.method == "POST":
+        txn_reference_id = request.POST.get("txnReferenceId")
 
-    # Parse and apply date range filter (expects YYYY-MM-DD)
-    start_date = None
-    end_date = None
-    date_error = None
+        payload = {
+            "txnReferenceId": txn_reference_id,
+            "complaintType": "Transaction"
+        }
 
-    # Helper to parse date string
-    def parse_date(dstr):
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/json"
+        }
+
         try:
-            # parse as date
-            return datetime.strptime(dstr, "%Y-%m-%d").date()
-        except (ValueError, TypeError):
-            return None
+            response = requests.post(
+                f"{Baseurl}/npci/transaction-status/",
+                json=payload,
+                headers=headers,
+                timeout=20
+            )
+            print(f'{response=}')
 
-    if start_date_str:
-        start_date = parse_date(start_date_str)
-        if start_date is None:
-            date_error = "Invalid start date format. Use YYYY-MM-DD."
+            data = response.json()
+            print("NPCI RESPONSE:", data)
+            # ✅ SUCCESS RESPONSE
 
-    if end_date_str:
-        end_date = parse_date(end_date_str)
-        if end_date is None:
-            date_error = "Invalid end date format. Use YYYY-MM-DD."
+            if (
+                response.status_code == 200
+                and data.get("status") is True
+                and data.get("data", {}).get("status") == "SUCCESS"
+            ):
+                # Parse payload as per the sample response structure
+                payload = data["data"].get("payload", {})
+                additional_params = payload.get("additionalParams", {})
+                txn_detail = additional_params.get("txnlist", {}).get("txndetail", {})
 
-    # If both present and valid, ensure start <= end
-    if start_date and end_date and start_date > end_date:
-        # swap or set error — here we swap so UI remains flexible
-        start_date, end_date = end_date, start_date
+                context = {
+                    "result": data,  # directly pass the whole data for deeply nested lookups in template
+                    "txn_reference_id": txn_detail.get("txnReferenceId", ""),
+                    'user_data':user_data
+                }
+                print(f'{context=}')
+                return render(request, "recharge/transaction_status.html", context)
 
-    # Apply date filters
-    if start_date:
-        services = services.filter(create_date__date__gte=start_date)
-    if end_date:
-        services = services.filter(create_date__date__lte=end_date)
 
-    # Category filter (validate against choices)
-    if category:
-        allowed_categories = [choice[0] for choice in Service.SERVICE_CHOICES]
-        if category in allowed_categories:
-            services = services.filter(service_type=category)
+            # ❌ API ERROR
+            error_msg = data.get("message", "Unable to fetch transaction status")
+            messages.error(request, error_msg)
+            return redirect("check_transaction_status")
 
-    # Status filter
-    if status:
-        allowed_status = [s[0] for s in Service.STATUS_CHOICES]
-        if status in allowed_status:
-            services = services.filter(status=status)
+        except requests.RequestException:
+            messages.error(request, "Server error. Please try again.")
+            return redirect("check_transaction_status")
 
-    # Search across number, reference, orderid
-    if search:
-        services = services.filter(
-            Q(rechargers_number__icontains=search) |
-            Q(refrence__icontains=search) |
-            Q(orderid__icontains=search)
+    return render(request, "recharge/transaction_status.html",{'user_data':user_data})
+
+
+
+
+
+
+
+
+import requests
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
+def get_complaint_dispositions(request):
+    if 'access_token' not in request.session:
+        messages.error(request, "Session expired, login again")
+        return redirect("sign_in")
+
+    access_token = request.session.get("access_token")
+
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json"
+    }
+
+    try:
+        response = requests.get(
+            f"{Baseurl}/npci/complaint-dispositions/",
+            headers=headers,
+            timeout=20
         )
 
-    # Prepare select options
-    categories = [('', 'Category')] + list(Service.SERVICE_CHOICES)
-    statuses = [('', 'Status')] + list(Service.STATUS_CHOICES)
+        data = response.json()
+        # print("DISPOSITIONS RESPONSE:", data)
+
+        if response.status_code == 200 and data.get("status") is True:
+            dispositions = data["data"]["payload"].get("dispositions", [])
+            return dispositions
+
+        return []
+
+    except requests.RequestException:
+        return []
+
+
+
+from datetime import datetime
+import requests
+import re
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
+def raise_npci_complaint(request):
+    if 'user_data' not in request.session:
+        return redirect('sign_in')
+
+    user_data = request.session.get('user_data', {})
+    access_token = request.session.get("access_token")
+
+    if not access_token:
+        messages.error(request, "Session expired. Please login again.")
+        return redirect("sign_in")
+
+    # ✅ GET dispositions for dropdown
+    dispositions = get_complaint_dispositions(request)
+
+    if request.method == "POST":
+        payload = {
+            "txnReferenceId": request.POST.get("txnReferenceId"),
+            "disposition": request.POST.get("disposition"),
+            "description": request.POST.get("description"),
+            "customerMobile": request.POST.get("customerMobile"),
+            "customerName": request.POST.get("customerName")
+        }
+
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/json"
+        }
+
+        try:
+            response = requests.post(
+                f"{Baseurl}/npci/raise-complaint/",
+                json=payload,
+                headers=headers,
+                timeout=20
+            )
+
+            data = response.json()
+            print("RAISE COMPLAINT RESPONSE:", data)
+
+            # ✅ Success case
+            if response.status_code == 200 and data.get("status") is True:
+                messages.success(request, "Complaint raised successfully")
+                return redirect("raise_npci_complaint")
+
+            # ❌ Error case
+            error_payload = data.get("error", {}).get("payload", {})
+            errors = error_payload.get("errors", [])
+            formatted_errors = []
+
+            for err in errors:
+                reason = err.get("reason", "")
+
+                # Agar reason dict hai, values ko join kar lo
+                if isinstance(reason, dict):
+                    reason = " ".join([str(v) for v in reason.values()])
+
+                # Check if reason has date-time and format it
+                match = re.search(r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})', reason)
+                if match:
+                    raw_dt = match.group(1)  # e.g. '2026-01-15 15:48:35'
+                    dt_obj = datetime.strptime(raw_dt, "%Y-%m-%d %H:%M:%S")
+                    friendly_dt = dt_obj.strftime("%d %b %Y, %I:%M %p")  # '15 Jan 2026, 03:48 PM'
+                    reason = reason.replace(raw_dt, friendly_dt)
+
+                formatted_errors.append(reason)
+
+            if formatted_errors:
+                # Join all errors with numbering
+                formatted_error_message = "\n".join([f"{idx+1}. {e}" for idx, e in enumerate(formatted_errors)])
+            else:
+                formatted_error_message = error_payload.get("message", "Unable to raise complaint")
+
+            messages.error(request, formatted_error_message)
+
+        except requests.RequestException:
+            messages.error(request, "Server error, try again")
 
     context = {
-        'user_data': user_data,
-        'services': services,
-        'categories': categories,
-        'statuses': statuses,
-        'selected_category': category,
-        'selected_status': status,
-        'search_query': search,
-        'start_date': start_date_str,
-        'end_date': end_date_str,
-        'date_error': date_error,
+        "user_data": user_data,
+        "dispositions": dispositions
     }
-    return render(request, 'recharge/transaction_history.html', context)
+    return render(request, "recharge/raise_complaint.html", context)
 
-   
-from django.http import HttpResponse
+
 
 
 

@@ -1,0 +1,95 @@
+{% extends "service/service_base.html" %}
+{% block content %}
+
+
+{% include 'recharge/logo.html' %}
+
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+
+      {% if messages %}
+      <div class="message-container" style="margin-bottom: 18px;">
+        {% for message in messages %}
+          <div 
+            class="alert alert-custom {% if message.tags %}alert-{{ message.tags }}{% endif %} shadow-sm fade-in"
+            style="display: flex; align-items: center; gap: 7px; border-radius: 10px; padding: 12px 16px; font-size: 0.90rem; margin-bottom: 12px;
+                  {% if message.tags == 'success' %}background: #eafbe7; color: #218838; border:1px solid #90e2a2;
+                  {% elif message.tags == 'error' %}background: #fff1f0; color: #d81b36; border:1px solid #fadcdc;
+                  {% elif message.tags == 'warning' %}background:#fff7e6; color: #d68910; border:1px solid #f7dbb5;
+                  {% else %}background: #e9f0fb; color:#243b55; border:1px solid #b9cdf4;{% endif %}">
+            <i class="fa
+              {% if message.tags == 'success' %}fa-check-circle text-success
+              {% elif message.tags == 'error' %}fa-times-circle text-danger
+              {% elif message.tags == 'warning' %}fa-exclamation-triangle text-warning
+              {% else %}fa-info-circle text-primary{% endif %}
+              me-2" aria-hidden="true"
+              style="font-size: 1.35em;
+                {% if message.tags == 'success' %}color: #39b265;
+                {% elif message.tags == 'error' %}color: #e74c3c;
+                {% elif message.tags == 'warning' %}color: #ffa426;
+                {% else %}color: #3566d4;{% endif %}"></i>
+            <span style="flex:1;">{{ message }}</span>
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="card shadow rounded-4">
+        <div class="card-body p-4">
+          <h5 class="text-center fw-bold mb-4">Health Insurance  Bill </h5>
+
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="billerId" value="{{ request.GET.billerId }}">
+            
+           
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Policy Number</label>
+              <input type="text" name="Policy_Number"
+                     class="form-control form-control-lg"
+                     placeholder="Enter your Policy Number"
+                     required
+                     maxlength="32"
+                     pattern="[A-Za-z0-9\-]{5,32}"
+                     title="Please enter a valid policy number"
+                     oninput="this.value = this.value.replace(/[^A-Za-z0-9\-]/g, '').slice(0, 32);">
+              <div class="invalid-feedback">
+                Please enter a valid policy number.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Customer Mobile Number</label>
+              <input type="text" name="Customer_Mobile_Number"
+                     class="form-control form-control-lg"
+                     placeholder="Enter your Mobile Number"
+                     required
+                     maxlength="10"
+                     minlength="10"
+                     pattern="[0-9]{10}"
+                     title="Enter a valid 10-digit Indian mobile number"
+                     oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);">
+              <div class="invalid-feedback">
+                Please enter a valid 10-digit mobile number.
+              </div>
+            </div>
+          
+            </script>
+            <button class="btn btn-primary w-100 btn-lg">
+              Fetch Bill
+            </button>
+          </form>
+
+          <div class="alert alert-info small text-left mt-3" style="border-radius:8px;">
+            Please enter the Policy Number and Customer Mobile Number linked to your health insurance policy to get your bill details.
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

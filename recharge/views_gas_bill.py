@@ -62,7 +62,7 @@ def gas_category_view(request):
 
     except Exception:
         messages.error(request, "Invalid response from gas server.")
-
+        return redirect('gas_category')
     return render(request, "gas_bill/gas_billers.html", {
         "billers": billers,
         "category": category,
@@ -147,9 +147,12 @@ def gas_fetch_bill(request):
                     "return_payload": data.get("return_payload"),
                 }
                 return redirect("gas_bill_confirm")
-
             else:
-                messages.error(request, "Unable to fetch gas bill")
+                # API error message show karo
+                error_msg = data.get("data", {}).get("payload", {}).get("message", "Unable to fetch gas bill")
+                messages.error(request, error_msg)
+            # else:
+            #     messages.error(request, "Unable to fetch gas bill")
 
         except Exception:
             messages.error(request, "Invalid response from gas server.")
@@ -201,6 +204,8 @@ def gas_bill_confirm(request):
                        Payment method
 ===============================================================================================================
 '''
+
+from datetime import datetime
 def gas_bill_payment(request):
     user_data = request.session.get("user_data", {})
     access_token = request.session.get("access_token")
@@ -257,6 +262,16 @@ def gas_bill_payment(request):
                 and data.get("bill_data", {}).get("status") == "SUCCESS"
             ):
                 success_payload = data["bill_data"]["payload"]
+                # ✅ Time formatting
+                raw_time = success_payload.get("timeStamp")
+                formatted_time = ""
+
+                if raw_time:
+                    # Remove timezone
+                    clean_time = raw_time.split("+")[0]
+                    formatted_time = datetime.strptime(
+                        clean_time, "%Y-%m-%dT%H:%M:%S"
+                    ).strftime("%d %b %Y, %I:%M %p")
 
                 # ✅ prevent double payment
                 request.session.pop("GAS_BILL", None)
@@ -264,9 +279,11 @@ def gas_bill_payment(request):
                 receipt = {
                     "customer_name": data.get("name", ""),
                     "amount": amount,
+                    "refid": success_payload.get("refId", ""),
+                    "time": formatted_time,
                     "Consumer_number": bill.get("return_payload", {}).get("customerParams", {}).get("CUstomer ID Registration Number", ""),
-                    "distributor_id": bill.get("return_payload", {}).get("customerParams", {}).get("Distributor id Registration ID", ""),
-
+                    # "distributor_id": bill.get("return_payload", {}).get("customerParams", {}).get("Distributor id Registration ID", ""),
+                    
                     "transaction_id": success_payload.get("additionalParams", {}).get("transactionID", ""),
                     "reference_id": success_payload.get("additionalParams", {}).get("txnReferenceId", ""),
                     "distributor_contact": success_payload.get("additionalParams", {}).get("Distributor Contact", ""),
@@ -277,9 +294,6 @@ def gas_bill_payment(request):
                     "Outstanding_Amount": success_payload.get("additionalParams", {}).get("Total Outstanding Amount", ""),
                     "approval_ref": success_payload.get("reason", {}).get("approvalRefNum", ""),
                     "responseReason":success_payload.get("reason", {}).get("responseReason", ""),
-                    "time": success_payload.get("timeStamp", ""),
-                    "status": data.get("data", {}).get("status"),
-                    # "status":bill.get("return_payload", {}).get("status", {}),
                     "mobile": data.get("mobile", ""),
                     "self_cashback": data.get("self_cashback", ""),
                     "biller_type": "Gas",
