@@ -15,7 +15,8 @@ from django.http import HttpResponse
 from django.shortcuts import  redirect
 from django.shortcuts import render, redirect
 from .models import Service, State
-
+from django.conf import settings
+Baseurl = f"{settings.JINORA_API_BASE}"
 '''
 ===============================================================================================================
                             Recharge method
@@ -23,7 +24,7 @@ from .models import Service, State
 '''
 
 import requests
-Baseurl = "https://api.jinora.co.in/api"
+
 
 
 import requests

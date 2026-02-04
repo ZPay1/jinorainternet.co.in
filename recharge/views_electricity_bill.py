@@ -6,7 +6,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from lelifeproject.views import refresh_tokents
 import requests
-Baseurl = "https://api.jinora.co.in/api"
+from django.conf import settings
+Baseurl = f"{settings.JINORA_API_BASE}"
 import requests
 from django.shortcuts import render, redirect
 

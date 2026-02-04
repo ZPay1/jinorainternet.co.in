@@ -3,8 +3,8 @@ from django.contrib import messages
 from lelifeproject.views import refresh_tokents
 import requests
 
-Baseurl = "https://api.jinora.co.in/api"
-
+from django.conf import settings
+Baseurl = f"{settings.JINORA_API_BASE}"
 '''
 ===============================================================================================================
                         Category method (for Cable TV: cable_tv_category_view)

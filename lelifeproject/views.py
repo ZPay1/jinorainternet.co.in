@@ -3,10 +3,11 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import  redirect
 # from django.contrib import messages
-Baseurl = "https://api.jinora.co.in/api"
+
 from django.views.decorators.csrf import csrf_exempt
 import requests
-
+from django.conf import settings
+Baseurl = f"{settings.JINORA_API_BASE}"
 
 
 '''===================== user login with email ===================================================='''
@@ -43,7 +44,7 @@ def google_login(request):
         remember_me = request.POST.get('remember_me')
         #print(f'{remember_me=}')
 
-        # ✅ Encrypt & save in session instead of URL
+        # âœ… Encrypt & save in session instead of URL
         encrypted_identifier = encrypt_data(identifier)
         #print(f'{encrypted_identifier}')
         encrypted_password = encrypt_data(password)
@@ -82,7 +83,7 @@ def google_callback(request):
     state = request.GET.get('state', 'login')  # Default to 'login' if state is not provided
     #print(f'{state=}')
     
-    # 👇 Ye line poora current URL (including domain + query params) #print karegi
+    # ðŸ‘‡ Ye line poora current URL (including domain + query params) #print karegi
     full_url = request.build_absolute_uri()
     #print(f"Current full callback URL: {full_url}")
 
@@ -143,7 +144,7 @@ def google_callback(request):
         headers = {
             "Content-Type": "application/json",
             # "X-CSRFToken": csrf_token,
-            "Referer": "https://api.jinora.co.in/api"
+            "Referer": f"{Baseurl}"
         }
 
         payload = {
@@ -157,9 +158,9 @@ def google_callback(request):
         try:
             # Step 3: POST login request
             response = session.post(f"{Baseurl}/user/login/", json=payload, headers=headers, verify=False)
-            #print(f'{response=}')
+            # print(f'{response=}')
             data = response.json()
-            #print(f'{data=}')
+            # print(f'{data=}')
 
             if data.get('status') == 'success':
                 # Save user info and access token in session
@@ -198,13 +199,19 @@ def google_callback(request):
         data = register_data  
 
         try:
-            if sponsor:
-                url = f"{Baseurl}/register-user/"
-            else:
-                url = f"{Baseurl}/user/register/"
-
+            # if sponsor:
+            #     url = f"{Baseurl}/register-user/"
+            #     print(f' register user pai called{url=}')
+            # else:
+            # url = f"{Baseurl}/user/register/"
+            # print(f' user register pai called{url=}')
+            url = f"{Baseurl}/register-user/"
+            # print(f' register user pai called{url=}')
             response = requests.post(url, json=data)
+            # print(f'{response=}')
+            # print(f'{response.text=}')
             api_response = response.json()
+            # print(f'{api_response=}')
 
             #print("API RAW RESPONSE:", api_response)
 
@@ -262,13 +269,13 @@ def register_account(request):
 
     if request.method == 'POST':
 
-        # ✅ Common data fields
+        # âœ… Common data fields
         data = {
             'username': request.POST.get('username', '').strip(),
             'email': request.POST.get('email', '').strip(),
             'mobile': request.POST.get('mobile', '').strip(),
             'tpin': request.POST.get('tpin', '').strip(),
-            'pincode': request.POST.get('pincode', '').strip(),
+            # 'pincode': request.POST.get('pincode', '').strip(),
             'password': request.POST.get('password', '').strip(),
             'confirm_password': request.POST.get('confirm_password', '').strip(),
         
@@ -332,7 +339,7 @@ def sign_in_view(request):
         headers = {
             "Content-Type": "application/json",
             # "X-CSRFToken": csrf_token,
-            "Referer": "https://api.jinora.co.in/api"
+            "Referer": f"{Baseurl}"
         }
 
         payload = {
@@ -353,7 +360,7 @@ def sign_in_view(request):
                 #print(f'{data=}')
                 # Save user info and access token in session
                 request.session['access_token'] = data.get('access')
-                request.session['refresh_token'] = data.get('refresh')  # ✅ ALWAYS SAVE
+                request.session['refresh_token'] = data.get('refresh')  # âœ… ALWAYS SAVE
       
                 request.session['user_data'] = data
 
@@ -396,7 +403,7 @@ def refresh_tokents(request):
         response = requests.post(url, headers=headers, data=payload)
         data = response.json()
         if 'access' in data:
-            # ✅ Session me naya token dal do
+            # âœ… Session me naya token dal do
             request.session['access_token'] = data.get('access')
             request.session['refresh_token'] = data.get('refresh', refresh_token)
             return True  # refresh success
@@ -421,7 +428,7 @@ def register_view(request):
             'email': request.POST.get('email', '').strip(),
             'mobile': request.POST.get('mobile', '').strip(),
             'tpin': request.POST.get('tpin', '').strip(),
-            'pincode': request.POST.get('pincode', '').strip(),
+            # 'pincode': request.POST.get('pincode', '').strip(),
             'password': request.POST.get('password', '').strip(),
             'confirm_password': request.POST.get('confirm_password', '').strip(),
 
@@ -495,7 +502,6 @@ def logout_view(request):
 '''
 
 def dashboard_view(request):
-    
     if 'user_data' not in request.session: 
         return redirect('sign_in') 
       
@@ -676,7 +682,7 @@ def download_test_pdf(request):
 # def download_test_pdf(request):
 #     buffer = io.BytesIO()
 #     p = canvas.Canvas(buffer)
-#     p.drawString(100, 750, "✅ PDF Download Successful!")
+#     p.drawString(100, 750, "âœ… PDF Download Successful!")
 #     p.showPage()
 #     p.save()
 #     buffer.seek(0)
@@ -739,8 +745,5 @@ def contact_us_view(request):
 
 
 
-
-# def register_view(request):
-#     return render(request, 'register.html')
 
 

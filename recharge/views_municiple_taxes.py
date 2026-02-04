@@ -4,7 +4,8 @@ from lelifeproject.views import refresh_tokents
 import requests
 from datetime import datetime
 
-Baseurl = "https://api.jinora.co.in/api"
+from django.conf import settings
+Baseurl = f"{settings.JINORA_API_BASE}"
 
 
 # ================================================================================================

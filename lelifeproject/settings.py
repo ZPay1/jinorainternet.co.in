@@ -168,3 +168,8 @@ LOGOUT_REDIRECT_URL = '/'  # Redirect after logout
 import base64, os
 # 🔐 Create a secure 32-byte Fernet key (one-time setup)
 SECRET_KEY_FOR_ENCRYPTION = base64.urlsafe_b64encode(os.urandom(32)).decode()
+
+
+# settings.py
+JINORA_BASE_URL = "https://jinorainternet.biz/"
+JINORA_API_BASE = f"{JINORA_BASE_URL}/api"

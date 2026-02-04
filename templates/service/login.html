@@ -3,309 +3,282 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Jinora Recharge</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
-    .login {
-      /* background: linear-gradient(120deg, #75e6da 0%, #189ab4 100%); */
+    :root {
+      --primary-color: #189ab4;
+      --secondary-color: #05445e;
+      --accent-color: #75e6da;
+      --light-bg: #f0f7f8;
+    }
+
+    body {
+      background-color: var(--light-bg);
+      background-image: radial-gradient(circle at 10% 20%, rgba(24, 154, 180, 0.05) 0%, transparent 20%),
+                        radial-gradient(circle at 90% 80%, rgba(117, 230, 218, 0.1) 0%, transparent 20%);
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Segoe UI', sans-serif;
-      margin-top: 20px;
+      margin: 0;
     }
+
     .login-card {
-      background: #fff;
-      padding: 40px 32px 32px 32px;
-      border-radius: 22px;
-      box-shadow: 0 8px 32px rgba(24, 154, 180, 0.18), 0 1.5px 8px rgba(0,0,0,0.08);
+      background: #ffffff;
+      padding: 45px 35px;
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(5, 68, 94, 0.1);
       width: 100%;
-      max-width: 410px;
-      position: relative;
-      overflow: hidden;
+      max-width: 420px;
+      border: 1px solid rgba(24, 154, 180, 0.1);
     }
+
     .login-logo {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 18px;
-    }
-    .login-logo img {
-      width: 90%;
-      height: 90px;
-      object-fit: contain;
-      /* border-radius: 50%; */
-      /* box-shadow: 0 2px 8px rgba(24, 154, 180, 0.12); */
-      /* background: #f5f3f1; */
-      padding: 6px;
-    }
-    .login-card h3 {
-      margin-bottom: 18px;
-      font-weight: 800;
       text-align: center;
-      color: #189ab4;
-      letter-spacing: 1px;
+      margin-bottom: 30px;
     }
+
+    .login-logo img {
+      max-height: 85px;
+      width: auto;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
+    }
+
+    .login-card h3 {
+      color: var(--secondary-color);
+      font-weight: 800;
+      font-size: 1.6rem;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 30px;
+    }
+
     .form-label {
       font-weight: 600;
-      color: #222;
+      color: var(--secondary-color);
+      font-size: 0.85rem;
+      margin-left: 4px;
     }
-    .form-control:focus {
-      border-color: #189ab4;
-      box-shadow: 0 0 0 0.15rem rgba(24, 154, 180, 0.15);
+
+    .input-group {
+      background: #f8fafb;
+      border-radius: 12px;
+      border: 1.5px solid #eee;
+      transition: all 0.3s ease;
+      overflow: hidden;
     }
+
+    .input-group:focus-within {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(24, 154, 180, 0.1);
+      background: #fff;
+    }
+
     .input-group-text {
-      background: #f0f2f5;
+      background: transparent;
       border: none;
-      color: #189ab4;
-      font-size: 1.1rem;
+      color: var(--primary-color);
+      padding-left: 15px;
     }
-    .captcha-box {
-      background: linear-gradient(90deg, #e9ecef 60%, #d4f1f4 100%);
-      padding: 8px 18px;
+
+    .form-control {
+      background: transparent;
+      border: none;
+      padding: 12px 10px;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .form-control:focus {
+      box-shadow: none;
+      background: transparent;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
       font-weight: 700;
-      letter-spacing: 3px;
-      display: inline-block;
-      border-radius: 7px;
-      user-select: none;
-      font-family: 'Fira Mono', monospace;
-      font-size: 1.1rem;
-      color: #189ab4;
-      border: 1.5px dashed #189ab4;
+      font-size: 1.05rem;
+      margin-top: 10px;
+      transition: all 0.3s ease;
     }
-    .btn-captcha {
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      padding: 0;
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(24, 154, 180, 0.3);
+      opacity: 0.95;
+    }
+
+    .forgot-link {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .signup-link {
+      color: var(--primary-color);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .message-container {
+      margin-bottom: 20px;
+    }
+
+    .alert-custom {
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      border: none;
       display: flex;
       align-items: center;
-      justify-content: center;
-      border: none;
-      background: #f0f2f5;
-      color: #189ab4;
-      margin-left: 10px;
-      transition: background 0.2s;
+      animation: slideDown 0.4s ease;
     }
-    .btn-captcha:hover {
-      background: #d4f1f4;
-      color: #05445e;
+
+    @keyframes slideDown {
+      from { transform: translateY(-10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
-    .forgot-link {
-      color: #189ab4;
-      font-size: 0.97rem;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-    .forgot-link:hover {
-      color: #05445e;
-      text-decoration: underline;
-    }
-    .btn-primary {
-      background: linear-gradient(90deg, #189ab4 60%, #05445e 100%);
-      border: none;
-      font-weight: 700;
-      font-size: 1.1rem;
-      letter-spacing: 1px;
-      box-shadow: 0 2px 8px rgba(24, 154, 180, 0.10);
-      transition: background 0.2s;
-    }
-    .btn-primary:hover {
-      background: linear-gradient(90deg, #05445e 60%, #189ab4 100%);
-    }
-    .signup-link {
-      color: #189ab4;
-      font-weight: 600;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .signup-link:hover {
-      color: #05445e;
-      text-decoration: underline;
-    }
-    .input-group .form-control {
-      border-right: none;
-    }
-    .input-group .input-group-text {
-      border-left: none;
-      cursor: pointer;
-    }
-    @media (max-width: 500px) {
+
+    @media (max-width: 480px) {
       .login-card {
-        padding: 24px 8px 18px 8px;
-        max-width: 98vw;
-      }
-      .login-logo img {
-        width: 60px;
-        height: 60px;
+        margin: 20px;
+        padding: 35px 25px;
       }
     }
-
-
-  /* Container spacing */
-  .message-container {
-    position: relative;
-    margin: 15px auto;
-    max-width: 700px;
-  }
-  
-  /* Base message box */
-  .alert-custom {
-    border-radius: 10px;
-    padding: 12px 18px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    transition: all 0.3s ease;
-  }
-  
-  /* Optional shadow animation */
-  .fade-in {
-    animation: fadeIn 0.6s ease forwards;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  /* Message types */
-  .alert-success {
-    background: #e6f4ea;
-    color: #1b5e20;
- 
-  }
-  
-  .alert-error, .alert-danger {
-    background: #fdecea;
-    color: #b71c1c;
-   
-  }
-  
-  .alert-warning {
-    background: #fff8e1;
-    color: #795548;
- 
-  }
-  
-  .alert-info {
-    background: #e3f2fd;
-    color: #0d47a1;
-  
-  }
-  
-  /* Hover animation */
-  .alert-custom:hover {
-
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  }
- 
   </style>
 </head>
 <body>
 
-
-  
-<div class="login">
 <div class="login-card">
   <div class="login-logo">
-    <img src="/media/logo/jinora.jpeg" alt="jinora logo">
+    <img src="/media/logo/jinora.jpeg" alt="Jinora Logo" onerror="this.src='https://via.placeholder.com/150x80?text=JINORA'">
   </div>
+  
   <h3>Welcome Back</h3>
-  <form id="signinForm" method="POST" action="{% url 'google_login' %}">
+  <p class="subtitle">Log in to manage your recharges</p>
+
+  <form id="signinForm" method="POST" action="{% url 'google_login' %}" onsubmit="return validateUserForm()">
     {% csrf_token %}
+
     {% if messages %}
     <div class="message-container">
       {% for message in messages %}
-        <div class="alert alert-custom {% if message.tags %}alert-{{ message.tags }}{% endif %} shadow-sm fade-in">
-          <i class="fa 
-            {% if message.tags == 'success' %}fa-check-circle text-success{% elif message.tags == 'error' %}fa-times-circle text-danger{% elif message.tags == 'warning' %}fa-exclamation-triangle text-warning{% else %}fa-info-circle text-primary{% endif %}
-          me-2"></i>
+        <div class="alert alert-custom {% if message.tags == 'success' %}bg-success-subtle text-success{% else %}bg-danger-subtle text-danger{% endif %} shadow-sm">
+          <i class="fa {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} me-2"></i>
           {{ message }}
         </div>
       {% endfor %}
     </div>
-  {% endif %}
-  
-  
-  
-  
-    <!-- Identifier -->
-    <label for="identifier" class="form-label">Mobile</label>
-    <div class="input-group mb-3">
-      <span class="input-group-text"><i class="fa fa-mobile-alt"></i></span>
-      <input type="text" name="identifier" class="form-control" placeholder="Enter User ID or Email or Mobile" required>
-      <!-- <input type="text" name="identifier" class="form-control" placeholder="Enter your mobile number" required> -->
-    </div>
-  
-    <!-- Password -->
+    {% endif %}
+
     <div class="mb-3">
-      <label for="password" class="form-label">Password</label>
+      <label class="form-label">User ID / Mobile Number</label>
       <div class="input-group">
-        <span class="input-group-text"><i class="fa fa-lock"></i></span>
-        
-        <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password" required>
-        <span class="input-group-text" onclick="togglePassword()" style="cursor:pointer;" id="togglePassword">
+        <span class="input-group-text"><i class="fa fa-tablet-alt"></i></span>
+        <input type="text" name="identifier" id="userInput" class="form-control" 
+               placeholder="JN1234567 or Mobile" required oninput="validateUserInput(this)">
+      </div>
+      <small id="userError" class="text-danger d-none mt-1" style="font-size: 0.75rem;">
+        <i class="fa fa-info-circle"></i> Enter valid JN ID or 10-digit mobile
+      </small>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Security Password</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa fa-shield-alt"></i></span>
+        <input type="password" id="password" name="password" class="form-control" 
+               placeholder="••••••••" required>
+        <span class="input-group-text" onclick="togglePassword()" style="cursor:pointer;">
           <i class="fa fa-eye" id="eyeIcon"></i>
         </span>
       </div>
     </div>
-  
-    <!-- Remember Me + Forgot Password -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="remember_me" id="rememberMe">
-        <label class="form-check-label" for="rememberMe">
-          Remember Me
+        <input class="form-check-input" type="checkbox" id="rememberMe" style="cursor: pointer;">
+        <label class="form-check-label" for="rememberMe" style="cursor: pointer; font-size: 0.85rem; color: #666;">
+          Remember me
         </label>
       </div>
-     
-      <a href="#" class="forgot-link">Forgot Password?</a>
+      <a href="#" class="forgot-link">Forgot Password</a>
     </div>
-  
-    <!-- Submit -->
-    <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
-  
-    <!-- Signup -->
-    <div class="text-center">
-      <span style="color:#555;">Don't have an account?</span>
-      <a href="{% url 'register_view' %}" class="signup-link">Sign Up</a>
+
+    <button type="submit" class="btn btn-primary w-100 shadow-sm">
+      Secure Login <i class="fa fa-arrow-right ms-2" style="font-size: 0.8rem;"></i>
+    </button>
+
+    <div class="text-center mt-4">
+      <p style="font-size: 0.9rem; color: #777;">
+        New partner? <a href="{% url 'register_view' %}" class="signup-link">Create Account</a>
+      </p>
     </div>
   </form>
-  
 </div>
-</div>
-<script>
-  // Simple captcha generator
-  function generateCaptcha() {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let captcha = '';
-    for(let i=0; i<5; i++){
-      captcha += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    document.getElementById('captchaText').innerText = captcha;
-  }
-  // On page load, generate a captcha
-  window.onload = generateCaptcha;
 
-  // Password show/hide toggle
+<script>
+  // Password Visibility Toggle
   function togglePassword() {
     const pwd = document.getElementById('password');
     const eye = document.getElementById('eyeIcon');
     if (pwd.type === "password") {
       pwd.type = "text";
-      eye.classList.remove('fa-eye');
-      eye.classList.add('fa-eye-slash');
+      eye.classList.replace('fa-eye', 'fa-eye-slash');
     } else {
       pwd.type = "password";
-      eye.classList.remove('fa-eye-slash');
-      eye.classList.add('fa-eye');
+      eye.classList.replace('fa-eye-slash', 'fa-eye');
     }
   }
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+  // Live Validation Logic
+  function validateUserInput(input) {
+    let value = input.value.toUpperCase();
+    const error = document.getElementById("userError");
+    
+    // Cleaning input
+    value = value.replace(/[^JN0-9]/g, '');
+
+    if (/^\d/.test(value)) {
+      value = value.slice(0, 10); // Mobile
+    } else if (value.startsWith('J')) {
+      value = value.slice(0, 9);  // JN ID
+    }
+
+    input.value = value;
+
+    const regex = /^(JN\d{7}|\d{10})$/;
+    if (value === "" || regex.test(value)) {
+      error.classList.add("d-none");
+    } else {
+      error.classList.remove("d-none");
+    }
+  }
+
+  function validateUserForm() {
+    const val = document.getElementById('userInput').value;
+    const regex = /^(JN\d{7}|\d{10})$/;
+    if (!regex.test(val)) {
+      document.getElementById("userError").classList.remove("d-none");
+      return false;
+    }
+    return true;
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
